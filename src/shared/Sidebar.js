@@ -1,7 +1,9 @@
 import React, { Component, useState } from "react";
+import Button from "react-bootstrap/Button";
 import { Link, withRouter } from "react-router-dom";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { Trans } from "react-i18next";
+import TextEditor from "../TextEditor";
 
 function Sidebar(props) {
   const [highlight, setHighlight] = useState(false);
@@ -19,6 +21,12 @@ function Sidebar(props) {
   //     setMenuState(true);
   //   }
   // }
+  const [showTextEditor, setShowTextEditor] = useState(false);
+
+  const handleTextEditor = (e) => {
+    e.preventDefault();
+    setShowTextEditor(true);
+  };
 
   function highlightClick() {
     setHighlight(!highlight);
@@ -135,13 +143,11 @@ function Sidebar(props) {
             </span>
           </Link>
         </li>
-       
+
         {/* highlight */}
         <li
           className={
-            highlight
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            highlight ? "nav-item menu-items active" : "nav-item menu-items"
           }
         >
           <a
@@ -158,8 +164,30 @@ function Sidebar(props) {
             <i className="fa fa-angle-right"></i>
           </a>
         </li>
+        <li className={"nav-item menu-items"}>
+          <a
+            style={{ position: "relative" }}
+            className="nav-link"
+            onClick={handleTextEditor}
+          >
+            <span className="menu-icon">
+              <i className="mdi mdi-text"></i>
+            </span>
+            <span className="menu-title">
+              <Trans>Create Notes</Trans>
+            </span>
+            <i className="fa fa-angle-right"></i>
+          </a>
+        </li>
         {/* highlight */}
       </ul>
+      {showTextEditor && (
+        <TextEditor
+          id={"data-file"}
+          showTextEditor={showTextEditor}
+          setShowTextEditor={setShowTextEditor}
+        />
+      )}
     </nav>
   );
 }
