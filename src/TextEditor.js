@@ -5,7 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 
-const SAVE_INTERVAL_MS = 2000;
+const SAVE_INTERVAL_MS = 60000;
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -68,19 +68,19 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     };
   }, [socket, quill]);
 
-  useEffect(() => {
-    if (socket == null || quill == null) return;
+  // useEffect(() => {
+  //   if (socket == null || quill == null) return;
 
-    const handler = (delta, oldDelta, source) => {
-      if (source !== "user") return;
-      socket.emit("send-changes", delta);
-    };
-    quill.on("text-change", handler);
+  //   const handler = (delta, oldDelta, source) => {
+  //     if (source !== "user") return;
+  //     socket.emit("send-changes", delta);
+  //   };
+  //   quill.on("text-change", handler);
 
-    return () => {
-      quill.off("text-change", handler);
-    };
-  }, [socket, quill]);
+  //   return () => {
+  //     quill.off("text-change", handler);
+  //   };
+  // }, [socket, quill]);
 
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
@@ -102,6 +102,12 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     socket.disconnect();
   };
 
+  const handleNoteSave = () => {
+    if (socket == null || quill == null) return;
+    socket.emit("save-document", quill.getContents());
+    handleClose();
+  }
+
   return (
     <React.Fragment>
       <Modal
@@ -116,8 +122,11 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
           <div className="container" ref={wrapperRef}></div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Close
+          </Button>
+          <Button variant="primary" onClick={handleNoteSave}>
+            Save
           </Button>
         </Modal.Footer>
       </Modal>
