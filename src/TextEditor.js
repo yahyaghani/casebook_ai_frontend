@@ -5,7 +5,10 @@ import { Button, Modal } from "react-bootstrap";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 
+// Time in milliseconds to auto save the document
 const SAVE_INTERVAL_MS = 60000;
+
+// Options available in toolbar
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -32,6 +35,7 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     };
   }, []);
 
+  // To load Initial document
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -43,6 +47,7 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     socket.emit("get-document", documentId);
   }, [socket, quill, documentId]);
 
+  // To auto save document according to SAVE_INTERVAL_MS
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -55,6 +60,7 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     };
   }, [socket, quill]);
 
+  // to revieve the changes done somewhere else in the same document
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -82,6 +88,7 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
   //   };
   // }, [socket, quill]);
 
+  // Setting up the quill editor
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
 
@@ -97,11 +104,13 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     setQuill(q);
   }, []);
 
+  // to close note editor
   const handleClose = () => {
     setShowTextEditor(false);
     socket.disconnect();
   };
 
+  // called when save button in clicked
   const handleNoteSave = () => {
     if (socket == null || quill == null) return;
     socket.emit("save-document", quill.getContents());
