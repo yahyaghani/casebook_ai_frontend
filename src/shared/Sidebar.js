@@ -7,6 +7,7 @@ import TextEditor from "../TextEditor";
 
 function Sidebar(props) {
   const [highlight, setHighlight] = useState(false);
+  const [fileViewer, setFileViewer] = useState(false);
   const [menuState, setMenuState] = useState(false);
 
   // function toggleMenuState(menuState) {
@@ -29,8 +30,15 @@ function Sidebar(props) {
   };
 
   function highlightClick() {
+    if (fileViewer) setFileViewer(false);
     setHighlight(!highlight);
     props.HighlightClicks(!highlight);
+  }
+
+  function handleFileViewer() {
+    if(highlight) setHighlight(false);
+    setFileViewer(!fileViewer);
+    props.FileViewerClicks(!fileViewer);
   }
   return (
     <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -179,7 +187,25 @@ function Sidebar(props) {
             <i className="fa fa-angle-right"></i>
           </a>
         </li>
-        {/* highlight */}
+        <li
+          className={
+            fileViewer ? "nav-item menu-items active" : "nav-item menu-items"
+          }
+        >
+          <a
+            style={{ position: "relative" }}
+            className="nav-link"
+            onClick={handleFileViewer}
+          >
+            <span className="menu-icon">
+              <i className="mdi mdi-file"></i>
+            </span>
+            <span className="menu-title">
+              <Trans>File Viewer</Trans>
+            </span>
+            <i className="fa fa-angle-right"></i>
+          </a>
+        </li>
       </ul>
       {showTextEditor && (
         <TextEditor

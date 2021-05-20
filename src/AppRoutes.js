@@ -12,7 +12,7 @@ function AppRoutes(props){
         {props.highlight === true && <Highlight />}
        
         <Switch>
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard" render={() => <Dashboard showFileViewer={props.showFileViewer} />} />
           <Redirect to="/dashboard" />
         </Switch>
        

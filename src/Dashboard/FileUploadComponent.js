@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Fragment } from "react";
 import axios from "axios";
 import { Button, Input } from "reactstrap";
+import { UserContext } from "../App";
+
 
 function FileUploadComponent(props) {
+  const { state, dispatch } = useContext(UserContext);
+
   const [file, setFile] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [uploadedResponse, setUploadedResponse] = useState("");
@@ -17,6 +21,7 @@ function FileUploadComponent(props) {
       size: file.size,
       type: file.type,
     };
+    dispatch({ type: "ADD_FILE", payload: file });
     await axios
       .post("http://127.0.0.1:5000/api/v1/file", uploadedFile)
       .then(function (response) {
@@ -35,12 +40,12 @@ function FileUploadComponent(props) {
     let reader = new FileReader();
     let file = e.target.files[0];
 
-    reader.onloadend = () => {
+    reader.onload = () => {
       setFile(file);
       setImagePreviewUrl(reader.result);
     };
 
-    reader.readAsDataURL(file);
+    if(file) reader.readAsDataURL(file);
   }
 
   let $imagePreview = null;
@@ -72,7 +77,7 @@ function FileUploadComponent(props) {
                 onChange={(e) => _handleImageChange(e)}
                 aria-describedby="inputGroupFileAddon01"
               />
-              <label className="custom-file-label" htmlFor="inputGroupFile01">
+              <label style={{ color: '#c7c7c7' }} className="custom-file-label" htmlFor="inputGroupFile01">
                 {file === '' ? 'Choose file' : file.name}
               </label>
             </div>

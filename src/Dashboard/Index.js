@@ -28,6 +28,7 @@ import type {
 } from "react-pdf-highlighter/src/types";
 import { Fragment } from "react";
 import GraphFunc from "./graphFunc";
+import PdfViewer from "./PdfViewer";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -50,7 +51,7 @@ const HighlightPopup = ({ comment }) =>
 //const searchParams = new URLSearchParams(document.location.search);
 //const url = searchParams.get("url") || DEFAULT_URL;
 
-function Dashboard() {
+function Dashboard({ showFileViewer }) {
   const [graphData, setGraphData] = useState([]);
   //const [state, setState] = useState({ highlights: testHighlights[url] ? [...testHighlights[url]] : [] })
   const [state, setState] = useState({ highlights: [] });
@@ -145,6 +146,7 @@ function Dashboard() {
 
   return (
     <Fragment>
+      { !showFileViewer ? <>
       <GraphFunc />
       {url ? (
         <PdfLoader url={url} beforeLoad={<Spinner />}>
@@ -222,7 +224,7 @@ function Dashboard() {
         </PdfLoader>
       ) : (
         <Spinner />
-      )}
+      )}</> : <PdfViewer pdfUrl={PdfUrl.url} />}
     </Fragment>
   );
 }

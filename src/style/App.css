@@ -90,7 +90,7 @@ blockquote:after {
 }
 .content-wrapper .PdfHighlighter {
   position: relative;
-  height: 500px !important;
+  height: 100vh !important;
 }
 
 .error_text {
