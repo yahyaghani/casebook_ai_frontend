@@ -93,6 +93,16 @@ blockquote:after {
   height: 100vh !important;
 }
 
+/* .pdf-viewer {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  width: fit-content;
+} */
+/* .pdf-viewer .PdfHighlighter {
+  position: fixed;
+} */
+
 .error_text {
   color: #000;
   height: 200px;

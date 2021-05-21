@@ -224,7 +224,7 @@ function Dashboard({ showFileViewer }) {
         </PdfLoader>
       ) : (
         <Spinner />
-      )}</> : <PdfViewer pdfUrl={PdfUrl.url} />}
+      )}</> : <PdfViewer />}
     </Fragment>
   );
 }

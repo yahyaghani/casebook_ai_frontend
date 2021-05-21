@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import processMd from "./markdown";
 import axios from "axios";
 
