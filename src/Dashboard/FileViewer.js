@@ -18,7 +18,8 @@ function FileViewer() {
   
   useEffect(() => {
     async function fetchData() {
-      const result_json = await axios("http://127.0.0.1:5000/api/v1/json");
+      if(!state.currentFile) return null;
+      const result_json = await axios(`http://127.0.0.1:5000/api/v1/json?filename=${state.currentFile.name}`);
       const pdfHighlights = (state.currentFile && result_json.data[state.currentFile.name]) || [];
       // setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
       setHighlights(pdfHighlights);
