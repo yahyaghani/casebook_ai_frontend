@@ -10,16 +10,19 @@ body {
   color: #fff;
 }
 
-.sidebar {
+.sidebarnew {
   overflow: auto;
-  color: rgb(119, 119, 119);
-  background: linear-gradient(
+  color: #fff ;
+  /* rgb(119, 119, 119); */
+  background: #191c24;
+  /* linear-gradient(
     rgb(249, 248, 247),
     rgb(251, 250, 248) 46px,
     rgb(251, 251, 249) 120px,
     rgb(248, 247, 245) 35%,
     rgb(249, 248, 246)
-  );
+  ); */
+  width: 100%;
 }
 
 .sidebar__highlights {
@@ -81,6 +84,24 @@ blockquote:before {
 blockquote:after {
   content: close-quote;
 }
+.content-wrapper {
+  background-color: #fff;
+  padding: unset;
+}
+.content-wrapper .PdfHighlighter {
+  position: relative;
+  height: 100vh !important;
+}
+
+/* .pdf-viewer {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  width: fit-content;
+} */
+/* .pdf-viewer .PdfHighlighter {
+  position: fixed;
+} */
 
 .error_text {
   color: #000;
@@ -97,12 +118,75 @@ blockquote:after {
   text-align: center;
   width: 100%;
 }
+.preview_Sec {
+  padding-left: 20px;
+}
+
+.sidebar .nav .nav-item .nav-link i.fa-angle-right:before {
+  content: "\f105";
+  font-family: 'FontAwesome';
+  font-size: inherit;
+  color: inherit;
+}
+.sidebar .nav .nav-item .nav-link i.fa-angle-right {
+  position: absolute;
+  right: 15px;
+  font-weight: bold;
+}
+
+.highlight_btn {
+  margin: 20px 0;
+  text-align: center;
+  width: 100%;
+}
 .previewComponent {
   text-align: center;
-  margin-top: 35px;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+.nav_items_upload > div{
+  position: relative;
+  bottom: 5px;
+}
+.nav_items_upload .custom-file-label {
+  margin-right: 10px;
+}
+.previewComponent form{
   display: flex;
   align-items: center;
 }
 .preview_Sec {
   padding-left: 20px;
+}
+
+
+/* Styles for TextEditor */
+
+.container .ql-editor {
+  color: #000;
+  width: 80vw;
+  min-height: 70vh;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  background-color: white;
+}
+
+.container .ql-container.ql-snow {
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.container .ql-toolbar.ql-snow {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  margin-top: 1rem;
+  top: 0;
+  z-index: 1;
+  background-color: #F3F3F3;
+  border: none;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
 }
