@@ -14,7 +14,7 @@ const Register = () => {
     console.log(userDetails);
     const response = await fetch(`http://localhost:5000/api/user/register`, {
       method: "POST",
-      body: userDetails,
+      body: JSON.stringify(userDetails),
     });
     const json = await response.json();
   };

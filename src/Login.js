@@ -10,10 +10,7 @@ const Login = () => {
   const loginUser = async (e) => {
     e.preventDefault();
     const response = await fetch(`http://localhost:5000/api/user/login`, {
-      headers: {
-        username: userDetails.username,
-        password: userDetails.password,
-      },
+      headers: {},
     });
     const json = await response.json();
     console.log(json);
