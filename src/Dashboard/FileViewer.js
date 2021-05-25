@@ -15,7 +15,6 @@ function FileViewer() {
   const [highlights, setHighlights] = useState([]);
   const [selectPdf, setSelectPdf] = useState(false);
 
-  
   useEffect(() => {
     async function fetchData() {
       if(!state.currentFile) return null;

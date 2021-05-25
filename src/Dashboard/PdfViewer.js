@@ -13,6 +13,7 @@ import Spinner from "./Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
 import { UserContext } from "../App";
+import { BASE_URL_DEV } from "../utils";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -50,7 +51,7 @@ function PdfViewer() {
   useEffect(() => {
     async function fetchData() {
       if(!state.currentFile) return null;
-      const result_json = await axios(`http://127.0.0.1:5000/api/v1/json?filename=${state.currentFile.name}`);
+      const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
       const pdfHighlights =
         (state.currentFile && result_json.data[state.currentFile.name]) || [];
       setHighlights(pdfHighlights);

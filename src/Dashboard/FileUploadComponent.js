@@ -1,36 +1,52 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Fragment } from "react";
 import axios from "axios";
-import { Button, Input } from "reactstrap";
+import { Button } from "reactstrap";
 import { UserContext } from "../App";
-
+import { BASE_URL_DEV } from "../utils";
 
 function FileUploadComponent(props) {
   const { state, dispatch } = useContext(UserContext);
 
   const [file, setFile] = useState("");
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-  const [uploadedResponse, setUploadedResponse] = useState("");
+  // const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  // const [uploadedResponse, setUploadedResponse] = useState("");
 
   async function _handleSubmit(e) {
     e.preventDefault();
-    let uploadedFile = {
-      lastModified: file.lastModified,
-      lastModifiedDate: new Date(file.lastModifiedDate),
-      name: file.name,
-      size: file.size,
-      type: file.type,
-    };
+    // let uploadedFile = {
+    //   lastModified: file.lastModified,
+    //   lastModifiedDate: new Date(file.lastModifiedDate),
+    //   name: file.name,
+    //   size: file.size,
+    //   type: file.type,
+    // };
+    if(!file) return null;
     dispatch({ type: "ADD_FILE", payload: file });
+    const data = new FormData();
+    data.append("file", file);
+    console.log(state.auth);
     await axios
-      .post("http://127.0.0.1:5000/api/v1/file", uploadedFile)
+      .post(`${BASE_URL_DEV}/upload/file`, data, {
+        headers: {
+          'x-access-token': state.auth && state.auth.authToken,
+        }
+      })
       .then(function (response) {
-        setUploadedResponse(response.data);
+        console.log(response)
+        // setUploadedResponse(response.data);
+        if(response.data) {
+          dispatch({ type: "MESSAGE", payload: response.data.message });
+        }
       })
       .catch(function (error) {
-        setUploadedResponse(
-          error && error.response !== undefined && error.response.statusText
-        );
+        console.log(error)
+        // setUploadedResponse(
+        //   error && error.response !== undefined && error.response.statusText
+        // );
+        if (error && error.response) {
+          dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
+        }
       });
   }
 
@@ -42,16 +58,16 @@ function FileUploadComponent(props) {
 
     reader.onload = () => {
       setFile(file);
-      setImagePreviewUrl(reader.result);
+      // setImagePreviewUrl(reader.result);
     };
 
     if(file) reader.readAsDataURL(file);
   }
 
-  let $imagePreview = null;
-  if (imagePreviewUrl) {
-    $imagePreview = <img src={imagePreviewUrl} height="50px" width="50px" />;
-  }
+  // let $imagePreview = null;
+  // if (imagePreviewUrl) {
+  //   $imagePreview = <img src={imagePreviewUrl} height="50px" width="50px" />;
+  // }
   //   else {
   //     $imagePreview = (
   //         <div></div>
@@ -98,12 +114,12 @@ function FileUploadComponent(props) {
             Upload File
           </Button>
         </form>
-        <div className="preview_Sec">
+        {/* <div className="preview_Sec">
           {$imagePreview !== null && (
             <div className="imgPreview">{$imagePreview}</div>
           )}
-          {uploadedResponse !== "" && <p>{uploadedResponse}</p>}
-        </div>
+          {uploadedResponse !== "" && <p>File Uploaded Successfully</p>}
+        </div> */}
       </div>
     </Fragment>
   );

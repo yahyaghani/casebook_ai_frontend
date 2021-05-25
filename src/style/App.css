@@ -161,6 +161,10 @@ blockquote:after {
 }
 
 
+.auth-page input {
+  color: #d3d3d3 !important;
+}
+
 /* Styles for TextEditor */
 
 .container .ql-editor {

@@ -8,9 +8,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AppRoutes from "./AppRoutes";
 
 import { reducer, InitialState } from "./Reducers";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Redirect,
+  Switch,
+  BrowserRouter as Router,
+} from "react-router-dom";
 import Highlight from "./Dashboard/Highlight";
 
+import Register from "./Dashboard/Register";
+import Login from "./Dashboard/Login";
 //import testHighlights from "./test-highlights";
 
 import Sidebar from "./shared/Sidebar";
@@ -18,8 +25,8 @@ import "./App.scss";
 
 import "./style/App.css";
 import Navbar from "./shared/Navbar";
-import Footer from "./shared/Footer";
 import FileViewer from "./Dashboard/FileViewer";
+import { fetchAuth } from "./utils";
 
 export const UserContext = createContext();
 
@@ -30,36 +37,46 @@ function App() {
 
   function getHighlightClicks(val) {
     setShowHighlight(val);
-    if(val) setShowFileViewer(false);
+    if (val) setShowFileViewer(false);
   }
 
   function getFileViewerClicks(val) {
     setShowFileViewer(val);
-    if(val) setShowHighlight(false);
+    if (val) setShowHighlight(false);
   }
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <Router>
-        <div className="container-scroller">
-          <Sidebar
-            HighlightClicks={getHighlightClicks}
-            FileViewerClicks={getFileViewerClicks}
-          />
-          <div className="container-fluid page-body-wrapper">
-            <Navbar />
-            <div className="main-panel">
-              <div className="show_side" style={{ display: "flex" }}>
-                {showHighlight === true && <Highlight />}
-                {showFileViewer === true && <FileViewer />}
-                <div className="content-wrapper" style={{ width: "100%" }}>
-                  <AppRoutes showFileViewer={showFileViewer} />
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route exact path="/dashboard">
+            <div className="container-scroller">
+              <Sidebar
+                HighlightClicks={getHighlightClicks}
+                FileViewerClicks={getFileViewerClicks}
+              />
+              <div className="container-fluid page-body-wrapper">
+                <Navbar />
+                <div className="main-panel">
+                  <div className="show_side" style={{ display: "flex" }}>
+                    {showHighlight === true && <Highlight />}
+                    {showFileViewer === true && <FileViewer />}
+                    <div className="content-wrapper" style={{ width: "100%" }}>
+                      <AppRoutes showFileViewer={showFileViewer} />
+                    </div>
+                  </div>
                 </div>
               </div>
-              {/* <Footer /> */}
             </div>
-          </div>
-        </div>
+          </Route>
+          <Redirect to="/login" />
+        </Switch>
       </Router>
     </UserContext.Provider>
   );
