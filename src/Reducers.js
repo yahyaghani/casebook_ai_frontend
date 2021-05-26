@@ -16,10 +16,17 @@ export const reducer = (state, action) => {
   if (action.type === "ADD_FILE") {
     if(!Array.isArray(action.payload)) action.payload = [action.payload];
     console.log('typeof file', Array.isArray(action.payload));
+    let Allfiles = [...state.files, ...action.payload];
+    let fileNames = [];
+    let files = Allfiles.filter((file) => {
+      if(fileNames.includes(file.name)) return false;
+      fileNames.push(file.name);
+      return true;
+    })
     return {
       ...state,
-      files: [...state.files, ...action.payload],
-      currentFile: state.files[0] || action.payload[0],
+      files,
+      currentFile: state.currentFile || action.payload[0],
     };
   }
   if (action.type === "AUTH") {
