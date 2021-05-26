@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import processMd from "./markdown";
 import axios from "axios";
+import { BASE_URL_DEV } from "../utils";
 
 
 const updateHash = (highlight) => {
@@ -15,7 +16,7 @@ function Highlight(props) {
     async function fetchData() {
       const result_json = await axios("http://127.0.0.1:5000/api/v1/json");
       const pdf_name = Object.keys(result_json.data)[0];
-      setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
+      setPdfUrl({ url: `${BASE_URL_DEV}/api/v1/pdf/${pdf_name}` });
       setState({ highlights: result_json.data[pdf_name] });
     }
     fetchData();

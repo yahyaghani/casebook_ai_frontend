@@ -48,6 +48,7 @@ function FileUploadComponent(props) {
           dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
         }
       });
+      setFile('');
   }
 
   function _handleImageChange(e) {

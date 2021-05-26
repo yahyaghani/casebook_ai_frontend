@@ -7,7 +7,11 @@ function AppRoutes(props) {
   return (
     <Suspense fallback={<Spinner />}>
       {props.highlight === true && <Highlight />}
-      <Dashboard showFileViewer={props.showFileViewer} />
+      <Dashboard
+        showFileViewer={props.showFileViewer}
+        showDashboardView={props.showDashboardView}
+        showHighlight={props.showHighlight}
+      />
     </Suspense>
   );
 }

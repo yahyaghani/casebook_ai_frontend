@@ -4,10 +4,8 @@
 // rewritten with hooks
 
 import React, { useState, useEffect, useRef } from "react";
-import URLSearchParams from "url-search-params";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppRoutes from "../AppRoutes";
 import {
   PdfLoader,
   PdfHighlighter,
@@ -22,13 +20,14 @@ import Spinner from "./Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
 
-import type {
-  T_Highlight,
-  T_NewHighlight,
-} from "react-pdf-highlighter/src/types";
+// import type {
+//   T_Highlight,
+//   T_NewHighlight,
+// } from "react-pdf-highlighter/src/types";
 import { Fragment } from "react";
 import GraphFunc from "./graphFunc";
 import PdfViewer from "./PdfViewer";
+import DashboardView from "./DashboardView";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -51,12 +50,11 @@ const HighlightPopup = ({ comment }) =>
 //const searchParams = new URLSearchParams(document.location.search);
 //const url = searchParams.get("url") || DEFAULT_URL;
 
-function Dashboard({ showFileViewer }) {
+function Dashboard({ showFileViewer, showDashboardView, showHighlight }) {
   const [graphData, setGraphData] = useState([]);
   //const [state, setState] = useState({ highlights: testHighlights[url] ? [...testHighlights[url]] : [] })
   const [state, setState] = useState({ highlights: [] });
   const [PdfUrl, setPdfUrl] = useState({ url: "" });
-  const [showHighlight, setShowHighlight] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -100,16 +98,15 @@ function Dashboard({ showFileViewer }) {
     });
   };
 
-  function addHighlight(highlight: T_NewHighlight) {
+  function addHighlight(highlight) {
     const { highlights } = state;
-
 
     setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
     });
   }
 
-  const deleteHighlight = (index: number) => {
+  const deleteHighlight = (index) => {
     const highlights = state.highlights.filter((highlight, idx) => {
       if (index !== idx) {
         return highlight;
@@ -119,11 +116,10 @@ function Dashboard({ showFileViewer }) {
   };
 
   function updateHighlight(
-    highlightId: string,
-    position: Object,
-    content: Object
+    highlightId,
+    position,
+    content
   ) {
-
     setState({
       highlights: state.highlights.map((h) => {
         return h.id === highlightId
@@ -137,94 +133,95 @@ function Dashboard({ showFileViewer }) {
     });
   }
 
-  function getHighlightClicks(val) {
-    setShowHighlight(val);
-  }
-
   const { highlights } = state;
   const { url } = PdfUrl;
 
   return (
     <Fragment>
-      { !showFileViewer ? <>
-      <GraphFunc />
-      {url ? (
-        <PdfLoader url={url} beforeLoad={<Spinner />}>
-          {(pdfDocument) => (
-            <PdfHighlighter
-              ref={pdfHighlighter}
-              pdfDocument={pdfDocument}
-              enableAreaSelection={(event) => event.altKey}
-              onScrollChange={resetHash}
-              scrollRef={(scrollTo) => {}}
-              onSelectionFinished={(
-                position,
-                content,
-                hideTipAndSelection,
-                transformSelection
-              ) => (
-                <Tip
-                  onOpen={transformSelection}
-                  onConfirm={(comment) => {
-                    addHighlight({ content, position, comment });
+      {showHighlight && (
+        <>
+          <GraphFunc />
+          {url ? (
+            <PdfLoader url={url} beforeLoad={<Spinner />}>
+              {(pdfDocument) => (
+                <PdfHighlighter
+                  ref={pdfHighlighter}
+                  pdfDocument={pdfDocument}
+                  enableAreaSelection={(event) => event.altKey}
+                  onScrollChange={resetHash}
+                  scrollRef={(scrollTo) => {}}
+                  onSelectionFinished={(
+                    position,
+                    content,
+                    hideTipAndSelection,
+                    transformSelection
+                  ) => (
+                    <Tip
+                      onOpen={transformSelection}
+                      onConfirm={(comment) => {
+                        addHighlight({ content, position, comment });
 
-                    hideTipAndSelection();
+                        hideTipAndSelection();
+                      }}
+                    />
+                  )}
+                  highlightTransform={(
+                    highlight,
+                    index,
+                    setTip,
+                    hideTip,
+                    viewportToScaled,
+                    screenshot,
+                    isScrolledTo
+                  ) => {
+                    const isTextHighlight = !Boolean(
+                      highlight.content && highlight.content.image
+                    );
+
+                    const component = isTextHighlight ? (
+                      <Highlight
+                        isScrolledTo={isScrolledTo}
+                        position={highlight.position}
+                        comment={highlight.comment}
+                      />
+                    ) : (
+                      <AreaHighlight
+                        highlight={highlight}
+                        onChange={(boundingRect) => {
+                          updateHighlight(
+                            highlight.id,
+                            {
+                              boundingRect: viewportToScaled(boundingRect),
+                            },
+                            { image: screenshot(boundingRect) }
+                          );
+                        }}
+                      />
+                    );
+
+                    return (
+                      <Popup
+                        popupContent={<HighlightPopup {...highlight} />}
+                        onMouseOver={(popupContent) =>
+                          setTip(highlight, (highlight) => popupContent)
+                        }
+                        onMouseOut={hideTip}
+                        key={index}
+                        children={component}
+                      />
+                    );
                   }}
+                  highlights={highlights}
                 />
               )}
-              highlightTransform={(
-                highlight,
-                index,
-                setTip,
-                hideTip,
-                viewportToScaled,
-                screenshot,
-                isScrolledTo
-              ) => {
-                const isTextHighlight = !Boolean(
-                  highlight.content && highlight.content.image
-                );
-
-                const component = isTextHighlight ? (
-                  <Highlight
-                    isScrolledTo={isScrolledTo}
-                    position={highlight.position}
-                    comment={highlight.comment}
-                  />
-                ) : (
-                  <AreaHighlight
-                    highlight={highlight}
-                    onChange={(boundingRect) => {
-                      updateHighlight(
-                        highlight.id,
-                        {
-                          boundingRect: viewportToScaled(boundingRect),
-                        },
-                        { image: screenshot(boundingRect) }
-                      );
-                    }}
-                  />
-                );
-
-                return (
-                  <Popup
-                    popupContent={<HighlightPopup {...highlight} />}
-                    onMouseOver={(popupContent) =>
-                      setTip(highlight, (highlight) => popupContent)
-                    }
-                    onMouseOut={hideTip}
-                    key={index}
-                    children={component}
-                  />
-                );
-              }}
-              highlights={highlights}
-            />
+            </PdfLoader>
+          ) : (
+            <Spinner />
           )}
-        </PdfLoader>
-      ) : (
-        <Spinner />
-      )}</> : <PdfViewer />}
+        </>
+      )}
+      {showFileViewer && <PdfViewer />}
+      {showDashboardView && <DashboardView />}
     </Fragment>
   );
 }

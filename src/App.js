@@ -17,6 +17,7 @@ import {
 import Highlight from "./Dashboard/Highlight";
 
 import Register from "./Dashboard/Register";
+import DashboardView from "./Dashboard/DashboardView";
 import Login from "./Dashboard/Login";
 //import testHighlights from "./test-highlights";
 
@@ -34,15 +35,24 @@ function App() {
   const [state, dispatch] = useReducer(reducer, InitialState);
   const [showHighlight, setShowHighlight] = useState(false);
   const [showFileViewer, setShowFileViewer] = useState(false);
+  const [showDashboardView, setShowDashboardView] = useState(true);
 
   function getHighlightClicks(val) {
     setShowHighlight(val);
     if (val) setShowFileViewer(false);
+    if (val) setShowDashboardView(false);
   }
 
   function getFileViewerClicks(val) {
     setShowFileViewer(val);
     if (val) setShowHighlight(false);
+    if (val) setShowDashboardView(false);
+  }
+
+  function getDashboardViewClicks(val) {
+    setShowDashboardView(val);
+    if (val) setShowHighlight(false);
+    if (val) setShowFileViewer(false);
   }
 
   return (
@@ -60,6 +70,7 @@ function App() {
               <Sidebar
                 HighlightClicks={getHighlightClicks}
                 FileViewerClicks={getFileViewerClicks}
+                DashboardViewClicks={getDashboardViewClicks}
               />
               <div className="container-fluid page-body-wrapper">
                 <Navbar />
@@ -67,8 +78,12 @@ function App() {
                   <div className="show_side" style={{ display: "flex" }}>
                     {showHighlight === true && <Highlight />}
                     {showFileViewer === true && <FileViewer />}
-                    <div className="content-wrapper" style={{ width: "100%" }}>
-                      <AppRoutes showFileViewer={showFileViewer} />
+                    <div className="content-wrapper" style={{ width: "75%" }}>
+                      <AppRoutes
+                        showFileViewer={showFileViewer}
+                        showDashboardView={showDashboardView}
+                        showHighlight={showHighlight}
+                      />
                     </div>
                   </div>
                 </div>

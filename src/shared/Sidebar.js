@@ -1,13 +1,14 @@
-import React, { Component, useState } from "react";
-import Button from "react-bootstrap/Button";
-import { Link, withRouter } from "react-router-dom";
-import { Collapse, Dropdown } from "react-bootstrap";
+import React, { useContext, useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import { Trans } from "react-i18next";
 import TextEditor from "../TextEditor";
+import { UserContext } from "../App";
 
 function Sidebar(props) {
+  const { state } = useContext(UserContext);
   const [highlight, setHighlight] = useState(false);
   const [fileViewer, setFileViewer] = useState(false);
+  const [dashboardView, setDashboardView] = useState(true);
   const [menuState, setMenuState] = useState(false);
 
   // function toggleMenuState(menuState) {
@@ -31,14 +32,35 @@ function Sidebar(props) {
 
   function highlightClick() {
     if (fileViewer) setFileViewer(false);
-    setHighlight(!highlight);
-    props.HighlightClicks(!highlight);
+    if (dashboardView) setDashboardView(false);
+    if(!highlight) {
+      setHighlight(true);
+      props.HighlightClicks(true);
+      props.FileViewerClicks(false);
+      props.DashboardViewClicks(false);
+    }
   }
 
   function handleFileViewer() {
+    if (highlight) setHighlight(false);
+    if (dashboardView) setDashboardView(false);
+    if(!fileViewer) { 
+      setFileViewer(true);
+      props.FileViewerClicks(true);
+      props.DashboardViewClicks(false);
+      props.HighlightClicks(false);
+    }
+  }
+
+  function dashboardClick() {
     if(highlight) setHighlight(false);
-    setFileViewer(!fileViewer);
-    props.FileViewerClicks(!fileViewer);
+    if(fileViewer) setFileViewer(false);
+    if (!dashboardView) {
+      setDashboardView(true);
+      props.DashboardViewClicks(true);
+      props.FileViewerClicks(false);
+      props.HighlightClicks(false);
+    }
   }
   return (
     <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -137,19 +159,17 @@ function Sidebar(props) {
         </li>
         <li
           className={
-            window.location.pathname === "/dashboard"
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            dashboardView ? "nav-item menu-items active" : "nav-item menu-items"
           }
         >
-          <Link className="nav-link" to="/dashboard">
+          <a className="nav-link" onClick={dashboardClick}>
             <span className="menu-icon">
               <i className="mdi mdi-speedometer"></i>
             </span>
             <span className="menu-title">
               <Trans>Dashboard</Trans>
             </span>
-          </Link>
+          </a>
         </li>
 
         {/* highlight */}
@@ -209,7 +229,7 @@ function Sidebar(props) {
       </ul>
       {showTextEditor && (
         <TextEditor
-          id={"data-file"}
+          id={state.auth && state.auth.userPublicId}
           showTextEditor={showTextEditor}
           setShowTextEditor={setShowTextEditor}
         />

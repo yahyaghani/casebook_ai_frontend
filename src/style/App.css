@@ -11,7 +11,7 @@ body {
 }
 
 .sidebarnew {
-  overflow: auto;
+  /* overflow: auto; */
   color: #fff ;
   /* rgb(119, 119, 119); */
   background: #191c24;
@@ -160,6 +160,9 @@ blockquote:after {
   padding-left: 20px;
 }
 
+.dashboard-view {
+  min-height: 100vh;
+}
 
 .auth-page input {
   color: #d3d3d3 !important;

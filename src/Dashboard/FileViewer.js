@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { UserContext } from "../App";
 import processMd from "./markdown";
+import { BASE_URL_DEV } from "../utils";
 
 const updateHash = (highlight) => {
   document.location.hash = `pdf-highlight-${highlight.id}`;
@@ -16,9 +17,22 @@ function FileViewer() {
   const [selectPdf, setSelectPdf] = useState(false);
 
   useEffect(() => {
+    (async () => {
+      const result = await axios(`${BASE_URL_DEV}/get/files`, {
+        headers: {
+          "x-access-token": state.auth && state.auth.authToken,
+        },
+      });
+      const files = result.data && result.data.files;
+      console.log(files);
+      dispatch({ type: "ADD_FILE", payload: files });
+    })();
+  }, []);
+
+  useEffect(() => {
     async function fetchData() {
       if(!state.currentFile) return null;
-      const result_json = await axios(`http://127.0.0.1:5000/api/v1/json?filename=${state.currentFile.name}`);
+      const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
       const pdfHighlights = (state.currentFile && result_json.data[state.currentFile.name]) || [];
       // setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
       setHighlights(pdfHighlights);
@@ -45,7 +59,7 @@ function FileViewer() {
   };
 
   return (
-    <div className="sidebarnew" style={{ width: "25vw" }}>
+    <div className="sidebarnew" style={{ width: "25vw", minWidth: '20vw' }}>
       <div className="description" style={{ padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem" }}>SUPO</h2>
 

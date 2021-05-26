@@ -37,15 +37,20 @@ function PdfViewer() {
   const [highlights, setHighlights] = useState([]);
 
   useEffect(() => {
-    let reader = new FileReader();
-    let file = state.currentFile;
     setCurrFile(null);
-    reader.onload = () => {
-      console.log(file.name);
-      setCurrFile(reader.result);
-    };
+    console.log(state.currentFile);
+    if(state.currentFile && state.currentFile.url) {
+      setTimeout(() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`), 100);
+    } else {
+      let reader = new FileReader();
+      let file = state.currentFile;
+      reader.onload = () => {
+        console.log(file.name);
+        setCurrFile(reader.result);
+      };
 
-    if (file) reader.readAsDataURL(file);
+      if (file) reader.readAsDataURL(file);
+    }
   }, [state.currentFile]);
   
   useEffect(() => {
@@ -104,8 +109,10 @@ function PdfViewer() {
       style={{
         minHeight: "100vh",
         color: "#000000",
+        maxWidth: '75vw',
+        width: '100%',
       }}
-      className="pdf-viewer"
+      className="pdf-viewer p-2"
     >
       {currFile ? (
         <PdfLoader

@@ -8,15 +8,18 @@ export const InitialState = {
     userPublicId: null,
     username: null,
     email: null,
+    expiry: null,
   }
 };
 
 export const reducer = (state, action) => {
   if (action.type === "ADD_FILE") {
+    if(!Array.isArray(action.payload)) action.payload = [action.payload];
+    console.log('typeof file', Array.isArray(action.payload));
     return {
       ...state,
-      files: [...state.files, action.payload],
-      currentFile: state.files[0] || action.payload,
+      files: [...state.files, ...action.payload],
+      currentFile: state.files[0] || action.payload[0],
     };
   }
   if (action.type === "AUTH") {
@@ -35,10 +38,7 @@ export const reducer = (state, action) => {
   }
   if (action.type === "LOG_OUT") {
     localStorage.clear();
-    return {
-      ...state,
-      auth: InitialState.auth,
-    };
+    return InitialState;
   }
   if (action.type === "SET_CURR_FILE") {
     return {
@@ -57,9 +57,6 @@ export const reducer = (state, action) => {
       ...state,
       message: action.payload,
     };
-  }
-  if (action.type === "CLEAR") {
-    return InitialState;
   }
   return state;
 };
