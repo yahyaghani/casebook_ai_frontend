@@ -25,6 +25,11 @@ body {
   width: 100%;
 }
 
+.dashboard-card {
+  background: #191c24;
+  color: #ffffff;
+}
+
 .sidebar__highlights {
   list-style: "none";
   padding: 0;

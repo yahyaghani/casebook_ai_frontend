@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import Spinner from "./Dashboard/Spinner";
+import Spinner from "./shared/Spinner";
 import Highlight from "./shared/Highlight";
 const Dashboard = lazy(() => import("./Dashboard/Index"));
 

@@ -16,7 +16,7 @@ import {
 
 //import testHighlights from "./test-highlights";
 
-import Spinner from "./Spinner";
+import Spinner from "../shared/Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
 

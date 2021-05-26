@@ -9,7 +9,7 @@ import {
 import { Container } from "react-bootstrap";
 import axios from 'axios';
 
-import Spinner from "./Spinner";
+import Spinner from "../shared/Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
 import { UserContext } from "../App";
