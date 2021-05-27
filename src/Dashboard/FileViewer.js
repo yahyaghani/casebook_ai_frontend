@@ -27,18 +27,41 @@ function FileViewer() {
       console.log(files);
       dispatch({ type: "ADD_FILE", payload: files });
     })();
+    if(state.fileHighlights && state.fileHighlights.length === 0) {
+      (async () => {
+        const result = await axios(`${BASE_URL_DEV}/get-highlights`, {
+          headers: {
+            "x-access-token": state.auth && state.auth.authToken,
+          },
+        });
+        const fileHighlights = result.data;
+        console.log(fileHighlights);
+        if(fileHighlights && fileHighlights.highlights && fileHighlights.highlights.length > 0) {
+          dispatch({ type: "FETCH_FILE_HIGHLIGHTS", payload: fileHighlights.highlights });
+        }
+      })();
+    }
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      if(!state.currentFile) return null;
-      const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
-      const pdfHighlights = (state.currentFile && result_json.data[state.currentFile.name]) || [];
-      // setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
-      setHighlights(pdfHighlights);
+    // (async () => {
+    //   if(!state.currentFile) return null;
+    //   const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
+    //   const pdfHighlights = (state.currentFile && result_json.data[state.currentFile.name]) || [];
+    //   // setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
+    //   setHighlights(pdfHighlights);
+    // })();
+    if (state.currentFile) {
+      let highlightUpdated = false;
+      state.fileHighlights.forEach((item) => {
+        if (item.name === state.currentFile.name) {
+          setHighlights(item.highlights);
+          highlightUpdated = true;
+        }
+      });
+      if(!highlightUpdated) setHighlights([]);
     }
-    fetchData();
-  }, [state.currentFile]);
+  }, [state.currentFile, state.fileHighlights]);
 
   const handleFileClick = (index) => {
     dispatch({ type: "SET_CURR_FILE", payload: state.files[index] });

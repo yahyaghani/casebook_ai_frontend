@@ -32,13 +32,23 @@ const HighlightPopup = ({ comment }) =>
   ) : null;
 
 function PdfViewer() {
-  const { state } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
 
   useEffect(() => {
+    console.log(highlights);
+    if(highlights && highlights.length > 0) {
+      dispatch({ type: "SET_FILE_HIGHLIGHTS", payload: {
+        highlights,
+        name: state.currentFile && state.currentFile.name,
+      }});
+    }
+  },[highlights]);
+
+  useEffect(() => {
     setCurrFile(null);
-    console.log(state.currentFile);
+    console.log(state);
     if(state.currentFile && state.currentFile.url) {
       setTimeout(() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`), 100);
     } else {
@@ -53,6 +63,16 @@ function PdfViewer() {
     }
   }, [state.currentFile]);
   
+  useEffect(() => {
+    if(currFile) {
+      state.fileHighlights.forEach((item) => {
+        if(item.name === state.currentFile.name) {
+          setHighlights(item.highlights);
+        }
+      });
+    }
+  }, [currFile]);
+
   useEffect(() => {
     async function fetchData() {
       if(!state.currentFile) return null;
@@ -82,6 +102,7 @@ function PdfViewer() {
   });
 
   function addHighlight(highlight) {
+    console.log(highlight);
     setHighlights([{ ...highlight, id: getNextId() }, ...highlights]);
   }
 
@@ -103,7 +124,6 @@ function PdfViewer() {
       } : h)));
   }
 
-  console.log(state);
   return (
     <div
       style={{

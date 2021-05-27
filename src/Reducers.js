@@ -1,6 +1,7 @@
 export const InitialState = {
   files: [],
   currentFile: null,
+  fileHighlights: [],
   error: null,
   message: null,
   auth: {
@@ -15,7 +16,6 @@ export const InitialState = {
 export const reducer = (state, action) => {
   if (action.type === "ADD_FILE") {
     if(!Array.isArray(action.payload)) action.payload = [action.payload];
-    console.log('typeof file', Array.isArray(action.payload));
     let Allfiles = [...state.files, ...action.payload];
     let fileNames = [];
     let files = Allfiles.filter((file) => {
@@ -51,6 +51,35 @@ export const reducer = (state, action) => {
     return {
       ...state,
       currentFile: action.payload,
+    };
+  }
+  if (action.type === "FETCH_FILE_HIGHLIGHTS") {
+    return {
+      ...state,
+      fileHighlights: action.payload,
+    };
+  }
+  if (action.type === "SET_FILE_HIGHLIGHTS") {
+    let highlights = [];
+    if(state.fileHighlights.length > 0) {
+      let fileUpdated = false;
+      highlights = state.fileHighlights.map((singleFile) => {
+        if(singleFile.name === action.payload.name) {
+          singleFile.highlights = action.payload.highlights;
+          fileUpdated = true;
+        }
+        return singleFile;
+      });
+      if(!fileUpdated) {
+        highlights = [...state.fileHighlights, action.payload];
+      }
+    } else {
+      highlights = [action.payload];
+    }
+    console.log(highlights);
+    return {
+      ...state,
+      fileHighlights: highlights,
     };
   }
   if (action.type === "ERROR") {
