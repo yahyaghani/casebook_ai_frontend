@@ -65,30 +65,36 @@ function PdfViewer() {
   
   useEffect(() => {
     if(currFile) {
+      let match = false;
       state.fileHighlights.forEach((item) => {
         if(item.name === state.currentFile.name) {
           setHighlights(item.highlights);
+          match = true;
         }
       });
+      if(!match) {
+        setHighlights([]);
+      }
     }
   }, [currFile]);
 
-  useEffect(() => {
-    async function fetchData() {
-      if(!state.currentFile) return null;
-      const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
-      const pdfHighlights =
-        (state.currentFile && result_json.data[state.currentFile.name]) || [];
-      setHighlights(pdfHighlights);
-    }
-    fetchData();
-  }, [state.currentFile]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if(!state.currentFile) return null;
+  //     const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
+  //     const pdfHighlights =
+  //       (state.currentFile && result_json.data[state.currentFile.name]) || [];
+  //     setHighlights(pdfHighlights);
+  //   }
+  //   fetchData();
+  // }, [state.currentFile]);
 
   const pdfHighlighter = useRef(null);
   const getHighlightById = (id) =>
     highlights.find((highlight) => highlight.id === id);
   const scrollToHighlightFromHash = () => {
     const highlight = getHighlightById(parseIdFromHash());
+    console.log(highlight);
     if (highlight) {
       pdfHighlighter.current.scrollTo(highlight);
     }

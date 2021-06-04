@@ -37,10 +37,29 @@ function FileUploadComponent(props) {
         // setUploadedResponse(response.data);
         if(response.data) {
           dispatch({ type: "MESSAGE", payload: response.data.message });
+          return (async () => {
+            const result = await axios(
+              `${BASE_URL_DEV}/highlights-json/${
+                state.auth && state.auth.userPublicId
+              }/${file.name}`
+            );
+            const fileHighlights = result.data;
+            console.log(fileHighlights);
+            if (
+              fileHighlights &&
+              fileHighlights.highlights &&
+              fileHighlights.highlights.length > 0
+            ) {
+              dispatch({
+                type: "FETCH_FILE_HIGHLIGHTS",
+                payload: fileHighlights.highlights,
+              });
+            }
+          })();
         }
       })
       .catch(function (error) {
-        console.log(error)
+        console.log(error);
         // setUploadedResponse(
         //   error && error.response !== undefined && error.response.statusText
         // );
