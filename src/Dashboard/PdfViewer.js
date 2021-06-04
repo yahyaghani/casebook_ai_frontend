@@ -64,19 +64,17 @@ function PdfViewer() {
   }, [state.currentFile]);
   
   useEffect(() => {
-    if(currFile) {
-      let match = false;
+    if (state.currentFile) {
+      let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
-        if(item.name === state.currentFile.name) {
+        if (item.name === state.currentFile.name) {
           setHighlights(item.highlights);
-          match = true;
+          highlightUpdated = true;
         }
       });
-      if(!match) {
-        setHighlights([]);
-      }
+      if (!highlightUpdated) setHighlights([]);
     }
-  }, [currFile]);
+  }, [state.currentFile, state.fileHighlights]);
 
   // useEffect(() => {
   //   async function fetchData() {
