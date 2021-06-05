@@ -94,8 +94,12 @@ blockquote:after {
   padding: unset;
 }
 .content-wrapper .PdfHighlighter {
-  position: relative;
+  position: fixed;
   height: 100vh !important;
+}
+
+.pdfViewer.removePageBorders .page {
+  margin-left: 0px !important;
 }
 
 /* .pdf-viewer {

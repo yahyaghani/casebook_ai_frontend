@@ -45,6 +45,7 @@ function FileViewer() {
 
   useEffect(() => {
     if (state.currentFile) {
+      console.log(state);
       let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
         if (item.name === state.currentFile.name) {

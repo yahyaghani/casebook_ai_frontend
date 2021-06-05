@@ -33,7 +33,7 @@ function FileUploadComponent(props) {
         }
       })
       .then(function (response) {
-        console.log(response)
+        // console.log(response)
         // setUploadedResponse(response.data);
         if(response.data) {
           dispatch({ type: "MESSAGE", payload: response.data.message });
@@ -44,14 +44,14 @@ function FileUploadComponent(props) {
               }/${file.name}`
             );
             const fileHighlights = result.data;
+            console.log('fileHighlights: ');
             console.log(fileHighlights);
             if (
               fileHighlights &&
-              fileHighlights.highlights &&
-              fileHighlights.highlights.length > 0
-            ) {
+              fileHighlights.highlights
+              ) {
               dispatch({
-                type: "FETCH_FILE_HIGHLIGHTS",
+                type: "SET_FILE_HIGHLIGHTS",
                 payload: fileHighlights.highlights,
               });
             }
