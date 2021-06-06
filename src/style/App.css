@@ -95,11 +95,22 @@ blockquote:after {
 }
 .content-wrapper .PdfHighlighter {
   position: fixed;
-  height: 100vh !important;
+  width: 800px !important;
 }
 
 .pdfViewer.removePageBorders .page {
+  width: 800px !important;
+  height: 1200px !important;
   margin-left: 0px !important;
+}
+
+.pdfViewer .canvasWrapper,
+.textLayer,
+.annotationLayer,
+.pdfViewer .page canvas,
+.pdfViewer.removePageBorders, .pdfViewer.scrollHorizontal .spread, .pdfViewer.scrollWrapped .spread {
+  width: 800px !important;
+  height: 1200px !important;
 }
 
 /* .pdf-viewer {

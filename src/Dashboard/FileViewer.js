@@ -76,7 +76,7 @@ function FileViewer() {
   };
 
   return (
-    <div className="sidebarnew" style={{ width: "25vw", minWidth: '20vw' }}>
+    <div className="sidebarnew" style={{ width: "25%", minWidth: '20%' }}>
       <div className="description" style={{ padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem" }}>SUPO</h2>
 

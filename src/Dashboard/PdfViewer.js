@@ -133,8 +133,8 @@ function PdfViewer() {
     <div
       style={{
         minHeight: "100vh",
+        paddingLeft: '1rem',
         color: "#000000",
-        maxWidth: '75vw',
         width: '100%',
       }}
       className="pdf-viewer p-2"
