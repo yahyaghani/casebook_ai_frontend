@@ -64,31 +64,36 @@ function PdfViewer() {
   }, [state.currentFile]);
   
   useEffect(() => {
-    if(currFile) {
+    if (state.currentFile) {
+      console.log(state);
+      let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
-        if(item.name === state.currentFile.name) {
+        if (item.name === state.currentFile.name) {
           setHighlights(item.highlights);
+          highlightUpdated = true;
         }
       });
+      if (!highlightUpdated) setHighlights([]);
     }
-  }, [currFile]);
+  }, [state.currentFile, state.fileHighlights]);
 
-  useEffect(() => {
-    async function fetchData() {
-      if(!state.currentFile) return null;
-      const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
-      const pdfHighlights =
-        (state.currentFile && result_json.data[state.currentFile.name]) || [];
-      setHighlights(pdfHighlights);
-    }
-    fetchData();
-  }, [state.currentFile]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if(!state.currentFile) return null;
+  //     const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
+  //     const pdfHighlights =
+  //       (state.currentFile && result_json.data[state.currentFile.name]) || [];
+  //     setHighlights(pdfHighlights);
+  //   }
+  //   fetchData();
+  // }, [state.currentFile]);
 
   const pdfHighlighter = useRef(null);
   const getHighlightById = (id) =>
     highlights.find((highlight) => highlight.id === id);
   const scrollToHighlightFromHash = () => {
     const highlight = getHighlightById(parseIdFromHash());
+    console.log(highlight);
     if (highlight) {
       pdfHighlighter.current.scrollTo(highlight);
     }
@@ -127,9 +132,9 @@ function PdfViewer() {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 70px)",
+        paddingLeft: '1rem',
         color: "#000000",
-        maxWidth: '75vw',
         width: '100%',
       }}
       className="pdf-viewer p-2"

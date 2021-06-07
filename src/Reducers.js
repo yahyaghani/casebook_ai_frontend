@@ -54,12 +54,14 @@ export const reducer = (state, action) => {
     };
   }
   if (action.type === "FETCH_FILE_HIGHLIGHTS") {
+    console.log(action.payload);
     return {
       ...state,
       fileHighlights: action.payload,
     };
   }
   if (action.type === "SET_FILE_HIGHLIGHTS") {
+    console.log(action.payload);
     let highlights = [];
     if(state.fileHighlights.length > 0) {
       let fileUpdated = false;
