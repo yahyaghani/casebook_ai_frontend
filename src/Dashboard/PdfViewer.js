@@ -132,7 +132,7 @@ function PdfViewer() {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 70px)",
         paddingLeft: '1rem',
         color: "#000000",
         width: '100%',

@@ -12,7 +12,7 @@ const updateHash = (highlight) => {
 
 function FileViewer() {
   const { state, dispatch } = useContext(UserContext);
-  
+
   const [highlights, setHighlights] = useState([]);
   const [selectPdf, setSelectPdf] = useState(false);
 
@@ -27,7 +27,7 @@ function FileViewer() {
       console.log(files);
       dispatch({ type: "ADD_FILE", payload: files });
     })();
-    if(state.fileHighlights && state.fileHighlights.length === 0) {
+    if (state.fileHighlights && state.fileHighlights.length === 0) {
       (async () => {
         const result = await axios(`${BASE_URL_DEV}/get-highlights`, {
           headers: {
@@ -36,8 +36,15 @@ function FileViewer() {
         });
         const fileHighlights = result.data;
         console.log(fileHighlights);
-        if(fileHighlights && fileHighlights.highlights && fileHighlights.highlights.length > 0) {
-          dispatch({ type: "FETCH_FILE_HIGHLIGHTS", payload: fileHighlights.highlights });
+        if (
+          fileHighlights &&
+          fileHighlights.highlights &&
+          fileHighlights.highlights.length > 0
+        ) {
+          dispatch({
+            type: "FETCH_FILE_HIGHLIGHTS",
+            payload: fileHighlights.highlights,
+          });
         }
       })();
     }
@@ -53,14 +60,14 @@ function FileViewer() {
           highlightUpdated = true;
         }
       });
-      if(!highlightUpdated) setHighlights([]);
+      if (!highlightUpdated) setHighlights([]);
     }
   }, [state.currentFile, state.fileHighlights]);
 
   const handleFileClick = (index) => {
     dispatch({ type: "SET_CURR_FILE", payload: state.files[index] });
     setSelectPdf(false);
-  }
+  };
 
   const deleteHighlight = (index) => {
     const updatedHighlights = highlights.filter((highlight, idx) => {
@@ -76,10 +83,17 @@ function FileViewer() {
   };
 
   return (
-    <div className="sidebarnew" style={{ width: "25%", minWidth: '20%' }}>
+    <div
+      className="sidebarnew"
+      style={{
+        width: "25%",
+        minWidth: "20%",
+        height: "calc(100vh - 70px)",
+        overflowY: "scroll",
+      }}
+    >
       <div className="description" style={{ padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem" }}>SUPO</h2>
-
         <p>
           <small>
             To create area highlight hold ⌥ Option key (Alt), then click and
