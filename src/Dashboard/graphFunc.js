@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Graph } from "react-d3-graph";
 import axios from "axios";
 import { Fragment } from "react";
@@ -63,7 +63,8 @@ function GraphFunc(props) {
   };
 
   const onClickNode = function (nodeId, node) {
-    //  window.alert('Clicked node ${nodeId} in position (${node.x}, ${node.y})');
+    // window.alert(`Clicked node ${nodeId} in position (${node.x}, ${node.y})`);
+    window.open(graphData.nodes_urls[nodeId], '_blank');
   };
 
   const onDoubleClickNode = function (nodeId, node) {
