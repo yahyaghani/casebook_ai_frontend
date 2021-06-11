@@ -4,6 +4,7 @@ export const InitialState = {
   fileHighlights: [],
   error: null,
   message: null,
+  searchQuery:"",
   auth: {
     authToken: null,
     userPublicId: null,
@@ -96,5 +97,14 @@ export const reducer = (state, action) => {
       message: action.payload,
     };
   }
+  if (action.type === "SET_SEARCH_QUERY") {
+    console.log(action.payload);
+    return {
+      ...state,
+      searchQuery: action.payload,
+    }
+  }
+
   return state;
 };
+

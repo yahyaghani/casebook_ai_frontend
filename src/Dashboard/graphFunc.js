@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { Graph } from "react-d3-graph";
 import axios from "axios";
 import { Fragment } from "react";
+import { UserContext } from "../App";
 
 function GraphFunc(props) {
   const [graphData, setGraphData] = useState([]);
   const [errorText, setErrorText] = useState("");
+  const {state} = useContext(UserContext);
 
   useEffect(() => {
-    async function fetchData() {
-      await axios
-        .get("http://127.0.0.1:5000/api/v1/graph")
+    async function fetchData() {      
+        await axios
+        .get("http://127.0.0.1:5000/api/v1/graph", {
+          params: {
+            search_query: state.searchQuery
+          }
+        })
         .then(function (response) {
           setGraphData(response.data);
         })
@@ -18,8 +24,11 @@ function GraphFunc(props) {
           setErrorText(error && error.response !== undefined && error.response.statusText);
         });
     }
-    fetchData();
-  }, []);
+    if(state.searchQuery !== ""){
+      fetchData();
+    }
+
+  }, [state.searchQuery]);
 
   const myConfig = {
     nodeHighlightBehavior: false,
