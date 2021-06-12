@@ -15,7 +15,7 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import Highlight from "./Dashboard/Highlight";
-
+import NodePreview from "./Dashboard/NodePreview";
 import Register from "./Dashboard/Register";
 import DashboardView from "./Dashboard/DashboardView";
 import Login from "./Dashboard/Login";
@@ -85,6 +85,7 @@ function App() {
                         showHighlight={showHighlight}
                       />
                     </div>
+                    {showHighlight === true && state.searchQuery !== "" && <NodePreview />}
                   </div>
                 </div>
               </div>

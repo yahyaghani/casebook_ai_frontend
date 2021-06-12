@@ -5,6 +5,7 @@ export const InitialState = {
   error: null,
   message: null,
   searchQuery:"",
+  nodePreview:"",
   auth: {
     authToken: null,
     userPublicId: null,
@@ -98,10 +99,16 @@ export const reducer = (state, action) => {
     };
   }
   if (action.type === "SET_SEARCH_QUERY") {
-    console.log(action.payload);
     return {
       ...state,
       searchQuery: action.payload,
+    }
+  }
+  
+  if (action.type === "SET_NODE_PREVIEW") {
+    return {
+      ...state,
+      nodePreview: action.payload === "" ? "sorry there is no preview" :  action.payload,
     }
   }
 

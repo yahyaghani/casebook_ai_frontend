@@ -7,7 +7,7 @@ import { UserContext } from "../App";
 function GraphFunc(props) {
   const [graphData, setGraphData] = useState([]);
   const [errorText, setErrorText] = useState("");
-  const {state} = useContext(UserContext);
+  const {state, dispatch} = useContext(UserContext);
 
   useEffect(() => {
     async function fetchData() {      
@@ -30,32 +30,70 @@ function GraphFunc(props) {
 
   }, [state.searchQuery]);
 
-  const myConfig = {
-    nodeHighlightBehavior: false,
-    highlightDegree: 1,
-    highlightOpacity: 1,
-    linkHighlightBehavior: false,
-    maxZoom: 5,
-    minZoom: 0.1,
-    focusZoom: 1,
-    focusAnimationDuration: 0.75,
-    nodeHighlightBehavior: false,
-    panAndZoom: false,
-    staticGraph: false,
-    d3: {
-      alphaTarget: 0.05,
-      gravity: -100,
-      linkLength: 100,
-      linkStrength: 1
+  const myConfig ={
+    "automaticRearrangeAfterDropNode": true,
+    "collapsible": false,
+    "directed": false,
+    "focusAnimationDuration": 0.25,
+    "focusZoom": 2,
+    "freezeAllDragEvents": false,
+    "height": 600,
+    "highlightDegree": 1,
+    "highlightOpacity": 0.2,
+    "linkHighlightBehavior": true,
+    "nodeHighlightBehavior": true,
+    "maxZoom": 8,
+    "minZoom": 0.1,
+    "panAndZoom": false,
+    "staticGraph": false,
+    "staticGraphWithDragAndDrop": false,
+    "width": 800,
+    "d3": {
+      "alphaTarget": 0.05,
+      "gravity": -60,
+      "linkLength": 300,
+      "linkStrength": 1,
+      "disableLinkForce": false
     },
-    node: {
-      color: "lightgreen",
-      size: 120,
-      highlightStrokeColor: "blue",
+    "node": {
+      "color": "#d3d3d3",
+      "fontColor": "black",
+      "fontSize": 12,
+      "fontWeight": "normal",
+      "highlightColor": "lightgreen",
+      "highlightFontSize": 10,
+      "highlightFontWeight": "bold",
+      "highlightStrokeColor": "SAME",
+      "highlightStrokeWidth": 1.5,
+      "labelProperty": "name",
+      "mouseCursor": "pointer",
+      "opacity": 1,
+      "renderLabel": true,
+      "size": 350,
+      "strokeColor": "#ffc00",
+      "strokeWidth": 1,
+      "svg": "",
+      "symbolType": "circle"
     },
-    link: {
-      highlightColor: "lightblue",
-    },
+    "link": {
+      "color": "#d3d3d3",
+      "fontColor": "#lightgreen",
+      "fontSize": 10,
+      "fontWeight": "normal",
+      "highlightColor": "blue",
+      "highlightFontSize": 8,
+      "highlightFontWeight": "bold",
+      "mouseCursor": "pointer",
+      "opacity": 1,
+      "renderLabel": false,
+      "semanticStrokeWidth": false,
+      "strokeWidth": 3,
+      "markerHeight": 6,
+      "markerWidth": 6,
+      "strokeDasharray": 0,
+      "strokeDashoffset": 0,
+      "strokeLinecap": "butt"
+    }
   };
 
   const onClickGraph = function (event) {
@@ -64,11 +102,13 @@ function GraphFunc(props) {
 
   const onClickNode = function (nodeId, node) {
     // window.alert(`Clicked node ${nodeId} in position (${node.x}, ${node.y})`);
-    window.open(graphData.nodes_urls[nodeId], '_blank');
+    const preview = graphData.nodes_previewes[nodeId] || []
+    dispatch({type: "SET_NODE_PREVIEW" , payload: preview.join(" ") })
   };
-
+  
   const onDoubleClickNode = function (nodeId, node) {
     //  window.alert('Double clicked node ${nodeId} in position (${node.x}, ${node.y})');
+    window.open(graphData.nodes_urls[nodeId], '_blank');
   };
 
   const onRightClickNode = function (event, nodeId, node) {
@@ -128,6 +168,7 @@ function GraphFunc(props) {
           onZoomChange={onZoomChange}
         />
       )}
+
       {errorText !== "" && <div className="error_text"><p>{errorText}</p></div>}
     </Fragment>
   );
