@@ -43,8 +43,8 @@ const Login = () => {
     <div className="mt-5 auth-page" style={{ height: "85vh" }}>
       <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
-          <div className="col-lg-4 mx-auto">
-            <div className="card text-left py-5 my-5 bg-dark px-4 px-sm-5">
+          <div className="col-lg-5 mx-auto">
+            <div className="card text-center py-3 mt-3 bg-dark px-3 px-sm-5">
               <div className="brand-logo">
                 <img src={require("../images/logo.svg")} alt="logo" />
               </div>

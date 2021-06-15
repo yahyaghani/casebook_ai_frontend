@@ -1,5 +1,5 @@
-@import url('https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url("https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 body {
   margin: 0;
@@ -14,7 +14,7 @@ body {
 
 .sidebarnew {
   /* overflow: auto; */
-  color: #fff ;
+  color: #fff;
   /* rgb(119, 119, 119); */
   background: #191c24;
   /* linear-gradient(
@@ -83,7 +83,7 @@ a {
 blockquote {
   padding: 0;
   margin: 0;
-  quotes: "\201c" "\201d";
+  quotes: "\201c""\201d";
 }
 blockquote:before {
   content: open-quote;
@@ -110,7 +110,9 @@ blockquote:after {
 .textLayer,
 .annotationLayer,
 .pdfViewer .page canvas,
-.pdfViewer.removePageBorders, .pdfViewer.scrollHorizontal .spread, .pdfViewer.scrollWrapped .spread {
+.pdfViewer.removePageBorders,
+.pdfViewer.scrollHorizontal .spread,
+.pdfViewer.scrollWrapped .spread {
   width: 800px !important;
   height: 1200px !important;
 }
@@ -129,7 +131,6 @@ blockquote:after {
   color: #000;
   height: 200px;
   text-align: center;
-
 }
 .error_text p {
   position: relative;
@@ -146,7 +147,7 @@ blockquote:after {
 
 .sidebar .nav .nav-item .nav-link i.fa-angle-right:before {
   content: "\f105";
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   font-size: inherit;
   color: inherit;
 }
@@ -167,14 +168,14 @@ blockquote:after {
   display: flex;
   align-items: center;
 }
-.nav_items_upload > div{
+.nav_items_upload > div {
   position: relative;
   bottom: 5px;
 }
 .nav_items_upload .custom-file-label {
   margin-right: 10px;
 }
-.previewComponent form{
+.previewComponent form {
   display: flex;
   align-items: center;
 }
@@ -187,7 +188,45 @@ blockquote:after {
 }
 
 .auth-page input {
-  color: #d3d3d3 !important;
+  color: #dadada !important;
+  border: 1px solid #515254;
+}
+
+.profile-text-dark {
+  color: #0090e7;
+}
+
+.profile-icon {
+  color: #0090e7;
+  font-size: 1.5rem;
+  height: 35px;
+  width: 35px;
+  background: #191c24;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-icon:hover {
+  color: #19a2f7;
+  font-size: 1.8rem;
+  background: #090a0e;
+}
+
+.nav-tabs > a {
+  color: #ffffff !important;
+  background: #191c24 !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  font-weight: 500;
+  border-radius: 0 !important;
+}
+
+.nav-tabs > a.active {
+  color: #191c24 !important;
+  background: #ffffff !important;
+}
+
+.bg-file-card {
+  background-color: #191c24;
 }
 
 /* Styles for TextEditor */
@@ -198,7 +237,7 @@ blockquote:after {
   min-height: 70vh;
   padding: 1rem;
   margin-top: 1rem;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  box-shadow: 0 0 5px 0 #00000080;
   background-color: white;
 }
 
@@ -215,7 +254,7 @@ blockquote:after {
   margin-top: 1rem;
   top: 0;
   z-index: 1;
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   border: none;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }

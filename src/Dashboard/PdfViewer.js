@@ -37,7 +37,7 @@ function PdfViewer() {
   const [highlights, setHighlights] = useState([]);
 
   useEffect(() => {
-    console.log(highlights);
+    // console.log(highlights);
     if(highlights && highlights.length > 0) {
       dispatch({ type: "SET_FILE_HIGHLIGHTS", payload: {
         highlights,
@@ -48,14 +48,14 @@ function PdfViewer() {
 
   useEffect(() => {
     setCurrFile(null);
-    console.log(state);
+    // console.log(state);
     if(state.currentFile && state.currentFile.url) {
       setTimeout(() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`), 100);
     } else {
       let reader = new FileReader();
       let file = state.currentFile;
       reader.onload = () => {
-        console.log(file.name);
+        // console.log(file.name);
         setCurrFile(reader.result);
       };
 
@@ -65,7 +65,7 @@ function PdfViewer() {
   
   useEffect(() => {
     if (state.currentFile) {
-      console.log(state);
+      // console.log(state);
       let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
         if (item.name === state.currentFile.name) {
@@ -93,7 +93,7 @@ function PdfViewer() {
     highlights.find((highlight) => highlight.id === id);
   const scrollToHighlightFromHash = () => {
     const highlight = getHighlightById(parseIdFromHash());
-    console.log(highlight);
+    // console.log(highlight);
     if (highlight) {
       pdfHighlighter.current.scrollTo(highlight);
     }
@@ -107,7 +107,7 @@ function PdfViewer() {
   });
 
   function addHighlight(highlight) {
-    console.log(highlight);
+    // console.log(highlight);
     setHighlights([{ ...highlight, id: getNextId() }, ...highlights]);
   }
 

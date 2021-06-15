@@ -6,9 +6,15 @@ export const fetchAuth = () => {
   const auth = JSON.parse(localStorage.getItem("authDetails"));
   if (
     !auth ||
+    !auth.userId ||
     !auth.authToken ||
     !auth.userPublicId ||
     !auth.username ||
+    !auth.fname ||
+    !auth.lname ||
+    !auth.city ||
+    !auth.country ||
+    !auth.organisation ||
     !auth.email ||
     !auth.expiry
   ) {
@@ -18,9 +24,15 @@ export const fetchAuth = () => {
   return {
     authToken: auth.authToken,
     auth_token: auth.authToken,
+    userId: auth.userId,
     userPublicId: auth.userPublicId,
     username: auth.username,
     email: auth.email,
     expiry: auth.expiry,
+    fname: auth.fname,
+    lname: auth.lname,
+    city: auth.city,
+    country: auth.country,
+    organisation: auth.organisation,
   };
 };

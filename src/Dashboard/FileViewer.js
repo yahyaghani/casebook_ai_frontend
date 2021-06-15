@@ -1,10 +1,8 @@
 // @flow
 import React, { useContext, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import axios from "axios";
 import { UserContext } from "../App";
 import processMd from "./markdown";
-import { BASE_URL_DEV } from "../utils";
 
 const updateHash = (highlight) => {
   document.location.hash = `pdf-highlight-${highlight.id}`;
@@ -15,40 +13,6 @@ function FileViewer() {
 
   const [highlights, setHighlights] = useState([]);
   const [selectPdf, setSelectPdf] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      const result = await axios(`${BASE_URL_DEV}/get/files`, {
-        headers: {
-          "x-access-token": state.auth && state.auth.authToken,
-        },
-      });
-      const files = result.data && result.data.files;
-      console.log(files);
-      dispatch({ type: "ADD_FILE", payload: files });
-    })();
-    if (state.fileHighlights && state.fileHighlights.length === 0) {
-      (async () => {
-        const result = await axios(`${BASE_URL_DEV}/get-highlights`, {
-          headers: {
-            "x-access-token": state.auth && state.auth.authToken,
-          },
-        });
-        const fileHighlights = result.data;
-        console.log(fileHighlights);
-        if (
-          fileHighlights &&
-          fileHighlights.highlights &&
-          fileHighlights.highlights.length > 0
-        ) {
-          dispatch({
-            type: "FETCH_FILE_HIGHLIGHTS",
-            payload: fileHighlights.highlights,
-          });
-        }
-      })();
-    }
-  }, []);
 
   useEffect(() => {
     if (state.currentFile) {
