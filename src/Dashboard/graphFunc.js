@@ -37,7 +37,7 @@ function GraphFunc(props) {
     "focusAnimationDuration": 0,
     "focusZoom": 1,
     "freezeAllDragEvents": false,
-    "height": 600,
+    "height": 700,
     "highlightDegree": 0.5,
     "highlightOpacity": 1,
     "linkHighlightBehavior": true,

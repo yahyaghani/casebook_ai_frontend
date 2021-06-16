@@ -19,6 +19,7 @@ function Highlight(props) {
     <div className="sidebarnew"style={{ width: "25vw" }}>
       <ul className="sidebar__highlights" style={{"maxHeight": "96vh", "overflow": "scroll"}}>
       {graphData.nodes && graphData.nodes.map((node , index )=> (
+        node.id !== state.searchQuery ?
           <li
           onClick={()=>handleNodeItemClick(node)}
           key ={index}
@@ -28,7 +29,7 @@ function Highlight(props) {
             <p style={{"opacity":".5"}}>{state.nodesData[node.id] ? state.nodesData[node.id].docket_number : null }</p>
             <p>{state.nodesData[node.id] ? state.nodesData[node.id].name : node.id }</p>
           </div>
-        </li>
+        </li>: null 
       ))}
       </ul>
     </div>
