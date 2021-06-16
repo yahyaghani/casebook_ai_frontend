@@ -4,7 +4,6 @@ import processMd from "./markdown";
 import axios from "axios";
 import { BASE_URL_DEV } from "../utils";
 
-
 const updateHash = (highlight) => {
   document.location.hash = `highlight-${highlight.id}`;
 };
@@ -23,7 +22,7 @@ function Highlight(props) {
   }, []);
 
 
-  const deleteHighlight = (index: number) => {
+  const deleteHighlight = (index) => {
     const highlights = state.highlights.filter((highlight, idx) => {
       if (index !== idx) {
         return highlight;

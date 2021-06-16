@@ -2,10 +2,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Col, Row, Tabs, Tab, Card, Button, Modal } from "react-bootstrap";
 import axios from "axios";
-import { PdfLoader, PdfHighlighter } from "react-pdf-highlighter";
-import { BASE_URL_DEV } from "../utils";
 
-import Spinner from "../shared/Spinner";
+import { BASE_URL_DEV } from "../utils";
+import OpenFileModal from "./OpenFileModal";
+
 import { UserContext } from "../App";
 
 function FeedView() {
@@ -118,7 +118,7 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
           <Col className="d-flex align-items-center" md={3} sm={5} xs={12}>
             <div className="d-flex align-items-center flex-column text-center">
               <div className="wrapper d-flex align-items-center font-weight-medium text-light">
-                {Array(Number(filePost.total_rating))
+                {Array(Math.floor(Number(filePost.total_rating)))
                   .fill()
                   .map((_, idx) => (
                     <i
@@ -127,7 +127,7 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
                       className="mdi mdi-star icon-sm mr-2"
                     ></i>
                   ))}
-                {Array(5 - Number(filePost.total_rating))
+                {Array(5 - Math.floor(Number(filePost.total_rating)))
                   .fill()
                   .map((_, idx) => (
                     <i
@@ -182,6 +182,7 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
               showFileModal={showFileModal}
               setShowFileModal={setShowFileModal}
               fileUrl={filePost.fileUrl}
+              filePost={filePost}
             />
           </Col>
         </Row>
@@ -231,9 +232,9 @@ function RatingModal({
     }
   };
 
-  const isRated = !!filePost.all_ratings.filter(
+  const isRated = filePost.all_ratings ? !!filePost.all_ratings.filter(
     (rating) => rating.user_id === auth.userId
-  ).length;
+  ).length : false;
 
   return (
     <>
@@ -302,57 +303,119 @@ function RatingModal({
   );
 }
 
-function OpenFileModal({ showFileModal, setShowFileModal, fileUrl }) {
-  const handleClose = () => {
-    setShowFileModal(false);
-  };
+// function OpenFileModal({ showFileModal, setShowFileModal, fileUrl }) {
+//   const handleClose = () => {
+//     setShowFileModal(false);
+//   };
 
-  const url = `${BASE_URL_DEV}/${fileUrl}`;
+//   const url = `${BASE_URL_DEV}/${fileUrl}`;
 
-  console.log(url);
+//   console.log(url);
 
-  return (
-    <div>
-      <Modal
-        show={showFileModal || false}
-        onHide={handleClose}
-        backdrop="static"
-        size="lg"
-        centered={true}
-        style={{ width: '100%' }}
-      >
-        <Modal.Body
-          style={{
-            minHeight: "calc(100vh - 85px)",
-            color: "#000000",
-          }}
-        >
-          {url && (
-            <PdfLoader
-              className="my-pdf-viewer"
-              url={url}
-              beforeLoad={<Spinner />}
-            >
-              {(pdfDocument) => (
-                <PdfHighlighter
-                  pdfDocument={pdfDocument}
-                  // enableAreaSelection={(event) => event.altKey}
-                  onScrollChange={() => {}}
-                  scrollRef={(scrollTo) => {}}
-                  highlights={[]}
-                />
-              )}
-            </PdfLoader>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Modal
+//         show={showFileModal || false}
+//         onHide={handleClose}
+//         backdrop="static"
+//         size="lg"
+//         centered={true}
+//         style={{ width: "100%" }}
+//       >
+//         <Modal.Body
+//           style={{
+//             minHeight: "calc(100vh - 85px)",
+//             color: "#000000",
+//           }}
+//         >
+//           {url && (
+//             <PdfLoader
+//               className="my-pdf-viewer"
+//               url={url}
+//               beforeLoad={<Spinner />}
+//             >
+//               {(pdfDocument) => (
+//                 <PdfHighlighter
+//                   ref={pdfHighlighter}
+//                   pdfDocument={pdfDocument}
+//                   enableAreaSelection={(event) => event.altKey}
+//                   onScrollChange={resetHash}
+//                   scrollRef={(scrollTo) => {}}
+//                   onSelectionFinished={(
+//                     position,
+//                     content,
+//                     hideTipAndSelection,
+//                     transformSelection
+//                   ) => (
+//                     <Tip
+//                       onOpen={transformSelection}
+//                       onConfirm={(comment) => {
+//                         addHighlight({ content, position, comment });
+
+//                         hideTipAndSelection();
+//                       }}
+//                     />
+//                   )}
+//                   highlightTransform={(
+//                     highlight,
+//                     index,
+//                     setTip,
+//                     hideTip,
+//                     viewportToScaled,
+//                     screenshot,
+//                     isScrolledTo
+//                   ) => {
+//                     const isTextHighlight = !Boolean(
+//                       highlight.content && highlight.content.image
+//                     );
+
+//                     const component = isTextHighlight ? (
+//                       <Highlight
+//                         isScrolledTo={isScrolledTo}
+//                         position={highlight.position}
+//                         comment={highlight.comment}
+//                       />
+//                     ) : (
+//                       <AreaHighlight
+//                         highlight={highlight}
+//                         onChange={(boundingRect) => {
+//                           updateHighlight(
+//                             highlight.id,
+//                             {
+//                               boundingRect: viewportToScaled(boundingRect),
+//                             },
+//                             { image: screenshot(boundingRect) }
+//                           );
+//                         }}
+//                       />
+//                     );
+
+//                     return (
+//                       <Popup
+//                         popupContent={<HighlightPopup {...highlight} />}
+//                         onMouseOver={(popupContent) =>
+//                           setTip(highlight, (highlight) => popupContent)
+//                         }
+//                         onMouseOut={hideTip}
+//                         key={index}
+//                         children={component}
+//                       />
+//                     );
+//                   }}
+//                   highlights={highlights}
+//                 />
+//               )}
+//             </PdfLoader>
+//           )}
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={handleClose}>
+//             Close
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     </div>
+//   );
+// }
 
 export default FeedView;
