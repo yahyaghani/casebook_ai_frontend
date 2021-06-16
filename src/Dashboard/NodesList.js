@@ -5,13 +5,34 @@ function Highlight(props) {
   const {state, dispatch} = useContext(UserContext);
   const [graphData, setGraphData] = useState({})
   useEffect(() => {
-    setGraphData(state.graphData)
+    setTimeout(()=>setGraphData(state.graphData), 500)
   }, [state.graphData ]);
 
-  function handleNodeItemClick(node){
+  function handleMouseEnter(node){
     const nodeData = state.nodesData[node.id]
     if (nodeData){
+      let nodes = state.graphData.nodes.map(n => {
+        if(n.id === node.id ){
+          return {...n, "fontSize": 16, "color": "lightgreen"}
+        }else {
+          return {...n, "fontSize": 8}
+        }
+      })
+      dispatch({type:"SET_GRAPH_DATA", payload: {...state.graphData, nodes}})
+    }
+    if (nodeData){
       dispatch({type: "SET_NODE_DATA" , payload: nodeData })
+    }
+  }
+
+  function handleMouseLeave(node){
+    const nodeData = state.nodesData[node.id]
+    if (nodeData){
+      let nodes = state.graphData.nodes.map(n => {
+        return {...n, "fontSize": 8}
+      })
+
+      dispatch({type:"SET_GRAPH_DATA", payload: {...state.graphData, nodes}})
     }
   }
 
@@ -21,7 +42,8 @@ function Highlight(props) {
       {graphData.nodes && graphData.nodes.map((node , index )=> (
         node.id !== state.searchQuery ?
           <li
-          onClick={()=>handleNodeItemClick(node)}
+          onMouseEnter={()=>handleMouseEnter(node)}
+          onMouseLeave={()=>handleMouseLeave(node)}
           key ={index}
           className="sidebar__highlight"
         >

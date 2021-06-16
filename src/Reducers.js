@@ -114,6 +114,7 @@ export const reducer = (state, action) => {
     }
   }
   if(action.type === "SET_GRAPH_DATA"){
+    console.count("hello");
     return {
       ...state,
       graphData: action.payload

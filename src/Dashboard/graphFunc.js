@@ -61,8 +61,8 @@ function GraphFunc(props) {
       "fontSize": 8,
       "fontWeight": "normal",
       "highlightColor": "lightgreen",
-      "highlightFontSize": 10,
-      "highlightFontWeight": "bold",
+      "highlightFontSize": 16,
+      "highlightFontWeight": "normal",
       "highlightStrokeColor": "SAME",
       "highlightStrokeWidth": "SAME",
       "labelProperty": "id",
@@ -100,15 +100,9 @@ function GraphFunc(props) {
   const onClickGraph = function (event) {
     //  window.alert('Clicked the graph background');
   };
-
+  
   const onClickNode = function (nodeId, node) {
     // window.alert(`Clicked node ${nodeId} in position (${node.x}, ${node.y})`);
-    const nodeData = state.nodesData[nodeId]
-    if (nodeData){
-      dispatch({type: "SET_NODE_DATA" , payload: nodeData })
-    }else{
-      // dispatch({type: "SET_NODE_PREVIEW" , payload: "node don't have a preview"})
-    }
   };
   
   const onDoubleClickNode = function (nodeId, node) {
@@ -125,6 +119,18 @@ function GraphFunc(props) {
 
   const onMouseOverNode = function (nodeId, node) {
     //  window.alert(`Mouse over node ${nodeId} in position (${node.x}, ${node.y})`);
+    const nodeData = state.nodesData[node.id]
+    if (nodeData){
+      dispatch({type: "SET_NODE_DATA" , payload: nodeData })
+      let nodes = state.graphData.nodes.map(n => {
+        if(n.id === node.id ){
+          return {...n, "fontSize": 16, "color": "lightgreen"}
+        }else {
+          return {...n, "fontSize": 8}
+        }
+      })
+      dispatch({type:"SET_GRAPH_DATA", payload: {...state.graphData, nodes}})
+    }
   };
 
   const onMouseOutNode = function (nodeId, node) {
@@ -154,7 +160,6 @@ function GraphFunc(props) {
   const onZoomChange = function (previousZoom, newZoom) {
     //  window.alert(`Graph is now zoomed at ${newZoom} from ${previousZoom}`);
   };
-
   return (
     <Fragment>
       {errorText === "" && (
