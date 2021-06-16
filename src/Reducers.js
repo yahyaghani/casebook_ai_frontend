@@ -5,7 +5,9 @@ export const InitialState = {
   error: null,
   message: null,
   searchQuery:"",
-  nodePreview:"",
+  nodeData: {},
+  nodesData: {},
+  graphData: {},
   auth: {
     authToken: null,
     userPublicId: null,
@@ -105,13 +107,24 @@ export const reducer = (state, action) => {
     }
   }
   
-  if (action.type === "SET_NODE_PREVIEW") {
+  if (action.type === "SET_NODE_DATA") {
     return {
       ...state,
-      nodePreview: action.payload === "" ? "sorry there is no preview" :  action.payload,
+      nodeData: action.payload,
     }
   }
-
+  if(action.type === "SET_GRAPH_DATA"){
+    return {
+      ...state,
+      graphData: action.payload
+    }
+  }
+  if(action.type === "SET_NODES_DATA"){
+    return {
+      ...state,
+      nodesData: action.payload
+    }
+  }
   return state;
 };
 
