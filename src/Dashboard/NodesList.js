@@ -2,19 +2,25 @@ import React, { useEffect, useContext, useState } from "react";
 import { UserContext } from "../App";
 
 function Highlight(props) {
-  const {state} = useContext(UserContext);
+  const {state, dispatch} = useContext(UserContext);
   const [graphData, setGraphData] = useState({})
-  const [nodesData, setNodesData] = useState([]);
-  
   useEffect(() => {
     setGraphData(state.graphData)
   }, [state.graphData ]);
+
+  function handleNodeItemClick(node){
+    const nodeData = state.nodesData[node.id]
+    if (nodeData){
+      dispatch({type: "SET_NODE_DATA" , payload: nodeData })
+    }
+  }
 
   return (
     <div className="sidebarnew"style={{ width: "25vw" }}>
       <ul className="sidebar__highlights" style={{"maxHeight": "96vh", "overflow": "scroll"}}>
       {graphData.nodes && graphData.nodes.map((node , index )=> (
           <li
+          onClick={()=>handleNodeItemClick(node)}
           key ={index}
           className="sidebar__highlight"
         >
