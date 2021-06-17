@@ -28,6 +28,8 @@ import { Fragment } from "react";
 import GraphFunc from "./graphFunc";
 import PdfViewer from "./PdfViewer";
 import DashboardView from "./DashboardView";
+import ProfileView from "./ProfileView";
+import FeedView from "./FeedView";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -50,7 +52,7 @@ const HighlightPopup = ({ comment }) =>
 //const searchParams = new URLSearchParams(document.location.search);
 //const url = searchParams.get("url") || DEFAULT_URL;
 
-function Dashboard({ showFileViewer, showDashboardView, showHighlight }) {
+function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfileView, showFeedView }) {
   const [graphData, setGraphData] = useState([]);
   //const [state, setState] = useState({ highlights: testHighlights[url] ? [...testHighlights[url]] : [] })
   const [state, setState] = useState({ highlights: [] });
@@ -222,6 +224,8 @@ function Dashboard({ showFileViewer, showDashboardView, showHighlight }) {
       )}
       {showFileViewer && <PdfViewer />}
       {showDashboardView && <DashboardView />}
+      {showProfileView && <ProfileView />}
+      {showFeedView && <FeedView />}
     </Fragment>
   );
 }

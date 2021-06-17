@@ -11,6 +11,8 @@ function AppRoutes(props) {
         showFileViewer={props.showFileViewer}
         showDashboardView={props.showDashboardView}
         showHighlight={props.showHighlight}
+        showProfileView={props.showProfileView}
+        showFeedView={props.showFeedView}
       />
     </Suspense>
   );

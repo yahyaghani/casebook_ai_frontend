@@ -2,27 +2,35 @@ export const InitialState = {
   files: [],
   currentFile: null,
   fileHighlights: [],
+  myPosts: [],
+  allPosts: [],
   error: null,
   message: null,
   auth: {
+    userId: null,
     authToken: null,
     userPublicId: null,
     username: null,
     email: null,
     expiry: null,
-  }
+    fname: null,
+    lname: null,
+    city: null,
+    country: null,
+    organisation: null,
+  },
 };
 
 export const reducer = (state, action) => {
   if (action.type === "ADD_FILE") {
-    if(!Array.isArray(action.payload)) action.payload = [action.payload];
+    if (!Array.isArray(action.payload)) action.payload = [action.payload];
     let Allfiles = [...state.files, ...action.payload];
     let fileNames = [];
     let files = Allfiles.filter((file) => {
-      if(fileNames.includes(file.name)) return false;
+      if (fileNames.includes(file.name)) return false;
       fileNames.push(file.name);
       return true;
-    })
+    });
     return {
       ...state,
       files,
@@ -31,16 +39,22 @@ export const reducer = (state, action) => {
   }
   if (action.type === "AUTH") {
     const auth = {
-        authToken: action.payload.auth_token,
-        userPublicId: action.payload.userPublicId,
-        username: action.payload.username,
-        email: action.payload.email,
-        expiry: action.payload.expiry || Date.parse(new Date()) + (29*60*1000),
-      };
-    localStorage.setItem('authDetails', JSON.stringify(auth));
+      userId: action.payload.userId,
+      authToken: action.payload.auth_token,
+      userPublicId: action.payload.userPublicId,
+      username: action.payload.username,
+      email: action.payload.email,
+      expiry: action.payload.expiry || Date.parse(new Date()) + 29 * 60 * 1000,
+      fname: action.payload.fname,
+      lname: action.payload.lname,
+      city: action.payload.city,
+      country: action.payload.country,
+      organisation: action.payload.organisation,
+    };
+    localStorage.setItem("authDetails", JSON.stringify(auth));
     return {
       ...state,
-      auth, 
+      auth,
     };
   }
   if (action.type === "LOG_OUT") {
@@ -53,32 +67,44 @@ export const reducer = (state, action) => {
       currentFile: action.payload,
     };
   }
+  if (action.type === "ALL_POSTS") {
+    return {
+      ...state,
+      allPosts: action.payload,
+    };
+  }
+  if (action.type === "ADD_My_POSTS") {
+    return {
+      ...state,
+      myPosts: [...state.myPosts, action.payload],
+    };
+  }
   if (action.type === "FETCH_FILE_HIGHLIGHTS") {
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       fileHighlights: action.payload,
     };
   }
   if (action.type === "SET_FILE_HIGHLIGHTS") {
-    console.log(action.payload);
+    // console.log(action.payload);
     let highlights = [];
-    if(state.fileHighlights.length > 0) {
+    if (state.fileHighlights.length > 0) {
       let fileUpdated = false;
       highlights = state.fileHighlights.map((singleFile) => {
-        if(singleFile.name === action.payload.name) {
+        if (singleFile.name === action.payload.name) {
           singleFile.highlights = action.payload.highlights;
           fileUpdated = true;
         }
         return singleFile;
       });
-      if(!fileUpdated) {
+      if (!fileUpdated) {
         highlights = [...state.fileHighlights, action.payload];
       }
     } else {
       highlights = [action.payload];
     }
-    console.log(highlights);
+    // console.log(highlights);
     return {
       ...state,
       fileHighlights: highlights,

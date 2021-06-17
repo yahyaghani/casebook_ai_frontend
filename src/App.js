@@ -17,7 +17,6 @@ import {
 import Highlight from "./Dashboard/Highlight";
 
 import Register from "./Dashboard/Register";
-import DashboardView from "./Dashboard/DashboardView";
 import Login from "./Dashboard/Login";
 //import testHighlights from "./test-highlights";
 
@@ -27,7 +26,6 @@ import "./App.scss";
 import "./style/App.css";
 import Navbar from "./shared/Navbar";
 import FileViewer from "./Dashboard/FileViewer";
-import { fetchAuth } from "./utils";
 
 export const UserContext = createContext();
 
@@ -36,23 +34,47 @@ function App() {
   const [showHighlight, setShowHighlight] = useState(false);
   const [showFileViewer, setShowFileViewer] = useState(false);
   const [showDashboardView, setShowDashboardView] = useState(true);
+  const [showProfileView, setShowProfileView] = useState(false);
+  const [showFeedView, setShowFeedView] = useState(false);
 
   function getHighlightClicks(val) {
     setShowHighlight(val);
     if (val) setShowFileViewer(false);
     if (val) setShowDashboardView(false);
+    if (val) setShowProfileView(false);
+    if (val) setShowFeedView(false);
+  }
+
+  function getProfileClicks(val) {
+    setShowProfileView(val);
+    if (val) setShowFileViewer(false);
+    if (val) setShowDashboardView(false);
+    if (val) setShowHighlight(false);
+    if (val) setShowFeedView(false);
+  }
+
+  function getFeedsClicks(val) {
+    setShowFeedView(val);
+    if (val) setShowFileViewer(false);
+    if (val) setShowDashboardView(false);
+    if (val) setShowProfileView(false);
+    if (val) setShowHighlight(false);
   }
 
   function getFileViewerClicks(val) {
     setShowFileViewer(val);
     if (val) setShowHighlight(false);
     if (val) setShowDashboardView(false);
+    if (val) setShowProfileView(false);
+    if (val) setShowFeedView(false);
   }
 
   function getDashboardViewClicks(val) {
     setShowDashboardView(val);
     if (val) setShowHighlight(false);
     if (val) setShowFileViewer(false);
+    if (val) setShowProfileView(false);
+    if (val) setShowFeedView(false);
   }
 
   return (
@@ -71,6 +93,8 @@ function App() {
                 HighlightClicks={getHighlightClicks}
                 FileViewerClicks={getFileViewerClicks}
                 DashboardViewClicks={getDashboardViewClicks}
+                ProfileViewClicks={getProfileClicks}
+                FeedsViewClicks={getFeedsClicks}
               />
               <div className="container-fluid page-body-wrapper">
                 <Navbar />
@@ -83,6 +107,8 @@ function App() {
                         showFileViewer={showFileViewer}
                         showDashboardView={showDashboardView}
                         showHighlight={showHighlight}
+                        showProfileView={showProfileView}
+                        showFeedView={showFeedView}
                       />
                     </div>
                   </div>
