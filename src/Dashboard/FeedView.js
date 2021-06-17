@@ -76,6 +76,7 @@ function FeedView() {
 
 function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
   const [showRating, setShowRating] = useState(false);
+  const [showRatingsModal, setShowRatingsModal] = useState(false);
 
   const [showFileModal, setShowFileModal] = useState(false);
 
@@ -147,6 +148,16 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
                   </p>
                 )}
               </div>
+              {filePost.total_rating > 0 && (
+                <div className="wrapper d-flex align-items-center font-weight-medium text-light">
+                  <p
+                    onClick={() => setShowRatingsModal(true)}
+                    className="mb-0 text-primary cursor-pointer"
+                  >
+                    View all ratings
+                  </p>
+                </div>
+              )}
             </div>
           </Col>
           <Col md={4} sm={7} xs={12}>
@@ -177,6 +188,11 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
               dispatch={dispatch}
               setIsFetchPosts={setIsFetchPosts}
               filePost={filePost}
+            />
+            <ShowRatingsModal
+              show={showRatingsModal}
+              setShow={setShowRatingsModal}
+              ratings={filePost.all_ratings}
             />
             <OpenFileModal
               showFileModal={showFileModal}
@@ -232,9 +248,10 @@ function RatingModal({
     }
   };
 
-  const isRated = filePost.all_ratings ? !!filePost.all_ratings.filter(
-    (rating) => rating.user_id === auth.userId
-  ).length : false;
+  const isRated = filePost.all_ratings
+    ? !!filePost.all_ratings.filter((rating) => rating.user_id === auth.userId)
+        .length
+    : false;
 
   return (
     <>
@@ -303,119 +320,56 @@ function RatingModal({
   );
 }
 
-// function OpenFileModal({ showFileModal, setShowFileModal, fileUrl }) {
-//   const handleClose = () => {
-//     setShowFileModal(false);
-//   };
+function ShowRatingsModal({ ratings, show, setShow }) {
+  const handleClose = () => {
+    setShow(false);
+  };
 
-//   const url = `${BASE_URL_DEV}/${fileUrl}`;
-
-//   console.log(url);
-
-//   return (
-//     <div>
-//       <Modal
-//         show={showFileModal || false}
-//         onHide={handleClose}
-//         backdrop="static"
-//         size="lg"
-//         centered={true}
-//         style={{ width: "100%" }}
-//       >
-//         <Modal.Body
-//           style={{
-//             minHeight: "calc(100vh - 85px)",
-//             color: "#000000",
-//           }}
-//         >
-//           {url && (
-//             <PdfLoader
-//               className="my-pdf-viewer"
-//               url={url}
-//               beforeLoad={<Spinner />}
-//             >
-//               {(pdfDocument) => (
-//                 <PdfHighlighter
-//                   ref={pdfHighlighter}
-//                   pdfDocument={pdfDocument}
-//                   enableAreaSelection={(event) => event.altKey}
-//                   onScrollChange={resetHash}
-//                   scrollRef={(scrollTo) => {}}
-//                   onSelectionFinished={(
-//                     position,
-//                     content,
-//                     hideTipAndSelection,
-//                     transformSelection
-//                   ) => (
-//                     <Tip
-//                       onOpen={transformSelection}
-//                       onConfirm={(comment) => {
-//                         addHighlight({ content, position, comment });
-
-//                         hideTipAndSelection();
-//                       }}
-//                     />
-//                   )}
-//                   highlightTransform={(
-//                     highlight,
-//                     index,
-//                     setTip,
-//                     hideTip,
-//                     viewportToScaled,
-//                     screenshot,
-//                     isScrolledTo
-//                   ) => {
-//                     const isTextHighlight = !Boolean(
-//                       highlight.content && highlight.content.image
-//                     );
-
-//                     const component = isTextHighlight ? (
-//                       <Highlight
-//                         isScrolledTo={isScrolledTo}
-//                         position={highlight.position}
-//                         comment={highlight.comment}
-//                       />
-//                     ) : (
-//                       <AreaHighlight
-//                         highlight={highlight}
-//                         onChange={(boundingRect) => {
-//                           updateHighlight(
-//                             highlight.id,
-//                             {
-//                               boundingRect: viewportToScaled(boundingRect),
-//                             },
-//                             { image: screenshot(boundingRect) }
-//                           );
-//                         }}
-//                       />
-//                     );
-
-//                     return (
-//                       <Popup
-//                         popupContent={<HighlightPopup {...highlight} />}
-//                         onMouseOver={(popupContent) =>
-//                           setTip(highlight, (highlight) => popupContent)
-//                         }
-//                         onMouseOut={hideTip}
-//                         key={index}
-//                         children={component}
-//                       />
-//                     );
-//                   }}
-//                   highlights={highlights}
-//                 />
-//               )}
-//             </PdfLoader>
-//           )}
-//         </Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={handleClose}>
-//             Close
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-//     </div>
-//   );
-// }
+  return (
+    <>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Body>
+          {ratings &&
+            ratings.map((item, i) => (
+              <div key={i}>
+                <div className="h4 text-dark mt-2">
+                  {Array(item.rating)
+                    .fill()
+                    .map((_, idx) => (
+                      <i
+                        key={idx}
+                        style={{ fontSize: "1.7rem", color: "#19a2f7" }}
+                        className="mdi mdi-star icon-sm mr-2"
+                      ></i>
+                    ))}
+                  {Array(5 - item.rating)
+                    .fill()
+                    .map((_, idx) => (
+                      <i
+                        key={idx}
+                        style={{ fontSize: "1.7rem" }}
+                        className="mdi mdi-star icon-sm mr-2"
+                      ></i>
+                    ))}
+                </div>
+                <div className="h4 mt-0 w-100 text-dark">{item.review}</div>
+                {(i !== (ratings.length -1)) && <hr className="bg-dark" />}
+              </div>
+            ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
 
 export default FeedView;
