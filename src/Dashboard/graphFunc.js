@@ -124,7 +124,7 @@ function GraphFunc(props) {
       dispatch({type: "SET_NODE_DATA" , payload: nodeData })
       let nodes = state.graphData.nodes.map(n => {
         if(n.id === node.id ){
-          return {...n, "fontSize": 16, "color": "lightgreen"}
+          return {...n, "fontSize": 16}
         }else {
           return {...n, "fontSize": 8}
         }

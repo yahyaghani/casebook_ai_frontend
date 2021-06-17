@@ -4,6 +4,7 @@ import { UserContext } from "../App";
 function Highlight(props) {
   const {state, dispatch} = useContext(UserContext);
   const [graphData, setGraphData] = useState({})
+
   useEffect(() => {
     setTimeout(()=>setGraphData(state.graphData), 500)
   }, [state.graphData ]);
@@ -13,7 +14,7 @@ function Highlight(props) {
     if (nodeData){
       let nodes = state.graphData.nodes.map(n => {
         if(n.id === node.id ){
-          return {...n, "fontSize": 16, "color": "lightgreen"}
+          return {...n, "fontSize": 16}
         }else {
           return {...n, "fontSize": 8}
         }
@@ -40,7 +41,7 @@ function Highlight(props) {
     <div className="sidebarnew"style={{ width: "25vw" }}>
       <ul className="sidebar__highlights" style={{"maxHeight": "96vh", "overflow": "scroll"}}>
       {graphData.nodes && graphData.nodes.map((node , index )=> (
-        node.id !== state.searchQuery ?
+        node.id !== state.searchQuery && state.nodesData[node.id] !== undefined ?
           <li
           onMouseEnter={()=>handleMouseEnter(node)}
           onMouseLeave={()=>handleMouseLeave(node)}
