@@ -15,7 +15,8 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import Highlight from "./Dashboard/Highlight";
-
+import NodePreview from "./Dashboard/NodePreview";
+import NodesList from "./Dashboard/NodesList";
 import Register from "./Dashboard/Register";
 import Login from "./Dashboard/Login";
 //import testHighlights from "./test-highlights";
@@ -100,7 +101,9 @@ function App() {
                 <Navbar />
                 <div className="main-panel">
                   <div className="show_side" style={{ display: "flex" }}>
-                    {showHighlight === true && <Highlight />}
+                    {/* {showHighlight === true && <Highlight />} */}
+                    {/* {showHighlight === true && <NodesList />} */}
+                    {showHighlight === true && state.searchQuery !== "" && <NodesList />}
                     {showFileViewer === true && <FileViewer />}
                     <div className="content-wrapper" style={{ width: "75%" }}>
                       <AppRoutes
@@ -111,6 +114,7 @@ function App() {
                         showFeedView={showFeedView}
                       />
                     </div>
+                    {showHighlight === true && state.searchQuery !== "" && <NodePreview />}
                   </div>
                 </div>
               </div>

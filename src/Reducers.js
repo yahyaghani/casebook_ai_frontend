@@ -6,6 +6,10 @@ export const InitialState = {
   allPosts: [],
   error: null,
   message: null,
+  searchQuery:"",
+  nodeData: {},
+  nodesData: {},
+  graphData: {},
   auth: {
     userId: null,
     authToken: null,
@@ -122,5 +126,32 @@ export const reducer = (state, action) => {
       message: action.payload,
     };
   }
+  if (action.type === "SET_SEARCH_QUERY") {
+    return {
+      ...state,
+      searchQuery: action.payload,
+    }
+  }
+  
+  if (action.type === "SET_NODE_DATA") {
+    return {
+      ...state,
+      nodeData: action.payload,
+    }
+  }
+  if(action.type === "SET_GRAPH_DATA"){
+    console.count("hello");
+    return {
+      ...state,
+      graphData: action.payload
+    }
+  }
+  if(action.type === "SET_NODES_DATA"){
+    return {
+      ...state,
+      nodesData: action.payload
+    }
+  }
   return state;
 };
+

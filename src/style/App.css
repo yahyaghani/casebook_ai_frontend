@@ -26,6 +26,9 @@ body {
   ); */
   width: 100%;
 }
+.sidebarnew em{
+  color:yellow;
+}
 
 .dashboard-card {
   background: #191c24;
