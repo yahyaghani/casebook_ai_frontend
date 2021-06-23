@@ -13,6 +13,7 @@ function AppRoutes(props) {
         showHighlight={props.showHighlight}
         showProfileView={props.showProfileView}
         showFeedView={props.showFeedView}
+        showTextAnonymizerView={props.showTextAnonymizerView}
       />
     </Suspense>
   );
