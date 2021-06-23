@@ -86,7 +86,7 @@ export default class TextAnonymizer extends React.Component{
       }
     render(){
         return(
-            <div className='dashboard-view bg-dark p-5 text-center '>
+            <div className='dashboard-view  bg-dark p-5 text-center '>
                 <Form className='d-flex jusitify-content-center flex-column'>
                     <Form.Group className='text-left'>
                       <h4 className='font-weight-bold'>
@@ -168,11 +168,10 @@ export default class TextAnonymizer extends React.Component{
                     <div className='text-light text-left mb-2'>
                         Text after Anonymization:
                     </div>
-                    
-                    <p className='border border-success border-1 text-light p-3' >
+                    <div className='overflow-auto border border-success border-1 text-light p-3' style={{maxHeight:120}}>
                         {this.state.result}
-                    </p>
-                    <div>
+                    </div>
+                    <div className='mt-2 mb-2'>
                     <button className='btn btn-secondary mr-1 btn-sm'  style={{fontSize:15}} onClick={this.handleCopyText}>
                         Copy
                     </button>
