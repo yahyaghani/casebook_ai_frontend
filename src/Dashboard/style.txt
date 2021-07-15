@@ -1,0 +1,15 @@
+.OTHER {
+  background: rgb(93, 115, 240);
+}
+
+.LEGALTEST {
+  background: rgb(5, 223, 16);
+}
+
+.ISSUE {
+  background: rgb(247, 115, 115);
+}
+
+.CONCLUSION {
+  background: rgb(26, 119, 114);
+}
