@@ -317,6 +317,7 @@ function Sidebar({
       {showTextEditor && (
         <TextEditor
           id={state.auth && state.auth.userPublicId}
+          fileName={'index'}
           showTextEditor={showTextEditor}
           setShowTextEditor={setShowTextEditor}
         />

@@ -7,7 +7,7 @@ import { UserContext } from "../App";
 function GraphFunc(props) {
   const [errorText, setErrorText] = useState("");
   const {state, dispatch} = useContext(UserContext);
-
+  console.log('graphFunc!!!');
   useEffect(() => {
     async function fetchData() {      
         await axios
@@ -17,6 +17,7 @@ function GraphFunc(props) {
           }
         })
         .then(function (response) {
+          console.log(response);
           dispatch({type:"SET_NODES_DATA", payload: response.data.nodes_data})
           dispatch({type:"SET_GRAPH_DATA", payload: response.data.graph_data})
         })

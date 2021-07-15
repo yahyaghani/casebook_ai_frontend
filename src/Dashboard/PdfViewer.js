@@ -7,8 +7,9 @@ import {
   AreaHighlight,
 } from "react-pdf-highlighter";
 import { Container } from "react-bootstrap";
-import axios from 'axios';
+import { Resizable } from "react-resizable";
 
+import TextEditor from "../TextEditor";
 import Spinner from "../shared/Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
@@ -35,22 +36,34 @@ function PdfViewer() {
   const { state, dispatch } = useContext(UserContext);
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
+  const [createNotes, setCreateNotes] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dimensions, setDimensions] = useState({
+    height: 720,
+    width: 250,
+  });
 
   useEffect(() => {
     // console.log(highlights);
-    if(highlights && highlights.length > 0) {
-      dispatch({ type: "SET_FILE_HIGHLIGHTS", payload: {
-        highlights,
-        name: state.currentFile && state.currentFile.name,
-      }});
+    if (highlights && highlights.length > 0) {
+      dispatch({
+        type: "SET_FILE_HIGHLIGHTS",
+        payload: {
+          highlights,
+          name: state.currentFile && state.currentFile.name,
+        },
+      });
     }
-  },[highlights]);
+  }, [highlights]);
 
   useEffect(() => {
     setCurrFile(null);
     // console.log(state);
-    if(state.currentFile && state.currentFile.url) {
-      setTimeout(() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`), 100);
+    if (state.currentFile && state.currentFile.url) {
+      setTimeout(
+        () => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
+        100
+      );
     } else {
       let reader = new FileReader();
       let file = state.currentFile;
@@ -62,7 +75,7 @@ function PdfViewer() {
       if (file) reader.readAsDataURL(file);
     }
   }, [state.currentFile]);
-  
+
   useEffect(() => {
     if (state.currentFile) {
       // console.log(state);
@@ -76,17 +89,6 @@ function PdfViewer() {
       if (!highlightUpdated) setHighlights([]);
     }
   }, [state.currentFile, state.fileHighlights]);
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     if(!state.currentFile) return null;
-  //     const result_json = await axios(`${BASE_URL_DEV}/api/v1/json?filename=${state.currentFile.name}`);
-  //     const pdfHighlights =
-  //       (state.currentFile && result_json.data[state.currentFile.name]) || [];
-  //     setHighlights(pdfHighlights);
-  //   }
-  //   fetchData();
-  // }, [state.currentFile]);
 
   const pdfHighlighter = useRef(null);
   const getHighlightById = (id) =>
@@ -122,108 +124,171 @@ function PdfViewer() {
   };
 
   function updateHighlight(highlightId, position, content) {
-    setHighlights(highlights.map((h) => (h.id === highlightId ? {
-        ...h,
-        position: { ...h.position, ...position },
-        content: { ...h.content, ...content },
-      } : h)));
+    setHighlights(
+      highlights.map((h) =>
+        h.id === highlightId
+          ? {
+              ...h,
+              position: { ...h.position, ...position },
+              content: { ...h.content, ...content },
+            }
+          : h
+      )
+    );
+  }
+
+  const handleGraphQuery = () => {
+    if(searchQuery.length && searchQuery.length <= 0) return null;
+    console.log(searchQuery);
   }
 
   return (
-    <div
-      style={{
-        minHeight: "calc(100vh - 70px)",
-        paddingLeft: '1rem',
-        color: "#000000",
-        width: '100%',
-      }}
-      className="pdf-viewer p-2"
-    >
-      {currFile ? (
-        <PdfLoader
-          className="my-pdf-viewer"
-          url={currFile}
-          beforeLoad={<Spinner />}
-        >
-          {(pdfDocument) => (
-            <PdfHighlighter
-              ref={pdfHighlighter}
-              pdfDocument={pdfDocument}
-              enableAreaSelection={(event) => event.altKey}
-              onScrollChange={resetHash}
-              scrollRef={(scrollTo) => {}}
-              onSelectionFinished={(
-                position,
-                content,
-                hideTipAndSelection,
-                transformSelection
-              ) => (
-                <Tip
-                  onOpen={transformSelection}
-                  onConfirm={(comment) => {
-                    addHighlight({ content, position, comment });
+    <div className="d-flex">
+      <div
+        style={{
+          minHeight: "calc(100vh - 70px)",
+          color: "#000000",
+          width: "80%",
+        }}
+        className="pdf-viewer"
+      >
+        {currFile ? (
+          <PdfLoader
+            className="my-pdf-viewer"
+            url={currFile}
+            beforeLoad={<Spinner />}
+          >
+            {(pdfDocument) => (
+              <PdfHighlighter
+                ref={pdfHighlighter}
+                pdfDocument={pdfDocument}
+                enableAreaSelection={(event) => event.altKey}
+                onScrollChange={resetHash}
+                scrollRef={(scrollTo) => {}}
+                onSelectionFinished={(
+                  position,
+                  content,
+                  hideTipAndSelection,
+                  transformSelection
+                ) => (
+                  <Tip
+                    onOpen={transformSelection}
+                    onConfirm={(comment) => {
+                      addHighlight({ content, position, comment });
 
-                    hideTipAndSelection();
-                  }}
-                />
-              )}
-              highlightTransform={(
-                highlight,
-                index,
-                setTip,
-                hideTip,
-                viewportToScaled,
-                screenshot,
-                isScrolledTo
-              ) => {
-                const isTextHighlight = !Boolean(
-                  highlight.content && highlight.content.image
-                );
-
-                const component = isTextHighlight ? (
-                  <Highlight
-                    isScrolledTo={isScrolledTo}
-                    position={highlight.position}
-                    comment={highlight.comment}
-                  />
-                ) : (
-                  <AreaHighlight
-                    highlight={highlight}
-                    onChange={(boundingRect) => {
-                      updateHighlight(
-                        highlight.id,
-                        {
-                          boundingRect: viewportToScaled(boundingRect),
-                        },
-                        { image: screenshot(boundingRect) }
-                      );
+                      hideTipAndSelection();
                     }}
                   />
-                );
+                )}
+                highlightTransform={(
+                  highlight,
+                  index,
+                  setTip,
+                  hideTip,
+                  viewportToScaled,
+                  screenshot,
+                  isScrolledTo
+                ) => {
+                  const isTextHighlight = !Boolean(
+                    highlight.content && highlight.content.image
+                  );
 
-                return (
-                  <Popup
-                    popupContent={<HighlightPopup {...highlight} />}
-                    onMouseOver={(popupContent) =>
-                      setTip(highlight, (highlight) => popupContent)
-                    }
-                    onMouseOut={hideTip}
-                    key={index}
-                    children={component}
-                  />
-                );
-              }}
-              highlights={highlights}
-            />
-          )}
-        </PdfLoader>
-      ) : state.files && state.files.length === 0 ? (
-        <Container>
-          <div className="h3 text-center mt-5">No File Selected!!</div>
-        </Container>
-      ) : (
-        <Spinner />
-      )}
+                  const component = isTextHighlight ? (
+                    <Highlight
+                      isScrolledTo={isScrolledTo}
+                      position={highlight.position}
+                      comment={highlight.comment}
+                    />
+                  ) : (
+                    <AreaHighlight
+                      highlight={highlight}
+                      onChange={(boundingRect) => {
+                        updateHighlight(
+                          highlight.id,
+                          {
+                            boundingRect: viewportToScaled(boundingRect),
+                          },
+                          { image: screenshot(boundingRect) }
+                        );
+                      }}
+                    />
+                  );
+
+                  return (
+                    <Popup
+                      popupContent={<HighlightPopup {...highlight} />}
+                      onMouseOver={(popupContent) =>
+                        setTip(highlight, (highlight) => popupContent)
+                      }
+                      onMouseOut={hideTip}
+                      key={index}
+                      children={component}
+                    />
+                  );
+                }}
+                highlights={highlights}
+              />
+            )}
+          </PdfLoader>
+        ) : state.files && state.files.length === 0 ? (
+          <Container>
+            <div className="h3 text-center mt-5">No File Selected!!</div>
+          </Container>
+        ) : (
+          <Spinner />
+        )}
+      </div>
+      <Resizable
+        className="box"
+        height={dimensions.height}
+        axis="x"
+        width={dimensions.width}
+        onResize={(e, { size }) => {
+          setDimensions({
+            height: size.height,
+            width: size.width,
+          });
+        }}
+        resizeHandles={["w"]}
+      >
+        <div
+          className="sidebarnew"
+          style={{
+            minWidth: "20%",
+            width: dimensions.width + "px" || "25%",
+            height: dimensions.height + "px" || "calc(100vh - 70px)",
+            overflowY: "scroll",
+          }}
+        >
+          <div>
+            <div
+              onClick={() => setCreateNotes(true)}
+              className="h4 text-center bg-secondary cursor-pointer my-5 p-3"
+            >
+              ADD NOTES
+            </div>
+            {createNotes && (
+              <TextEditor
+                id={state.auth && state.auth.userPublicId}
+                fileName={state.currentFile && state.currentFile.name}
+                showTextEditor={createNotes}
+                setShowTextEditor={setCreateNotes}
+              />
+            )}
+            <div className="form-group w-100 my-5">
+              <input
+                type="text"
+                onChange={({ target }) => setSearchQuery(target.value)}
+                placeholder="search..."
+                className="form-control text-light w-100"
+              />
+              <button onClick={handleGraphQuery} className="btn btn-secondary rounded-0 w-100 py-2">
+                Search For Graph
+              </button>
+            </div>
+          </div>
+        </div>
+      </Resizable>
     </div>
   );
 }

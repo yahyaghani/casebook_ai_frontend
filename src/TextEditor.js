@@ -21,7 +21,12 @@ const TOOLBAR_OPTIONS = [
   ["clean"],
 ];
 
-export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
+export default function TextEditor({
+  id,
+  fileName,
+  showTextEditor,
+  setShowTextEditor,
+}) {
   const documentId = id;
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
@@ -44,7 +49,8 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
       quill.enable();
     });
 
-    socket.emit("get-document", documentId);
+    socket.emit("get-document", JSON.stringify({ documentId, fileName }));
+    console.log(documentId, fileName);
   }, [socket, quill, documentId]);
 
   // To auto save document according to SAVE_INTERVAL_MS
@@ -115,7 +121,7 @@ export default function TextEditor({ id, showTextEditor, setShowTextEditor }) {
     if (socket == null || quill == null) return;
     socket.emit("save-document", quill.getContents());
     handleClose();
-  }
+  };
 
   return (
     <React.Fragment>

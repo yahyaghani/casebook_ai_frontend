@@ -106,15 +106,12 @@ blockquote:after {
   margin-left: 0px !important;
 }
 
-/* .pdf-viewer {
-  display: flex;
-  justify-content: center;
-  justify-items: center;
-  width: fit-content;
-} */
-/* .pdf-viewer .PdfHighlighter {
-  position: fixed;
-} */
+.pdf-viewer .PdfHighlighter {
+  /* position: fixed; */
+  min-width: 50%;
+  width: 70%;
+  overflow-x: scroll;
+}
 
 .error_text {
   color: #000;

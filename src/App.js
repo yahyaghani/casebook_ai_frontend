@@ -105,7 +105,7 @@ function App() {
                     {/* {showHighlight === true && <NodesList />} */}
                     {showHighlight === true && state.searchQuery !== "" && <NodesList />}
                     {showFileViewer === true && <FileViewer />}
-                    <div className="content-wrapper" style={{ width: "75%" }}>
+                    <div className="content-wrapper">
                       <AppRoutes
                         showFileViewer={showFileViewer}
                         showDashboardView={showDashboardView}

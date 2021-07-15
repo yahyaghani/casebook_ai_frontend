@@ -27,6 +27,7 @@
     "react-elasticsearch": "^2.0.0",
     "react-i18next": "^11.8.15",
     "react-pdf-highlighter": "^3.1.0",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "reactstrap": "^8.9.0",
