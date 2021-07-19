@@ -28,7 +28,6 @@ function GraphFunc(props) {
     if(state.searchQuery !== ""){
       fetchData();
     }
-
   }, [state.searchQuery]);
 
   const myConfig ={
@@ -184,7 +183,6 @@ function GraphFunc(props) {
           />
           </div>
       )}
-
       {errorText !== "" && <div className="error_text"><p>{errorText}</p></div>}
     </Fragment>
   );

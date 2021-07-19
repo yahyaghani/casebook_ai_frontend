@@ -47,9 +47,8 @@
   transform: rotate(135deg);
 }
 .react-resizable-handle-e {
-  /* right: 0; */
-  left: 250;
-  position: fixed;
+  right: 0;
+  /* position: fixed; */
   transform: rotate(315deg);
 }
 .react-resizable-handle-n,

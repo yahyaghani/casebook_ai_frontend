@@ -38,7 +38,7 @@ function Sidebar({
           },
         });
         const fileHighlights = result.data;
-        // console.log(fileHighlights);
+        console.log(fileHighlights);
         if (
           fileHighlights &&
           fileHighlights.highlights &&

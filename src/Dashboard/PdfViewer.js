@@ -6,11 +6,12 @@ import {
   Popup,
   AreaHighlight,
 } from "react-pdf-highlighter";
-import { Container } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import { Resizable } from "react-resizable";
 
 import TextEditor from "../TextEditor";
 import Spinner from "../shared/Spinner";
+import PdfGraphFunc from "./PdfGraphFunc";
 import Tip from "./Tip";
 import processMd from "./markdown";
 import { UserContext } from "../App";
@@ -37,7 +38,7 @@ function PdfViewer() {
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
   const [createNotes, setCreateNotes] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [showGraphModal, setShowGraphModal] = useState("");
   const [dimensions, setDimensions] = useState({
     height: 720,
     width: 250,
@@ -135,11 +136,6 @@ function PdfViewer() {
           : h
       )
     );
-  }
-
-  const handleGraphQuery = () => {
-    if(searchQuery.length && searchQuery.length <= 0) return null;
-    console.log(searchQuery);
   }
 
   return (
@@ -275,17 +271,31 @@ function PdfViewer() {
                 setShowTextEditor={setCreateNotes}
               />
             )}
-            <div className="form-group w-100 my-5">
-              <input
-                type="text"
-                onChange={({ target }) => setSearchQuery(target.value)}
-                placeholder="search..."
-                className="form-control text-light w-100"
-              />
-              <button onClick={handleGraphQuery} className="btn btn-secondary rounded-0 w-100 py-2">
-                Search For Graph
-              </button>
+            <div
+              onClick={() => setShowGraphModal(true)}
+              className="h4 text-center bg-secondary cursor-pointer my-5 p-3"
+            >
+              SHOW GRAPH
             </div>
+            {showGraphModal && (
+              <Modal
+                style={{ color: "#050505" }}
+                show={showGraphModal}
+                onHide={() => setShowGraphModal(false)}
+                backdrop="static"
+                size="lg"
+                centered={true}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-modal-sizes-title-sm">
+                    Graph
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <PdfGraphFunc />
+                </Modal.Body>
+              </Modal>
+            )}
           </div>
         </div>
       </Resizable>
