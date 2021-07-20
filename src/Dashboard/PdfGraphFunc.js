@@ -3,13 +3,14 @@ import { Graph } from "react-d3-graph";
 import axios from "axios";
 import { Fragment } from "react";
 import { UserContext } from "../App";
+import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
   const [errorText, setErrorText] = useState("");
   const { state, dispatch } = useContext(UserContext);
   console.log("PdfGraphFunc!!!");
   useEffect(() => {
-    if(state.allgraphData.length !== 0) {
+    if(state.graphData.length !== 0) {
         (async () => {
         const result = await axios(`${BASE_URL_DEV}/get-graphdata`, {
           headers: {
@@ -17,7 +18,7 @@ function PdfGraphFunc(props) {
           },
         });
         const allgraphs = result.data;
-        console.log(allgraphs);
+        console.log('logged graphData',allgraphs);
         if (allgraphs && allgraphs.length > 0) {
           dispatch({
             type: "FETCH_FILE_HIGHLIGHTS",
