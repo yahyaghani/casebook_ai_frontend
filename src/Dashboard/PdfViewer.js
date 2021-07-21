@@ -41,6 +41,7 @@ function PdfViewer() {
   const [highlights, setHighlights] = useState([]);
   const [createNotes, setCreateNotes] = useState(false);
   const [showGraphModal, setShowGraphModal] = useState(0);
+  const [showModal, setShowModal] = useState("");
   const [dimensions, setDimensions] = useState({
     height: 720,
     width: 250,
@@ -63,10 +64,10 @@ function PdfViewer() {
     setCurrFile(null);
     // console.log(state);
     if (state.currentFile && state.currentFile.url) {
-      // setTimeout(
-      //   () => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
-      //   100
-      // );
+      setTimeout(
+        () => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
+        100
+      );
     } else {
       let reader = new FileReader();
       let file = state.currentFile;
@@ -292,7 +293,7 @@ function PdfViewer() {
             {true && (
               <>
                 <i className="mdi mdi-fullscreen"
-                  onClick={() => showGraphData(2)}
+                  onClick={() => setShowModal(true)}
                   style={{
                     float: "right",
                     padding: "20px",
@@ -302,11 +303,11 @@ function PdfViewer() {
                 <PdfGraphFunc />
               </>
                 )}
-                {showGraphModal == 2 && (
+                {showModal && (
                   <Modal
                     style={{ color: "#050505" }}
-                    show={showGraphModal}
-                    onHide={() => setShowGraphModal(false)}
+                    show={showModal}
+                    onHide={() => setShowModal(false)}
                     backdrop="static"
                     size="lg"
                     centered={true}

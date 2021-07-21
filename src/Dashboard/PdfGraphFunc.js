@@ -25,11 +25,9 @@ function PdfGraphFunc(props) {
         });
         const allgraphs = result.data;
 
-        console.log('logged graphData', allgraphs.graphdata[0]);
         let currentFileName = state.currentFile && state.currentFile.name ? state.currentFile.name : '';
         let totalFile = state.files;
         let index = totalFile.findIndex(x => x.name === currentFileName);
-        console.log(index)
 
         setObj(allgraphs.graphdata[index]);
 
