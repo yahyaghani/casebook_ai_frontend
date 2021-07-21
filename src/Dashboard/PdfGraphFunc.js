@@ -6,9 +6,12 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
+  console.log("props____",props)
   const [errorText, setErrorText] = useState("");
   const [obj, setObj] = useState([]);
   const { state, dispatch } = useContext(UserContext);
+  const [showGraphModal, setShowGraphModal] = useState(props.showGraphModal);
+
   let data;
 
   console.log("PdfGraphFunc!!!", state);
@@ -23,8 +26,12 @@ function PdfGraphFunc(props) {
         const allgraphs = result.data;
 
         console.log('logged graphData', allgraphs.graphdata[0]);
+        let currentFileName = state.currentFile && state.currentFile.name ? state.currentFile.name : '';
+        let totalFile = state.files;
+        let index = totalFile.findIndex(x => x.name === currentFileName);
+        console.log(index)
 
-        setObj(allgraphs.graphdata[0]);
+        setObj(allgraphs.graphdata[index]);
 
         if (allgraphs && allgraphs.length > 0) {
           dispatch({

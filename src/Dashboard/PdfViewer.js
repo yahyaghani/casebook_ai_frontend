@@ -5,7 +5,9 @@ import {
   Highlight,
   Popup,
   AreaHighlight,
+  setPdfWorker
 } from "react-pdf-highlighter";
+
 import { Container, Modal } from "react-bootstrap";
 import { Resizable } from "react-resizable";
 
@@ -38,7 +40,7 @@ function PdfViewer() {
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
   const [createNotes, setCreateNotes] = useState(false);
-  const [showGraphModal, setShowGraphModal] = useState(1, 2);
+  const [showGraphModal, setShowGraphModal] = useState(0);
   const [dimensions, setDimensions] = useState({
     height: 720,
     width: 250,
@@ -137,6 +139,10 @@ function PdfViewer() {
       )
     );
   }
+  function showGraphData(type){
+    console.log("statenew___",type)
+    setShowGraphModal(type);
+  }
 
   return (
     <div className="d-flex">
@@ -149,12 +155,15 @@ function PdfViewer() {
         className="pdf-viewer"
       >
         {currFile ? (
+          <>
+          {console.log(currFile)}
           <PdfLoader
             className="my-pdf-viewer"
             url={currFile}
             beforeLoad={<Spinner />}
           >
             {(pdfDocument) => (
+              <>
               <PdfHighlighter
                 ref={pdfHighlighter}
                 pdfDocument={pdfDocument}
@@ -224,8 +233,10 @@ function PdfViewer() {
                 }}
                 highlights={highlights}
               />
+              </>
             )}
           </PdfLoader>
+          </>
         ) : state.files && state.files.length === 0 ? (
           <Container>
             <div className="h3 text-center mt-5">No File Selected!!</div>
@@ -272,16 +283,16 @@ function PdfViewer() {
               />
             )}
             <div
-              onClick={() => setShowGraphModal(1)}
+              onClick={() => showGraphData(1)}
               style={{marginBottom: "0 !important"}}
               className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
             >
               SHOW GRAPH
             </div>
-            {showGraphModal == 1 && (
+            {true && (
               <>
                 <i className="mdi mdi-fullscreen"
-                  onClick={() => setShowGraphModal(2)}
+                  onClick={() => showGraphData(2)}
                   style={{
                     float: "right",
                     padding: "20px",
