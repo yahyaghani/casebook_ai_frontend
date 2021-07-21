@@ -38,7 +38,7 @@ function PdfViewer() {
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
   const [createNotes, setCreateNotes] = useState(false);
-  const [showGraphModal, setShowGraphModal] = useState(1, 2);
+  const [showGraphModal, setShowGraphModal] = useState("");
   const [dimensions, setDimensions] = useState({
     height: 720,
     width: 250,
@@ -61,10 +61,10 @@ function PdfViewer() {
     setCurrFile(null);
     // console.log(state);
     if (state.currentFile && state.currentFile.url) {
-      // setTimeout(
-      //   () => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
-      //   100
-      // );
+      setTimeout(
+        () => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
+        100
+      );
     } else {
       let reader = new FileReader();
       let file = state.currentFile;
@@ -129,10 +129,10 @@ function PdfViewer() {
       highlights.map((h) =>
         h.id === highlightId
           ? {
-            ...h,
-            position: { ...h.position, ...position },
-            content: { ...h.content, ...content },
-          }
+              ...h,
+              position: { ...h.position, ...position },
+              content: { ...h.content, ...content },
+            }
           : h
       )
     );
@@ -160,7 +160,7 @@ function PdfViewer() {
                 pdfDocument={pdfDocument}
                 enableAreaSelection={(event) => event.altKey}
                 onScrollChange={resetHash}
-                scrollRef={(scrollTo) => { }}
+                scrollRef={(scrollTo) => {}}
                 onSelectionFinished={(
                   position,
                   content,
@@ -250,7 +250,7 @@ function PdfViewer() {
         <div
           className="sidebarnew"
           style={{
-            minWidth: "50%",
+            minWidth: "20%",
             width: dimensions.width + "px" || "25%",
             height: dimensions.height + "px" || "calc(100vh - 70px)",
             overflowY: "scroll",
@@ -272,44 +272,30 @@ function PdfViewer() {
               />
             )}
             <div
-              onClick={() => setShowGraphModal(1)}
-              style={{marginBottom: "0 !important"}}
-              className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
+              onClick={() => setShowGraphModal(true)}
+              className="h4 text-center bg-secondary cursor-pointer my-5 p-3"
             >
               SHOW GRAPH
             </div>
-            {showGraphModal == 1 && (
-              <>
-                <i className="mdi mdi-fullscreen"
-                  onClick={() => setShowGraphModal(2)}
-                  style={{
-                    float: "right",
-                    padding: "20px",
-                    fontSize: "30px",
-                  }}
-                />
-                <PdfGraphFunc />
-              </>
-                )}
-                {showGraphModal == 2 && (
-                  <Modal
-                    style={{ color: "#050505" }}
-                    show={showGraphModal}
-                    onHide={() => setShowGraphModal(false)}
-                    backdrop="static"
-                    size="lg"
-                    centered={true}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="example-modal-sizes-title-sm">
-                        Graph
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <PdfGraphFunc />
-                    </Modal.Body>
-                  </Modal>
-                )}
+            {showGraphModal && (
+              <Modal
+                style={{ color: "#050505" }}
+                show={showGraphModal}
+                onHide={() => setShowGraphModal(false)}
+                backdrop="static"
+                size="lg"
+                centered={true}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-modal-sizes-title-sm">
+                    Graph
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <PdfGraphFunc />
+                </Modal.Body>
+              </Modal>
+            )}
           </div>
         </div>
       </Resizable>

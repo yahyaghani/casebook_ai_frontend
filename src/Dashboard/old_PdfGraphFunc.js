@@ -7,25 +7,18 @@ import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
   const [errorText, setErrorText] = useState("");
-  const [obj, setObj] = useState([]);
   const { state, dispatch } = useContext(UserContext);
-  let data;
-
-  console.log("PdfGraphFunc!!!", state);
+  console.log("PdfGraphFunc!!!");
   useEffect(() => {
-    if (state.graphData.length !== 0) {
-      (async () => {
+    if(state.graphData.length !== 0) {
+        (async () => {
         const result = await axios(`${BASE_URL_DEV}/get-graphdata`, {
           headers: {
             "x-access-token": state.auth && state.auth.authToken,
           },
         });
         const allgraphs = result.data;
-
-        console.log('logged graphData', allgraphs.graphdata[0]);
-
-        setObj(allgraphs.graphdata[0]);
-
+        console.log('logged graphData',allgraphs);
         if (allgraphs && allgraphs.length > 0) {
           dispatch({
             type: "FETCH_FILE_HIGHLIGHTS",
@@ -43,7 +36,7 @@ function PdfGraphFunc(props) {
     focusAnimationDuration: 0,
     focusZoom: 1,
     freezeAllDragEvents: false,
-    height: 500,
+    height: 700,
     highlightDegree: 0.5,
     highlightOpacity: 1,
     linkHighlightBehavior: true,
@@ -53,7 +46,7 @@ function PdfGraphFunc(props) {
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
-    width: 500,
+    width: 800,
     d3: {
       alphaTarget: 0.05,
       gravity: -100,
@@ -63,7 +56,7 @@ function PdfGraphFunc(props) {
     },
     node: {
       color: "#d3d3d3",
-      fontColor: "#d3d3d3",
+      fontColor: "black",
       fontSize: 8,
       fontWeight: "normal",
       highlightColor: "lightgreen",
@@ -95,7 +88,7 @@ function PdfGraphFunc(props) {
       renderLabel: false,
       semanticStrokeWidth: false,
       strokeWidth: 1.5,
-      markerHeight: 2,
+      markerHeight: 6,
       markerWidth: 6,
       strokeDasharray: 0,
       strokeDashoffset: 0,
@@ -173,25 +166,23 @@ function PdfGraphFunc(props) {
     <Fragment>
       {errorText === "" && (
         <div className="graph__container">
-          {obj && (
-            <Graph
-              id="graph-id"
-              data={obj}
-              config={myConfig}
-              onClickGraph={onClickGraph}
-              onClickNode={onClickNode}
-              onDoubleClickNode={onDoubleClickNode}
-              onRightClickNode={onRightClickNode}
-              onClickLink={onClickLink}
-              onRightClickLink={onRightClickLink}
-              onMouseOverNode={onMouseOverNode}
-              onMouseOutNode={onMouseOutNode}
-              onMouseOverLink={onMouseOverLink}
-              onMouseOutLink={onMouseOutLink}
-              onNodePositionChange={onNodePositionChange}
-              onZoomChange={onZoomChange}
-            />
-          )}
+          <Graph
+            id="graph-id"
+            data={state.graphData}
+            config={myConfig}
+            onClickGraph={onClickGraph}
+            onClickNode={onClickNode}
+            onDoubleClickNode={onDoubleClickNode}
+            onRightClickNode={onRightClickNode}
+            onClickLink={onClickLink}
+            onRightClickLink={onRightClickLink}
+            onMouseOverNode={onMouseOverNode}
+            onMouseOutNode={onMouseOutNode}
+            onMouseOverLink={onMouseOverLink}
+            onMouseOutLink={onMouseOutLink}
+            onNodePositionChange={onNodePositionChange}
+            onZoomChange={onZoomChange}
+          />
         </div>
       )}
       {errorText !== "" && (

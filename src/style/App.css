@@ -29,7 +29,9 @@ body {
 .sidebarnew em{
   color:yellow;
 }
-
+.sidebarnew .mb-0{
+  margin-bottom: 0 !important;
+}
 .dashboard-card {
   background: #191c24;
   color: #ffffff;
