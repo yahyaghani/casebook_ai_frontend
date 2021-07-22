@@ -10,6 +10,7 @@ import {
 
 import { Container, Modal } from "react-bootstrap";
 import { Resizable } from "react-resizable";
+import styled from 'styled-components'
 
 import TextEditor from "../TextEditor";
 import Spinner from "../shared/Spinner";
@@ -35,6 +36,16 @@ const HighlightPopup = ({ comment }) =>
     </div>
   ) : null;
 
+const Wrapper = styled.div`
+  .Highlight__part {
+    background: ${props => props.highlightColor || "#000000"};
+    border: 3px solid ${props => props.highlightColor || "#000000"};
+  }
+  .AreaHighlight {
+    border: 3px solid ${props => props.highlightColor || "#000000"};
+    background-color: ${props => props.highlightColor || "#000000"};
+  }
+`
 function PdfViewer() {
   const { state, dispatch } = useContext(UserContext);
   const [currFile, setCurrFile] = useState();
@@ -146,6 +157,7 @@ function PdfViewer() {
   }
 
   return (
+    <Wrapper highlightColor={state.highlightColor}>
     <div className="d-flex">
       <div
         style={{
@@ -326,6 +338,7 @@ function PdfViewer() {
         </div>
       </Resizable>
     </div>
+    </Wrapper>
   );
 }
 

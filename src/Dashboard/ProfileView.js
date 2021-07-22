@@ -78,6 +78,10 @@ function ProfileView() {
                     <div className="h4 text-white">Country</div>
                     <div className="h4 profile-text-dark">{auth.country}</div>
                   </div>
+                  <div className="d-flex justify-content-between">
+                  <div className="h4 text-white">highlight color</div>
+                    <input type="color" name="highlight-color" value={state.highlightColor} id="highlight-color" onChange={e=>dispatch({type:"CHANGE_HIGHLIGHT_COLOR", payload:e.target.value})}/>
+                  </div>
                 </div>
               </div>
             </Col>

@@ -10,6 +10,7 @@ export const InitialState = {
   nodeData: {},
   nodesData: {},
   graphData: {},
+  highlightColor:"#eecc66",
   auth: {
     userId: null,
     authToken: null,
@@ -151,6 +152,9 @@ export const reducer = (state, action) => {
       ...state,
       nodesData: action.payload
     }
+  }
+  if(action.type === "CHANGE_HIGHLIGHT_COLOR"){
+    return {...state, highlightColor : action.payload}
   }
   return state;
 };
