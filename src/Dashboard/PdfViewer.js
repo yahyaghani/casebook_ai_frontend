@@ -262,7 +262,7 @@ function PdfViewer() {
         <div
           className="sidebarnew"
           style={{
-            minWidth: "50%",
+            minWidth: "30%",
             width: dimensions.width + "px" || "25%",
             height: dimensions.height + "px" || "calc(100vh - 70px)",
             overflowY: "scroll",
@@ -288,7 +288,7 @@ function PdfViewer() {
               style={{ marginBottom: "0 !important" }}
               className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
             >
-              SHOW GRAPH
+            MAXIMIZE GRAPH
             </div>
             {showGraph == 1 ||
               <i className="mdi mdi-fullscreen"

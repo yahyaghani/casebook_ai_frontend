@@ -6,7 +6,7 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
-  console.log("props____",props)
+  console.log("props____", props)
   const [errorText, setErrorText] = useState("");
   const [obj, setObj] = useState([]);
   const { state, dispatch } = useContext(UserContext);
@@ -45,7 +45,7 @@ function PdfGraphFunc(props) {
     automaticRearrangeAfterDropNode: true,
     collapsible: false,
     directed: false,
-    focusAnimationDuration: 0,
+    focusAnimationDuration: 10,
     focusZoom: 1,
     freezeAllDragEvents: false,
     height: 500,
@@ -182,9 +182,11 @@ function PdfGraphFunc(props) {
             <Graph
               id="graph-id"
               data={obj}
+              key={Math.round((new Date()).getTime() + Math.random())}
               config={myConfig}
               onClickGraph={onClickGraph}
               onClickNode={onClickNode}
+              passive={true}
               onDoubleClickNode={onDoubleClickNode}
               onRightClickNode={onRightClickNode}
               onClickLink={onClickLink}
