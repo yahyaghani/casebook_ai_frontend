@@ -288,9 +288,10 @@ function PdfViewer() {
               style={{ marginBottom: "0 !important" }}
               className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
             >
-            MAXIMIZE GRAPH
+            SHOW GRAPH
             </div>
             {showGraph == 1 ||
+            
               <i className="mdi mdi-fullscreen"
                 onClick={() => setShowGraphModal(true)}
                 style={{
