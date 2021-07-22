@@ -100,7 +100,7 @@ function PdfGraphFunc(props) {
       renderLabel: false,
       semanticStrokeWidth: false,
       strokeWidth: 1.5,
-      markerHeight: 2,
+      markerHeight: 6,
       markerWidth: 6,
       strokeDasharray: 0,
       strokeDashoffset: 0,

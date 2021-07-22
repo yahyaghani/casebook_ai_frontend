@@ -108,6 +108,10 @@ blockquote:after {
   margin-left: 0px !important;
 }
 
+.graph__container svg{
+  width: 100% !important;
+}
+
 .pdf-viewer .PdfHighlighter {
   /* position: fixed; */
   min-width: 50%;
