@@ -37,13 +37,14 @@ function App() {
   const [showDashboardView, setShowDashboardView] = useState(true);
   const [showProfileView, setShowProfileView] = useState(false);
   const [showFeedView, setShowFeedView] = useState(false);
-
+  const [showTextAnonymizerView, setShowTextAnonymizer] = useState(false)
   function getHighlightClicks(val) {
     setShowHighlight(val);
     if (val) setShowFileViewer(false);
     if (val) setShowDashboardView(false);
     if (val) setShowProfileView(false);
     if (val) setShowFeedView(false);
+    if (val) setShowTextAnonymizer(false)
   }
 
   function getProfileClicks(val) {
@@ -52,6 +53,7 @@ function App() {
     if (val) setShowDashboardView(false);
     if (val) setShowHighlight(false);
     if (val) setShowFeedView(false);
+    if (val) setShowTextAnonymizer(false)
   }
 
   function getFeedsClicks(val) {
@@ -60,6 +62,7 @@ function App() {
     if (val) setShowDashboardView(false);
     if (val) setShowProfileView(false);
     if (val) setShowHighlight(false);
+    if (val) setShowTextAnonymizer(false)
   }
 
   function getFileViewerClicks(val) {
@@ -68,6 +71,7 @@ function App() {
     if (val) setShowDashboardView(false);
     if (val) setShowProfileView(false);
     if (val) setShowFeedView(false);
+    if (val) setShowTextAnonymizer(false)
   }
 
   function getDashboardViewClicks(val) {
@@ -76,6 +80,15 @@ function App() {
     if (val) setShowFileViewer(false);
     if (val) setShowProfileView(false);
     if (val) setShowFeedView(false);
+    if (val) setShowTextAnonymizer(false)
+  }
+  function getTextAnonymizerViewClicks(val) {
+    setShowTextAnonymizer(val);
+    if (val) setShowHighlight(false);
+    if (val) setShowFileViewer(false);
+    if (val) setShowProfileView(false);
+    if (val) setShowFeedView(false);
+    if (val) setShowDashboardView(false);
   }
 
   return (
@@ -96,6 +109,7 @@ function App() {
                 DashboardViewClicks={getDashboardViewClicks}
                 ProfileViewClicks={getProfileClicks}
                 FeedsViewClicks={getFeedsClicks}
+                TextAnonViewClicks={getTextAnonymizerViewClicks}
               />
               <div className="container-fluid page-body-wrapper">
                 <Navbar />
@@ -112,6 +126,7 @@ function App() {
                         showHighlight={showHighlight}
                         showProfileView={showProfileView}
                         showFeedView={showFeedView}
+                        showTextAnonymizerView={showTextAnonymizerView}
                       />
                     </div>
                     {showHighlight === true && state.searchQuery !== "" && <NodePreview />}
