@@ -38,12 +38,27 @@ const HighlightPopup = ({ comment }) =>
 
 const Wrapper = styled.div`
   .Highlight__part {
-    background: ${props => props.highlightColor || "#000000"};
-    border: 3px solid ${props => props.highlightColor || "#000000"};
+    background: ${props => props.highlightColors.default || "#000000"};
+    /* border: 3px solid ${props => props.highlightColor || "#000000"}; */
   }
   .AreaHighlight {
-    border: 3px solid ${props => props.highlightColor || "#000000"};
-    background-color: ${props => props.highlightColor || "#000000"};
+    border: 3px solid ${props => props.highlightColors.default || "#000000"};
+    /* background-color: ${props => props.highlightColor || "#000000"}; */
+  }
+  .Highlight__part.OTHER {
+    background: rgb(93, 115, 240);
+  }
+
+  .Highlight__part.LEGALTEST {
+    background: ${props => props.highlightColors.legalTest};
+  }
+
+  .Highlight__part.ISSUE {
+    background: ${props => props.highlightColors.issue};
+  }
+
+  .Highlight__part.CONCLUSION {
+    background: ${props => props.highlightColors.conclusion};
   }
 `
 function PdfViewer() {
@@ -157,7 +172,7 @@ function PdfViewer() {
   }
 
   return (
-    <Wrapper highlightColor={state.highlightColor}>
+    <Wrapper highlightColors={state.highlightColors}>
     <div className="d-flex">
       <div
         style={{

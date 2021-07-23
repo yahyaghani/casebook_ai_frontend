@@ -10,7 +10,7 @@ export const InitialState = {
   nodeData: {},
   nodesData: {},
   graphData: {},
-  highlightColor:"#eecc66",
+  highlightColors:{ default:"#F48FB1", legalTest:"#E1BEE7", issue:"#D1C4E9", conclusion:"#B2EBF2" },
   auth: {
     userId: null,
     authToken: null,
@@ -154,7 +154,16 @@ export const reducer = (state, action) => {
     }
   }
   if(action.type === "CHANGE_HIGHLIGHT_COLOR"){
-    return {...state, highlightColor : action.payload}
+    return {...state, highlightColors : {...state.highlightColors, default:action.payload}}
+  }
+  if(action.type === "CHANGE_LEGAL_TEST_HIGHLIGHT_COLOR"){
+    return {...state, highlightColors : {...state.highlightColors, legalTest:action.payload}}
+  }
+  if(action.type === "CHANGE_ISSUE_HIGHLIGHT_COLOR"){
+    return {...state, highlightColors : {...state.highlightColors, issue:action.payload}}
+  }
+  if(action.type === "CHANGE_CONCLUSION_HIGHLIGHT_COLOR"){
+    return {...state, highlightColors : {...state.highlightColors, conclusion:action.payload}}
   }
   return state;
 };
