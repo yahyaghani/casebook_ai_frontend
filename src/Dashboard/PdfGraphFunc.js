@@ -6,7 +6,6 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
-  console.log("props____", props)
   const [errorText, setErrorText] = useState("");
   const [obj, setObj] = useState([]);
   const { state, dispatch } = useContext(UserContext);
@@ -14,7 +13,6 @@ function PdfGraphFunc(props) {
 
   let data;
 
-  console.log("PdfGraphFunc!!!", state);
   useEffect(() => {
     if (state.graphData.length !== 0) {
       (async () => {
@@ -30,6 +28,7 @@ function PdfGraphFunc(props) {
         let index = totalFile.findIndex(x => x.name === currentFileName);
 
         setObj(allgraphs.graphdata[index]);
+        
 
         if (allgraphs && allgraphs.length > 0) {
           dispatch({

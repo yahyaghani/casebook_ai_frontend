@@ -78,23 +78,6 @@ function ProfileView() {
                     <div className="h4 text-white">Country</div>
                     <div className="h4 profile-text-dark">{auth.country}</div>
                   </div>
-                  <hr />
-                  <div className="d-flex justify-content-between">
-                    <div className="h4 text-white">highlight color</div>
-                    <input type="color" name="highlight-color" value={state.highlightColors.default} id="highlight-color" onChange={e=>dispatch({type:"CHANGE_HIGHLIGHT_COLOR", payload:e.target.value})}/>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <div className="h4 text-white">legal test highlight color</div>
-                    <input type="color" name="highlight-color" value={state.highlightColors.legalTest} id="highlight-color" onChange={e=>dispatch({type:"CHANGE_LEGAL_TEST_HIGHLIGHT_COLOR", payload:e.target.value})}/>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <div className="h4 text-white">issue highlight color</div>
-                    <input type="color" name="highlight-color" value={state.highlightColors.issue} id="highlight-color" onChange={e=>dispatch({type:"CHANGE_ISSUE_HIGHLIGHT_COLOR", payload:e.target.value})}/>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <div className="h4 text-white">conclusion highlight color</div>
-                    <input type="color" name="highlight-color" value={state.highlightColors.conclusion} id="highlight-color" onChange={e=>dispatch({type:"CHANGE_CONCLUSION_HIGHLIGHT_COLOR", payload:e.target.value})}/>
-                  </div>
                 </div>
               </div>
             </Col>

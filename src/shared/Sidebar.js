@@ -12,14 +12,12 @@ function Sidebar({
   DashboardViewClicks,
   ProfileViewClicks,
   FeedsViewClicks,
-  TextAnonViewClicks
 }) {
   const { state, dispatch } = useContext(UserContext);
   const [highlight, setHighlight] = useState(false);
   const [fileViewer, setFileViewer] = useState(false);
   const [dashboardView, setDashboardView] = useState(true);
   const [feedsView, setFeedsView] = useState(false);
-  const [textAnonView, setTextAnonView] = useState(false);
   
   useEffect(() => {
     if(!state.auth || !state.auth.authToken) return;
@@ -66,7 +64,6 @@ function Sidebar({
     if (fileViewer) setFileViewer(false);
     if (dashboardView) setDashboardView(false);
     if (feedsView) setFeedsView(false);
-    if (textAnonView) setTextAnonView(false)
     if (!highlight) {
       setHighlight(true);
       HighlightClicks(true);
@@ -74,7 +71,6 @@ function Sidebar({
       DashboardViewClicks(false);
       FeedsViewClicks(false);
       ProfileViewClicks(false);
-      TextAnonViewClicks(false)
     }
   }
 
@@ -82,7 +78,6 @@ function Sidebar({
     if (highlight) setHighlight(false);
     if (dashboardView) setDashboardView(false);
     if (feedsView) setFeedsView(false);
-    if (textAnonView) setTextAnonView(false)
     if (!fileViewer) {
       setFileViewer(true);
       FileViewerClicks(true);
@@ -90,7 +85,6 @@ function Sidebar({
       HighlightClicks(false);
       FeedsViewClicks(false);
       ProfileViewClicks(false);
-      TextAnonViewClicks(false)
     }
   }
 
@@ -98,7 +92,6 @@ function Sidebar({
     if (highlight) setHighlight(false);
     if (fileViewer) setFileViewer(false);
     if (feedsView) setFeedsView(false);
-    if (textAnonView) setTextAnonView(false)
     if (!dashboardView) {
       setDashboardView(true);
       DashboardViewClicks(true);
@@ -106,7 +99,6 @@ function Sidebar({
       HighlightClicks(false);
       FeedsViewClicks(false);
       ProfileViewClicks(false);
-      TextAnonViewClicks(false)
     }
   }
 
@@ -114,7 +106,6 @@ function Sidebar({
     if (highlight) setHighlight(false);
     if (fileViewer) setFileViewer(false);
     if (dashboardView) setDashboardView(false);
-    if (textAnonView) setTextAnonView(false)
     if (!feedsView) {
       setFeedsView(true);
       DashboardViewClicks(false);
@@ -122,22 +113,6 @@ function Sidebar({
       HighlightClicks(false);
       FeedsViewClicks(true);
       ProfileViewClicks(false);
-      TextAnonViewClicks(false)
-    }
-  }
-
-  function textAnonClick() {
-    if (highlight) setHighlight(false);
-    if (fileViewer) setFileViewer(false);
-    if (dashboardView) setDashboardView(false);
-    if (!textAnonView) {
-      FeedsViewClicks(false);
-      DashboardViewClicks(false);
-      FileViewerClicks(false);
-      HighlightClicks(false);
-      ProfileViewClicks(false);
-      TextAnonViewClicks(true)
-      setTextAnonView(true)
     }
   }
 
@@ -146,14 +121,12 @@ function Sidebar({
     if (fileViewer) setFileViewer(false);
     if (dashboardView) setDashboardView(false);
     if (feedsView) setFeedsView(false);
-    if (textAnonView) setTextAnonView(false)
     if (true) {
       DashboardViewClicks(false);
       FileViewerClicks(false);
       HighlightClicks(false);
       FeedsViewClicks(false);
       ProfileViewClicks(true);
-      TextAnonViewClicks(false)
     }
   }
 
@@ -266,7 +239,7 @@ function Sidebar({
             </span>
           </a>
         </li>
-        
+
         {/* highlight */}
         <li
           className={
@@ -323,25 +296,6 @@ function Sidebar({
         </li>
         <li
           className={
-            textAnonView ? "nav-item menu-items active" : "nav-item menu-items"
-          }
-        >
-          <a
-            style={{ position: "relative" }}
-            className="nav-link"
-            onClick={textAnonClick}
-          >
-            <span className="menu-icon">
-              <i className="mdi mdi-account-convert"></i>
-            </span>
-            <span className="menu-title">
-              <Trans>Text Anonymizer</Trans>
-            </span>
-            <i className="fa fa-angle-right"></i>
-          </a>
-        </li>
-        <li
-          className={
             feedsView ? "nav-item menu-items active" : "nav-item menu-items"
           }
         >
@@ -359,7 +313,6 @@ function Sidebar({
             <i className="fa fa-angle-right"></i>
           </a>
         </li>
-
       </ul>
       {showTextEditor && (
         <TextEditor
