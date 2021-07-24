@@ -4,6 +4,8 @@ import { Modal } from "react-bootstrap";
 import { UserContext } from "../App";
 import { Resizable } from "react-resizable";
 import processMd from "./markdown";
+import axios from "axios";
+import { BASE_URL_DEV } from "../utils";
 
 import "../style/resizable.css";
 
@@ -23,7 +25,6 @@ function FileViewer() {
 
   useEffect(() => {
     if (state.currentFile) {
-      console.log(state);
       let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
         if (item.name === state.currentFile.name) {
@@ -35,8 +36,9 @@ function FileViewer() {
     }
   }, [state.currentFile, state.fileHighlights]);
 
-  const handleFileClick = (index) => {
+  const handleFileClick = async (index) => {
     dispatch({ type: "SET_CURR_FILE", payload: state.files[index] });
+    dispatch({ type: "SET_MODAL", payload: false });
     setSelectPdf(false);
   };
 
@@ -48,7 +50,11 @@ function FileViewer() {
     });
     setHighlights(updatedHighlights);
   };
+  const hideModal = () => {
+    setSelectPdf(false);
+    dispatch({ type: "SET_MODAL", payload: false });
 
+  }
   const resetHighlights = () => {
     setHighlights([]);
   };
@@ -149,8 +155,8 @@ function FileViewer() {
         ) : null}
         <Modal
           style={{ color: "#050505" }}
-          show={selectPdf}
-          onHide={() => setSelectPdf(false)}
+          show={selectPdf || state.isModalOpen}
+          onHide={() => hideModal()}
           backdrop="static"
           size="md"
           centered={true}
@@ -161,27 +167,61 @@ function FileViewer() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {state.files && state.files.length > 0 ? (
-              state.files.map((pdf, index) => (
-                <div
-                  key={index}
-                  className="btn btn-secondary w-100 rounded-0 py-3 my-1"
-                  onClick={() => handleFileClick(index)}
-                >
-                  {state.currentFile.name === pdf.name ? (
-                    <strong>
-                      <p style={{ margin: 0 }}>{pdf.name}</p>
-                    </strong>
-                  ) : (
-                    <p style={{ margin: 0 }}>{pdf.name}</p>
-                  )}
+
+            <div className="card">
+              <div className="card-body">
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>PDF Name</th>
+                        {/* <th>Last Modified</th> */}
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {state.files && state.files.length > 0 ? (
+                        state.files.map((pdf, index) => (
+                          state.currentFile.name === pdf.name ? (
+                            <tr style={{backgroundColor:"rgba(0, 0, 0, 0.075)", color:"#212529"}}>
+                              <td>{pdf.name}</td>
+                              {/* <td>N/A</td> */}
+                              <td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
+                            </tr>
+                          ) : (
+                            <tr>
+                              <td>{pdf.name}</td>
+                              {/* <td>N/A</td> */}
+                              <td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
+                            </tr>
+                          )
+
+                        ))) : (
+                        <tr>
+                          <td colspan="2" align="center"><p style={{ margin: "10px 0px 0px 0px" }}>No Pdfs uploaded!</p></td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
-              ))
-            ) : (
-              <div className="w-100 p-2">
-                <p style={{ margin: 0 }}>No Pdfs uploaded!</p>
               </div>
-            )}
+            </div>
+            {console.log(state)}
+            {/* // <div
+                //   key={index}
+                //   className="btn btn-secondary w-100 rounded-0 py-3 my-1"
+                //   onClick={() => handleFileClick(index)}
+                // >
+                //   {state.currentFile.name === pdf.name ? (
+                //     <strong>
+                //       <p style={{ margin: 0 }}>{pdf.name}</p>
+                //     </strong>
+                //   ) : (
+                //     <p style={{ margin: 0 }}>{pdf.name}</p>
+                //   )}
+                // </div>
+               */}
+
           </Modal.Body>
         </Modal>
       </div>

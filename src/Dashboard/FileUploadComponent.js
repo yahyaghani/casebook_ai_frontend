@@ -7,13 +7,68 @@ import { BASE_URL_DEV } from "../utils";
 
 function FileUploadComponent(props) {
   const { state, dispatch } = useContext(UserContext);
-
-  const [file, setFile] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
+  const [file, setFile] = useState([]);
+  let existsFileName = [];
   // const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   // const [uploadedResponse, setUploadedResponse] = useState("");
 
   async function _handleSubmit(e) {
     e.preventDefault();
+    if (!file) return null;
+    console.log("existsFileName", existsFileName);
+    if (existsFileName.length > 0) {
+      alert("File is already Exists", existsFileName);
+    }
+    else {
+      dispatch({ type: "ADD_FILE", payload: file });
+      const data = new FormData();
+      //data.append("file", file);
+      for (const key of Object.keys(file)) {
+        data.append('file', file[key])
+      }
+      setIsLoading(true);
+      await axios
+        .post(`${BASE_URL_DEV}/upload/file`, data, {
+          headers: {
+            'x-access-token': state.auth && state.auth.authToken,
+          }
+        })
+        .then(function (response) {
+          // console.log(response)
+          // setUploadedResponse(response.data);
+          if (response.data) {
+            setIsLoading(false);
+            dispatch({ type: "MESSAGE", payload: response.data.message });
+            dispatch({ type: "SET_MODAL", payload: true });
+            return (async () => {
+              const result = await axios(
+                `${BASE_URL_DEV}/highlights-json/${state.auth && state.auth.userPublicId
+                }/${file[0].name}`
+              );
+              const fileHighlights = result.data;
+              setFile([]);
+              console.log('fileHighlights: ', fileHighlights);
+              if (fileHighlights && fileHighlights.highlights) {
+                dispatch({
+                  type: "SET_FILE_HIGHLIGHTS",
+                  payload: fileHighlights.highlights,
+                });
+              }
+            })();
+
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          // setUploadedResponse(
+          //   error && error.response !== undefined && error.response.statusText
+          // );
+          if (error && error.response) {
+            dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
+          }
+        });
+    }
     // let uploadedFile = {
     //   lastModified: file.lastModified,
     //   lastModifiedDate: new Date(file.lastModifiedDate),
@@ -21,84 +76,40 @@ function FileUploadComponent(props) {
     //   size: file.size,
     //   type: file.type,
     // };
-    if(!file) return null;
-    dispatch({ type: "ADD_FILE", payload: file });
-    const data = new FormData();
-    data.append("file", file);
-    console.log(state.auth);
-    await axios
-      .post(`${BASE_URL_DEV}/upload/file`, data, {
-        headers: {
-          'x-access-token': state.auth && state.auth.authToken,
-        }
-      })
-      .then(function (response) {
-        // console.log(response)
-        // setUploadedResponse(response.data);
-        if(response.data) {
-          dispatch({ type: "MESSAGE", payload: response.data.message });
-          return (async () => {
-            const result = await axios(
-              `${BASE_URL_DEV}/highlights-json/${
-                state.auth && state.auth.userPublicId
-              }/${file.name}`
-            );
-            const fileHighlights = result.data;
-            console.log('fileHighlights: ');
-            console.log(fileHighlights);
-            if (
-              fileHighlights &&
-              fileHighlights.highlights
-              ) {
-              dispatch({
-                type: "SET_FILE_HIGHLIGHTS",
-                payload: fileHighlights.highlights,
-              });
-            }
-          })();
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        // setUploadedResponse(
-        //   error && error.response !== undefined && error.response.statusText
-        // );
-        if (error && error.response) {
-          dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
-        }
-      });
-      setFile('');
+
   }
 
   function _handleImageChange(e) {
     e.preventDefault();
+    let newfile = [];
+    let file = e.target.files;
+    console.log(file[0]);
+    for (let i = 0; i < file.length; i++) {
+      let existFile = state.files.filter(e => e.name == file[i].name);
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
+      if (existFile.length != 0) {
+        alert(`${existFile[0].name} is already Exists`)
+      } else {
+        let reader = new FileReader();
+        newfile.push(file[i]);
+        reader.readAsDataURL(file[i])
 
-    reader.onload = () => {
-      setFile(file);
-      // setImagePreviewUrl(reader.result);
-    };
+        reader.onload = () => {
+          setFile(newfile);
+        };
+      }
 
-    if(file) reader.readAsDataURL(file);
+    }
+
+
   }
 
-  // let $imagePreview = null;
-  // if (imagePreviewUrl) {
-  //   $imagePreview = <img src={imagePreviewUrl} height="50px" width="50px" />;
-  // }
-  //   else {
-  //     $imagePreview = (
-  //         <div></div>
-  //     //   <div className="previewText">Please select an Image for Preview</div>
-  //     );
-  //   }
+
 
   return (
     <Fragment>
       <div className="previewComponent">
-        <form onSubmit={(e) => _handleSubmit(e)}>
+        <form onSubmit={(e) => _handleSubmit(e)} encType="multipart/form-data">
           <div className="input-group">
             {/* <div className="input-group-prepend">
               <span className="input-group-text" id="inputGroupFileAddon01">
@@ -108,22 +119,18 @@ function FileUploadComponent(props) {
             <div className="custom-file">
               <input
                 type="file"
+                name="file"
                 className="custom-file-input"
-                id="inputGroupFile01"
+                //id="inputGroupFile01"
+                multiple="multiple"
                 onChange={(e) => _handleImageChange(e)}
                 aria-describedby="inputGroupFileAddon01"
               />
-              <label style={{ color: '#c7c7c7' }} className="custom-file-label" htmlFor="inputGroupFile01">
-                {file === '' ? 'Choose file' : file.name}
+              <label style={{ color: '#c7c7c7' }} className="custom-file-label" >
+                {file.length === 0 ? 'Choose file' : file.length + ' files selected'}
               </label>
             </div>
           </div>
-          {/* 
-<Input
-            className="fileInput"
-            type="file"
-           
-          /> */}
 
           <Button
             className="btn btn-md submitButton"
@@ -133,7 +140,27 @@ function FileUploadComponent(props) {
           >
             Upload File
           </Button>
+          {isLoading ? (
+            <div className="loading"></div>
+          ) :
+            null
+          }
         </form>
+        {/* {true &&
+          <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
+                <img src="..." className="rounded mr-2" alt="..."/>
+                <strong className="mr-auto">Bootstrap</strong>
+                <small>11 mins ago</small>
+                <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+              <div className="toast-body">
+                Hello, world! This is a toast message.
+              </div>
+          </div>
+        } */}
         {/* <div className="preview_Sec">
           {$imagePreview !== null && (
             <div className="imgPreview">{$imagePreview}</div>

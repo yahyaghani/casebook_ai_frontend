@@ -118,7 +118,20 @@ blockquote:after {
   width: 70%;
   overflow-x: scroll;
 }
+.loading {
+  border: 2px dotted #f3f3f3;
+    border-top: 2px dotted #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 29px;
+    animation: spin 2s linear infinite;
+    margin-left: 30px;
+}
 
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 .error_text {
   color: #000;
   height: 200px;
