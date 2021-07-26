@@ -6,7 +6,6 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 
 function PdfGraphFunc(props) {
-  console.log("props____",props)
   const [errorText, setErrorText] = useState("");
   const [obj, setObj] = useState([]);
   const { state, dispatch } = useContext(UserContext);
@@ -14,7 +13,6 @@ function PdfGraphFunc(props) {
 
   let data;
 
-  console.log("PdfGraphFunc!!!", state);
   useEffect(() => {
     if (state.graphData.length !== 0) {
       (async () => {
@@ -30,6 +28,7 @@ function PdfGraphFunc(props) {
         let index = totalFile.findIndex(x => x.name === currentFileName);
 
         setObj(allgraphs.graphdata[index]);
+        
 
         if (allgraphs && allgraphs.length > 0) {
           dispatch({
@@ -45,7 +44,7 @@ function PdfGraphFunc(props) {
     automaticRearrangeAfterDropNode: true,
     collapsible: false,
     directed: false,
-    focusAnimationDuration: 0,
+    focusAnimationDuration: 10,
     focusZoom: 1,
     freezeAllDragEvents: false,
     height: 500,
@@ -100,7 +99,7 @@ function PdfGraphFunc(props) {
       renderLabel: false,
       semanticStrokeWidth: false,
       strokeWidth: 1.5,
-      markerHeight: 2,
+      markerHeight: 6,
       markerWidth: 6,
       strokeDasharray: 0,
       strokeDashoffset: 0,
@@ -182,9 +181,11 @@ function PdfGraphFunc(props) {
             <Graph
               id="graph-id"
               data={obj}
+              key={Math.round((new Date()).getTime() + Math.random())}
               config={myConfig}
               onClickGraph={onClickGraph}
               onClickNode={onClickNode}
+              passive={true}
               onDoubleClickNode={onDoubleClickNode}
               onRightClickNode={onRightClickNode}
               onClickLink={onClickLink}

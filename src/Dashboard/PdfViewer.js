@@ -10,7 +10,6 @@ import {
 
 import { Container, Modal } from "react-bootstrap";
 import { Resizable } from "react-resizable";
-import styled from 'styled-components'
 
 import TextEditor from "../TextEditor";
 import Spinner from "../shared/Spinner";
@@ -36,38 +35,13 @@ const HighlightPopup = ({ comment }) =>
     </div>
   ) : null;
 
-const Wrapper = styled.div`
-  .Highlight__part {
-    background: ${props => props.highlightColors.default || "#000000"};
-    /* border: 3px solid ${props => props.highlightColor || "#000000"}; */
-  }
-  .AreaHighlight {
-    border: 3px solid ${props => props.highlightColors.default || "#000000"};
-    /* background-color: ${props => props.highlightColor || "#000000"}; */
-  }
-  .Highlight__part.OTHER {
-    background: rgb(93, 115, 240);
-  }
-
-  .Highlight__part.LEGALTEST {
-    background: ${props => props.highlightColors.legalTest};
-  }
-
-  .Highlight__part.ISSUE {
-    background: ${props => props.highlightColors.issue};
-  }
-
-  .Highlight__part.CONCLUSION {
-    background: ${props => props.highlightColors.conclusion};
-  }
-`
 function PdfViewer() {
   const { state, dispatch } = useContext(UserContext);
   const [currFile, setCurrFile] = useState();
   const [highlights, setHighlights] = useState([]);
   const [createNotes, setCreateNotes] = useState(false);
-  const [showGraphModal, setShowGraphModal] = useState(0);
-  const [showModal, setShowModal] = useState("");
+  const [showGraphModal, setShowGraphModal] = useState(false);
+  const [showGraph, setShowGraph] = useState(0);
   const [dimensions, setDimensions] = useState({
     height: 720,
     width: 250,
@@ -166,13 +140,12 @@ function PdfViewer() {
       )
     );
   }
-  function showGraphData(type){
-    console.log("statenew___",type)
-    setShowGraphModal(type);
-  }
+  // function showGraphData(type) {
+  //   console.log("statenew___", type)
+  //   setShowGraphModal(type);
+  // }
 
   return (
-    <Wrapper highlightColors={state.highlightColors}>
     <div className="d-flex">
       <div
         style={{
@@ -184,86 +157,86 @@ function PdfViewer() {
       >
         {currFile ? (
           <>
-          {console.log(currFile)}
-          <PdfLoader
-            className="my-pdf-viewer"
-            url={currFile}
-            beforeLoad={<Spinner />}
-          >
-            {(pdfDocument) => (
-              <>
-              <PdfHighlighter
-                ref={pdfHighlighter}
-                pdfDocument={pdfDocument}
-                enableAreaSelection={(event) => event.altKey}
-                onScrollChange={resetHash}
-                scrollRef={(scrollTo) => { }}
-                onSelectionFinished={(
-                  position,
-                  content,
-                  hideTipAndSelection,
-                  transformSelection
-                ) => (
-                  <Tip
-                    onOpen={transformSelection}
-                    onConfirm={(comment) => {
-                      addHighlight({ content, position, comment });
+            {console.log(currFile)}
+            <PdfLoader
+              className="my-pdf-viewer"
+              url={currFile}
+              beforeLoad={<Spinner />}
+            >
+              {(pdfDocument) => (
+                <>
+                  <PdfHighlighter
+                    ref={pdfHighlighter}
+                    pdfDocument={pdfDocument}
+                    enableAreaSelection={(event) => event.altKey}
+                    onScrollChange={resetHash}
+                    scrollRef={(scrollTo) => { }}
+                    onSelectionFinished={(
+                      position,
+                      content,
+                      hideTipAndSelection,
+                      transformSelection
+                    ) => (
+                      <Tip
+                        onOpen={transformSelection}
+                        onConfirm={(comment) => {
+                          addHighlight({ content, position, comment });
 
-                      hideTipAndSelection();
+                          hideTipAndSelection();
+                        }}
+                      />
+                    )}
+                    highlightTransform={(
+                      highlight,
+                      index,
+                      setTip,
+                      hideTip,
+                      viewportToScaled,
+                      screenshot,
+                      isScrolledTo
+                    ) => {
+                      const isTextHighlight = !Boolean(
+                        highlight.content && highlight.content.image
+                      );
+
+                      const component = isTextHighlight ? (
+                        <Highlight
+                          isScrolledTo={isScrolledTo}
+                          position={highlight.position}
+                          comment={highlight.comment}
+                        />
+                      ) : (
+                        <AreaHighlight
+                          highlight={highlight}
+                          onChange={(boundingRect) => {
+                            updateHighlight(
+                              highlight.id,
+                              {
+                                boundingRect: viewportToScaled(boundingRect),
+                              },
+                              { image: screenshot(boundingRect) }
+                            );
+                          }}
+                        />
+                      );
+
+                      return (
+                        <Popup
+                          popupContent={<HighlightPopup {...highlight} />}
+                          onMouseOver={(popupContent) =>
+                            setTip(highlight, (highlight) => popupContent)
+                          }
+                          onMouseOut={hideTip}
+                          key={index}
+                          children={component}
+                        />
+                      );
                     }}
+                    highlights={highlights}
                   />
-                )}
-                highlightTransform={(
-                  highlight,
-                  index,
-                  setTip,
-                  hideTip,
-                  viewportToScaled,
-                  screenshot,
-                  isScrolledTo
-                ) => {
-                  const isTextHighlight = !Boolean(
-                    highlight.content && highlight.content.image
-                  );
-
-                  const component = isTextHighlight ? (
-                    <Highlight
-                      isScrolledTo={isScrolledTo}
-                      position={highlight.position}
-                      comment={highlight.comment}
-                    />
-                  ) : (
-                    <AreaHighlight
-                      highlight={highlight}
-                      onChange={(boundingRect) => {
-                        updateHighlight(
-                          highlight.id,
-                          {
-                            boundingRect: viewportToScaled(boundingRect),
-                          },
-                          { image: screenshot(boundingRect) }
-                        );
-                      }}
-                    />
-                  );
-
-                  return (
-                    <Popup
-                      popupContent={<HighlightPopup {...highlight} />}
-                      onMouseOver={(popupContent) =>
-                        setTip(highlight, (highlight) => popupContent)
-                      }
-                      onMouseOut={hideTip}
-                      key={index}
-                      children={component}
-                    />
-                  );
-                }}
-                highlights={highlights}
-              />
-              </>
-            )}
-          </PdfLoader>
+                </>
+              )}
+            </PdfLoader>
           </>
         ) : state.files && state.files.length === 0 ? (
           <Container>
@@ -289,7 +262,7 @@ function PdfViewer() {
         <div
           className="sidebarnew"
           style={{
-            minWidth: "50%",
+            minWidth: "30%",
             width: dimensions.width + "px" || "25%",
             height: dimensions.height + "px" || "calc(100vh - 70px)",
             overflowY: "scroll",
@@ -311,49 +284,46 @@ function PdfViewer() {
               />
             )}
             <div
-              onClick={() => showGraphData(1)}
-              style={{marginBottom: "0 !important"}}
+              onClick={() => setShowGraph(1)}
+              style={{ marginBottom: "0 !important" }}
               className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
             >
-              SHOW GRAPH
+            SHOW GRAPH
             </div>
-            {true && (
-              <>
-                <i className="mdi mdi-fullscreen"
-                  onClick={() => setShowModal(true)}
-                  style={{
-                    float: "right",
-                    padding: "20px",
-                    fontSize: "30px",
-                  }}
-                />
-                <PdfGraphFunc />
-              </>
-                )}
-                {showModal && (
-                  <Modal
-                    style={{ color: "#050505" }}
-                    show={showModal}
-                    onHide={() => setShowModal(false)}
-                    backdrop="static"
-                    size="lg"
-                    centered={true}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="example-modal-sizes-title-sm">
-                        Graph
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <PdfGraphFunc />
-                    </Modal.Body>
-                  </Modal>
-                )}
+              <i className="mdi mdi-fullscreen"
+                onClick={() => setShowGraphModal(true)}
+                style={{
+                  float: "right",
+                  padding: "20px",
+                  fontSize: "30px",
+                }}
+              />
+           
+            {!showGraphModal && <PdfGraphFunc />}
+            {showGraphModal && (
+              <Modal
+                style={{ color: "#050505" }}
+                show={showGraphModal}
+                onHide={() => setShowGraphModal(false)}
+                backdrop="static"
+                size="lg"
+                centered={true}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-modal-sizes-title-sm">
+                    Graph
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <PdfGraphFunc />
+                </Modal.Body>
+              </Modal>
+            )}
+
           </div>
         </div>
       </Resizable>
     </div>
-    </Wrapper>
   );
 }
 

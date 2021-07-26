@@ -7,6 +7,7 @@ export const InitialState = {
   error: null,
   message: null,
   searchQuery:"",
+  isModalOpen:false,
   nodeData: {},
   nodesData: {},
   graphData: {},
@@ -142,7 +143,6 @@ export const reducer = (state, action) => {
     }
   }
   if(action.type === "SET_GRAPH_DATA"){
-    console.count("hello");
     return {
       ...state,
       graphData: action.payload
@@ -173,6 +173,11 @@ export const reducer = (state, action) => {
     const newState = {...state, highlightColors : {...state.highlightColors, conclusion:action.payload}}
     localStorage.setItem("highlightColors", JSON.stringify(state.highlightColors))
     return newState
+  if(action.type === "SET_MODAL"){
+    return {
+      ...state,
+      isModalOpen: action.payload
+    }
   }
   return state;
 };
