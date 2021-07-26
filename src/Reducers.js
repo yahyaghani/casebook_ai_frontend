@@ -156,23 +156,24 @@ export const reducer = (state, action) => {
   }
   if(action.type === "CHANGE_HIGHLIGHT_COLOR"){
     const newState = {...state, highlightColors : {...state.highlightColors, default:action.payload}}
-    localStorage.setItem("highlightColors", JSON.stringify(state.highlightColors))
+    localStorage.setItem("highlightColors", JSON.stringify(newState.highlightColors))
     return newState
   }
   if(action.type === "CHANGE_LEGAL_TEST_HIGHLIGHT_COLOR"){
     const newState = {...state, highlightColors : {...state.highlightColors, legalTest:action.payload}}
-    localStorage.setItem("highlightColors", JSON.stringify(state.highlightColors))
+    localStorage.setItem("highlightColors", JSON.stringify(newState.highlightColors))
     return newState
   }
   if(action.type === "CHANGE_ISSUE_HIGHLIGHT_COLOR"){
     const newState = {...state, highlightColors : {...state.highlightColors, issue:action.payload}}
-    localStorage.setItem("highlightColors", JSON.stringify(state.highlightColors))
+    localStorage.setItem("highlightColors", JSON.stringify(newState.highlightColors))
     return newState
   }
   if(action.type === "CHANGE_CONCLUSION_HIGHLIGHT_COLOR"){
     const newState = {...state, highlightColors : {...state.highlightColors, conclusion:action.payload}}
-    localStorage.setItem("highlightColors", JSON.stringify(state.highlightColors))
+    localStorage.setItem("highlightColors", JSON.stringify(newState.highlightColors))
     return newState
+  }
   if(action.type === "SET_MODAL"){
     return {
       ...state,
