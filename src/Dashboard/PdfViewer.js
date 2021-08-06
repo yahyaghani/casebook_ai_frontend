@@ -224,11 +224,12 @@ function PdfViewer() {
 													screenshot,
 													isScrolledTo
 												) => {
-													// Adding opacity to rects
-													const position = {
+													// Adding opacity to rects array
+													const positionWithOpacity = {
 														...highlight.position,
 														rects: [{ ...highlight.position.rects[0], opacity: highlight.comment.classifier_score }]
 													};
+
 													const isTextHighlight = !Boolean(
 														highlight.content && highlight.content.image
 													);
@@ -236,7 +237,7 @@ function PdfViewer() {
 													const component = isTextHighlight ? (
 														<Highlight
 															isScrolledTo={isScrolledTo}
-															position={position}
+															position={positionWithOpacity}
 															comment={highlight.comment}
 														/>
 													) : (
