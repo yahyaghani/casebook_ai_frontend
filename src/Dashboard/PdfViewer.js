@@ -5,20 +5,18 @@ import {
 	Highlight,
 	Popup,
 	AreaHighlight,
-	setPdfWorker
+	// setPdfWorker
 } from "react-pdf-highlighter";
 
-import { Container, Modal } from "react-bootstrap";
-import { Resizable } from "react-resizable";
+import { Container } from "react-bootstrap";
 import styled from "styled-components";
 
-import TextEditor from "../TextEditor";
 import Spinner from "../shared/Spinner";
-import PdfGraphFunc from "./PdfGraphFunc";
 import Tip from "./Tip";
 import processMd from "./markdown";
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
+import PdfViewerSide from "./PdfViewerSide";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -66,13 +64,6 @@ function PdfViewer() {
 	const { state, dispatch } = useContext(UserContext);
 	const [currFile, setCurrFile] = useState();
 	const [highlights, setHighlights] = useState([]);
-	const [createNotes, setCreateNotes] = useState(false);
-	const [showGraphModal, setShowGraphModal] = useState(false);
-	const [showGraph, setShowGraph] = useState(0);
-	const [dimensions, setDimensions] = useState({
-		height: 720,
-		width: 250,
-	});
 
 	useEffect(() => {
 		// console.log(highlights);
@@ -144,16 +135,6 @@ function PdfViewer() {
 		setHighlights([{ ...highlight, id: getNextId() }, ...highlights]);
 	}
 
-	const deleteHighlight = (index) => {
-		const currHighlights = [...highlights];
-		const updatedHighlights = currHighlights.filter((highlight, idx) => {
-			if (index !== idx) {
-				return highlight;
-			}
-		});
-		setHighlights([...updatedHighlights]);
-	};
-
 	function updateHighlight(highlightId, position, content) {
 		setHighlights(
 			highlights.map((h) =>
@@ -167,10 +148,6 @@ function PdfViewer() {
 			)
 		);
 	}
-	// function showGraphData(type) {
-	//   console.log("statenew___", type)
-	//   setShowGraphModal(type);
-	// }
 
 	return (
 		<Wrapper highlightColors={state.highlightColors}>
@@ -185,7 +162,7 @@ function PdfViewer() {
 				>
 					{currFile ? (
 						<>
-							{console.log(currFile)}
+							{/* {console.log(currFile)} */}
 							<PdfLoader
 								className="my-pdf-viewer"
 								url={currFile}
@@ -224,12 +201,6 @@ function PdfViewer() {
 													screenshot,
 													isScrolledTo
 												) => {
-													// Adding opacity to rects array
-													const positionWithOpacity = {
-														...highlight.position,
-														rects: [{ ...highlight.position.rects[0], opacity: highlight.comment.classifier_score }]
-													};
-
 													const isTextHighlight = !Boolean(
 														highlight.content && highlight.content.image
 													);
@@ -237,7 +208,7 @@ function PdfViewer() {
 													const component = isTextHighlight ? (
 														<Highlight
 															isScrolledTo={isScrolledTo}
-															position={positionWithOpacity}
+															position={highlight.position}
 															comment={highlight.comment}
 														/>
 													) : (
@@ -282,83 +253,7 @@ function PdfViewer() {
 						<Spinner />
 					)}
 				</div>
-				<Resizable
-					className="box"
-					height={dimensions.height}
-					axis="x"
-					width={dimensions.width}
-					onResize={(e, { size }) => {
-						setDimensions({
-							height: size.height,
-							width: size.width,
-						});
-					}}
-					resizeHandles={["w"]}
-				>
-					<div
-						className="sidebarnew"
-						style={{
-							minWidth: "30%",
-							width: dimensions.width + "px" || "25%",
-							height: dimensions.height + "px" || "calc(100vh - 70px)",
-							overflowY: "scroll",
-						}}
-					>
-						<div>
-							<div
-								onClick={() => setCreateNotes(true)}
-								className="h4 text-center bg-secondary cursor-pointer my-5 p-3"
-							>
-								ADD NOTES
-							</div>
-							{createNotes && (
-								<TextEditor
-									id={state.auth && state.auth.userPublicId}
-									fileName={state.currentFile && state.currentFile.name}
-									showTextEditor={createNotes}
-									setShowTextEditor={setCreateNotes}
-								/>
-							)}
-							<div
-								onClick={() => setShowGraph(1)}
-								style={{ marginBottom: "0 !important" }}
-								className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
-							>
-								SHOW GRAPH
-							</div>
-							<i className="mdi mdi-fullscreen"
-								onClick={() => setShowGraphModal(true)}
-								style={{
-									float: "right",
-									padding: "20px",
-									fontSize: "30px",
-								}}
-							/>
-
-							{!showGraphModal && <PdfGraphFunc />}
-							{showGraphModal && (
-								<Modal
-									style={{ color: "#050505" }}
-									show={showGraphModal}
-									onHide={() => setShowGraphModal(false)}
-									backdrop="static"
-									size="lg"
-									centered={true}
-								>
-									<Modal.Header closeButton>
-										<Modal.Title id="example-modal-sizes-title-sm">
-											Graph
-										</Modal.Title>
-									</Modal.Header>
-									<Modal.Body>
-										<PdfGraphFunc />
-									</Modal.Body>
-								</Modal>
-							)}
-
-						</div>
-					</div>
-				</Resizable>
+				<PdfViewerSide />
 			</div>
 		</Wrapper>
 	);

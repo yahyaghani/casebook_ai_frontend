@@ -1,0 +1,39 @@
+export const showProfile = {
+	showHighlight: false,
+	showFileViewer: false,
+	showDashboardView: false,
+	showProfileView: true,
+	showFeedView: false,
+}
+
+export const showDashboard = {
+	showHighlight: false,
+	showFileViewer: false,
+	showDashboardView: true,
+	showProfileView: false,
+	showFeedView: false,
+}
+
+export const showHighlight = {
+	showHighlight: true,
+	showFileViewer: false,
+	showDashboardView: false,
+	showProfileView: false,
+	showFeedView: false,
+}
+
+export const showFileViewer = {
+	showHighlight: false,
+	showFileViewer: true,
+	showDashboardView: false,
+	showProfileView: false,
+	showFeedView: false,
+}
+
+export const showFeedView = {
+	showHighlight: false,
+	showFileViewer: false,
+	showDashboardView: false,
+	showProfileView: false,
+	showFeedView: true,
+}
