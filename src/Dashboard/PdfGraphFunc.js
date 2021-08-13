@@ -24,7 +24,40 @@ function PdfGraphFunc(props) {
 				let totalFile = state.files;
 				let index = totalFile.findIndex(x => x.name === currentFileName);
 
-				setObj(allgraphs.graphdata[index]);
+
+				const uniqueLinks = allgraphs.graphdata[index];
+				const uniqueNodes = allgraphs.graphdata[index];
+				let dataObj;
+				if (uniqueLinks.links && uniqueNodes.nodes) {
+					const uniqueFilteredNodes = uniqueNodes.nodes.reduce((acc, current) => {
+						const x = acc.find(item => item.id === current.id);
+						if (!x) {
+							return acc.concat([current]);
+						} else {
+							return acc;
+						}
+					}, []);
+
+					const uniqueFilteredLinks = uniqueLinks.links.reduce((acc, current) => {
+						const x = acc.find(item => (item.source === current.source) && (item.target === current.target));
+						if (!x) {
+							return acc.concat([current]);
+						} else {
+							return acc;
+						}
+					}, []);
+
+					dataObj = {
+						...allgraphs.graphdata[index],
+						links: uniqueFilteredLinks,
+						nodes: uniqueFilteredNodes
+					}
+				}
+				else {
+					dataObj = null;
+				}
+
+				setObj(dataObj);
 
 				if (allgraphs && allgraphs.length > 0) {
 					dispatch({

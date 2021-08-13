@@ -1,12 +1,9 @@
 // @flow
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-// import { UserContext } from "../App";
 import DashboardCard from "../shared/DashboardCard";
 
 function DashboardView() {
-	// const { state, dispatch } = useContext(UserContext);
-
 	return (
 		<div
 			className="dashboard-view bg-dark p-5 text-center"

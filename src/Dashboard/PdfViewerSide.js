@@ -68,7 +68,7 @@ const PdfViewerSide = (props) => {
 						}}
 					/>
 
-					{/* {!showGraphModal && <PdfGraphFunc />} */}
+					{!showGraphModal && <PdfGraphFunc />}
 					{showGraphModal && (
 						<Modal
 							style={{ color: "#050505" }}
