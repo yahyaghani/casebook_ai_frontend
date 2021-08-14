@@ -4,8 +4,8 @@ import { Modal } from "react-bootstrap";
 import { UserContext } from "../App";
 import { Resizable } from "react-resizable";
 import processMd from "./markdown";
-// import axios from "axios";
-// import { BASE_URL_DEV } from "../utils";
+import axios from "axios";
+import { BASE_URL_DEV } from "../utils";
 
 import "../style/resizable.css";
 
@@ -43,12 +43,11 @@ function FileViewer() {
 	};
 
 	const deleteHighlight = (index) => {
-		const updatedHighlights = highlights.filter((highlight, idx) => (
-			// if (index !== idx) {
-			// 	return highlight;
-			// }
-			index !== idx ? highlight : null
-		));
+		const updatedHighlights = highlights.filter((highlight, idx) => {
+			if (index !== idx) {
+				return highlight;
+			}
+		});
 		setHighlights(updatedHighlights);
 	};
 	const hideModal = () => {
@@ -184,18 +183,19 @@ function FileViewer() {
 											{state.files && state.files.length > 0 ? (
 												state.files.map((pdf, index) => (
 													state.currentFile.name === pdf.name ? (
-														<tr style={{ backgroundColor: "rgba(0, 0, 0, 0.075)", color: "#212529" }} key={index}>
+														<tr style={{ backgroundColor: "rgba(0, 0, 0, 0.075)", color: "#212529" }}>
 															<td>{pdf.name}</td>
 															{/* <td>N/A</td> */}
 															<td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
 														</tr>
 													) : (
-														<tr key={index}>
+														<tr>
 															<td>{pdf.name}</td>
 															{/* <td>N/A</td> */}
 															<td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
 														</tr>
 													)
+
 												))) : (
 												<tr>
 													<td colspan="2" align="center"><p style={{ margin: "10px 0px 0px 0px" }}>No Pdfs uploaded!</p></td>
