@@ -10,8 +10,6 @@ function FileUploadComponent(props) {
 	const [isLoading, setIsLoading] = useState(false)
 	const [file, setFile] = useState([]);
 	let existsFileName = [];
-	// const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-	// const [uploadedResponse, setUploadedResponse] = useState("");
 
 	async function _handleSubmit(e) {
 		e.preventDefault();
@@ -35,8 +33,6 @@ function FileUploadComponent(props) {
 					}
 				})
 				.then(function (response) {
-					// console.log(response)
-					// setUploadedResponse(response.data);
 					if (response.data) {
 						setIsLoading(false);
 						dispatch({ type: "MESSAGE", payload: response.data.message });
@@ -56,27 +52,15 @@ function FileUploadComponent(props) {
 								});
 							}
 						})();
-
 					}
 				})
 				.catch(function (error) {
 					console.log(error);
-					// setUploadedResponse(
-					//   error && error.response !== undefined && error.response.statusText
-					// );
 					if (error && error.response) {
 						dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
 					}
 				});
 		}
-		// let uploadedFile = {
-		//   lastModified: file.lastModified,
-		//   lastModifiedDate: new Date(file.lastModifiedDate),
-		//   name: file.name,
-		//   size: file.size,
-		//   type: file.type,
-		// };
-
 	}
 
 	function _handleImageChange(e) {
@@ -98,30 +82,19 @@ function FileUploadComponent(props) {
 					setFile(newfile);
 				};
 			}
-
 		}
-
-
 	}
-
-
 
 	return (
 		<Fragment>
 			<div className="previewComponent">
 				<form onSubmit={(e) => _handleSubmit(e)} encType="multipart/form-data">
 					<div className="input-group">
-						{/* <div className="input-group-prepend">
-              <span className="input-group-text" id="inputGroupFileAddon01">
-                Upload
-              </span>
-            </div> */}
 						<div className="custom-file">
 							<input
 								type="file"
 								name="file"
 								className="custom-file-input"
-								//id="inputGroupFile01"
 								multiple="multiple"
 								onChange={(e) => _handleImageChange(e)}
 								aria-describedby="inputGroupFileAddon01"
@@ -142,31 +115,9 @@ function FileUploadComponent(props) {
 					</Button>
 					{isLoading ? (
 						<div className="loading"></div>
-					) :
-						null
+					) : null
 					}
 				</form>
-				{/* {true &&
-          <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div className="toast-header">
-                <img src="..." className="rounded mr-2" alt="..."/>
-                <strong className="mr-auto">Bootstrap</strong>
-                <small>11 mins ago</small>
-                <button type="button" className="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-              <div className="toast-body">
-                Hello, world! This is a toast message.
-              </div>
-          </div>
-        } */}
-				{/* <div className="preview_Sec">
-          {$imagePreview !== null && (
-            <div className="imgPreview">{$imagePreview}</div>
-          )}
-          {uploadedResponse !== "" && <p>File Uploaded Successfully</p>}
-        </div> */}
 			</div>
 		</Fragment>
 	);

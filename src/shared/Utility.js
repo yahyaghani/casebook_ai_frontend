@@ -7,3 +7,4 @@ export const updateHighlightStatus = (state, updateValues) => {
 	localStorage.setItem("highlightColors", JSON.stringify(newState.highlightColors))
 	return newState
 }
+

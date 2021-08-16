@@ -4,9 +4,6 @@ import { Modal } from "react-bootstrap";
 import { UserContext } from "../App";
 import { Resizable } from "react-resizable";
 import processMd from "./markdown";
-import axios from "axios";
-import { BASE_URL_DEV } from "../utils";
-
 import "../style/resizable.css";
 
 const updateHash = (highlight) => {
@@ -43,18 +40,17 @@ function FileViewer() {
 	};
 
 	const deleteHighlight = (index) => {
-		const updatedHighlights = highlights.filter((highlight, idx) => {
-			if (index !== idx) {
-				return highlight;
-			}
-		});
+		const updatedHighlights = highlights.filter((highlight, idx) => (
+			index !== idx ? highlight : null
+		));
 		setHighlights(updatedHighlights);
 	};
+
 	const hideModal = () => {
 		setSelectPdf(false);
 		dispatch({ type: "SET_MODAL", payload: false });
-
 	}
+
 	const resetHighlights = () => {
 		setHighlights([]);
 	};
@@ -183,13 +179,13 @@ function FileViewer() {
 											{state.files && state.files.length > 0 ? (
 												state.files.map((pdf, index) => (
 													state.currentFile.name === pdf.name ? (
-														<tr style={{ backgroundColor: "rgba(0, 0, 0, 0.075)", color: "#212529" }}>
+														<tr style={{ backgroundColor: "rgba(0, 0, 0, 0.075)", color: "#212529" }} key={index}>
 															<td>{pdf.name}</td>
 															{/* <td>N/A</td> */}
 															<td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
 														</tr>
 													) : (
-														<tr>
+														<tr key={index}>
 															<td>{pdf.name}</td>
 															{/* <td>N/A</td> */}
 															<td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
@@ -206,21 +202,6 @@ function FileViewer() {
 								</div>
 							</div>
 						</div>
-						{/* // <div
-                //   key={index}
-                //   className="btn btn-secondary w-100 rounded-0 py-3 my-1"
-                //   onClick={() => handleFileClick(index)}
-                // >
-                //   {state.currentFile.name === pdf.name ? (
-                //     <strong>
-                //       <p style={{ margin: 0 }}>{pdf.name}</p>
-                //     </strong>
-                //   ) : (
-                //     <p style={{ margin: 0 }}>{pdf.name}</p>
-                //   )}
-                // </div>
-               */}
-
 					</Modal.Body>
 				</Modal>
 			</div>
