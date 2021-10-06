@@ -40,7 +40,7 @@
       img {
         width: calc(#{$sidebar-width-lg} - 120px );
         max-width: 100%;
-        height: 28px;
+        height: 87px;
         margin: auto;
         vertical-align: middle;
       }
@@ -211,7 +211,7 @@
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
-          padding: 0.6rem 1.17rem;
+          padding: 2.6rem 1.17rem;
           line-height: 1.25;
           .profile-name {
             margin-left: 1rem;

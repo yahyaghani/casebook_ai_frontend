@@ -19,6 +19,11 @@
 		height: 90px;
 		border-radius: 100%;
 	}
+	//Background 
+.mt-5 auth-page{
+	background:#191c24;
+	
+	}
 	.auth-form-light {
 		background: $white;
 		select {
@@ -71,9 +76,9 @@
 		}
 	}
 	.brand-logo {
-		margin-bottom: 2rem;
+		margin-bottom: 1.5rem;
 		img {
-			width: 150px;
+			width: 200px;
 		}
 	}
 	form {

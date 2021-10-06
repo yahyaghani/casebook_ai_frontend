@@ -23,7 +23,7 @@ function Search(props) {
 				<Input
 					type="text"
 					className="form-control"
-					placeholder="Search products"
+					placeholder="Search for caselaw or statue "
 					value={searchQuery}
 					onChange={handleChange}
 				/>

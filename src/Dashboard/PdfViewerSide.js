@@ -7,7 +7,8 @@ import { Modal } from "react-bootstrap";
 
 const PdfViewerSide = (props) => {
 	const [dimensions, setDimensions] = useState({
-		height: 720,
+				height: 720,
+
 		width: 250
 	});
 	const [createNotes, setCreateNotes] = useState(false);
@@ -33,14 +34,15 @@ const PdfViewerSide = (props) => {
 				style={{
 					minWidth: "30%",
 					width: dimensions.width + "px" || "25%",
-					height: dimensions.height + "px" || "calc(100vh - 70px)",
+					// height: dimensions.height + "px" || "calc(100vh - 70px)",
+					height: '100vw',
 					overflowY: "scroll",
 				}}
 			>
 				<div>
 					<div
 						onClick={() => setCreateNotes(true)}
-						className="h4 text-center bg-secondary cursor-pointer my-5 p-3"
+						className="btn btn-md btn btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
 					>
 						ADD NOTES
 					</div>
@@ -55,10 +57,19 @@ const PdfViewerSide = (props) => {
 					<div
 						onClick={() => { }}
 						style={{ marginBottom: "0 !important" }}
-						className="h4 text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
+						className="btn btn-md btn btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
 					>
-						SHOW GRAPH
+						OPEN GRAPH
 					</div>
+					<div
+						onClick={() => { }}
+						style={{ marginBottom: "0 !important" }}
+						className="btn btn-md btn btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
+					>
+						RECOMMEND CASES
+					</div>
+
+
 					<i className="mdi mdi-fullscreen"
 						onClick={() => setShowGraphModal(true)}
 						style={{

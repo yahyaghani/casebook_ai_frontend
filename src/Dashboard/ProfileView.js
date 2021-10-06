@@ -19,7 +19,7 @@ function ProfileView() {
 
 	return (
 		<div
-			className="dashboard-view bg-dark p-5"
+			className="dashboard-view bg-dark2 p-5"
 			style={{ width: "100%", minHeight: "100vh" }}
 		>
 			{auth && (
@@ -43,11 +43,11 @@ function ProfileView() {
 									</div>
 								</div>
 
-								<hr className="bg-dark mb-0 mt-4" />
+								<hr className="bg-dark2 mb-0 mt-4" />
 								<div className="p-2">
 									<div className="h3 mb-0">Profile info</div>
 								</div>
-								<hr className="bg-dark mt-0" />
+								<hr className="bg-dark2 mt-0" />
 								<div className="px-3">
 									<div className="d-flex justify-content-between">
 										<div className="h4 text-white">Username</div>
@@ -100,7 +100,7 @@ function ProfileView() {
 						<Col md={6} xs={12} sm={12}>
 							<Card
 								style={{ height: "100%" }}
-								className="bg-dark text-center p-3"
+								className="bg-dark2 text-center p-3"
 							>
 								<Card.Header className="h3 p-0">
 									My Files

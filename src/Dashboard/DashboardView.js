@@ -6,43 +6,43 @@ import DashboardCard from "../shared/DashboardCard";
 function DashboardView() {
 	return (
 		<div
-			className="dashboard-view bg-dark p-5 text-center"
+			className="dashboard-view bg-dark2 p-5 text-center"
 			style={{ width: "100%" }}
 		>
 			<Row>
 				<Col lg={3} md={4} xs={12} sm={12}>
 					<DashboardCard
-						title={"Revenue"}
+						title={"Cases"}
 						icon={"mdi-currency-usd"}
-						footerText={"11% revenue growth"}
-						number={34234}
+						footerText={""}
+						number={0}
 						color={"success"}
 					/>
 				</Col>
 				<Col lg={3} md={4} xs={12} sm={12}>
 					<DashboardCard
-						title={"Sales"}
+						title={"Laws"}
 						icon={"mdi-sale"}
-						footerText={"15% sales increase"}
-						number={34234}
+						footerText={""}
+						number={0}
 						color={"danger"}
 					/>
 				</Col>
 				<Col lg={3} md={4} xs={12} sm={12}>
 					<DashboardCard
-						title={"Customers"}
+						title={"Community"}
 						icon={"mdi-account"}
-						footerText={"22% customer growth"}
-						number={34234}
+						footerText={""}
+						number={0}
 						color={"warning"}
 					/>
 				</Col>
 				<Col lg={3} md={4} xs={12} sm={12}>
 					<DashboardCard
-						title={"Stats"}
+						title={"Caselaw"}
 						icon={"mdi-elevation-rise"}
-						footerText={"17% overall growth"}
-						number={34234}
+						footerText={""}
+						number={0}
 						color={"success"}
 					/>
 				</Col>

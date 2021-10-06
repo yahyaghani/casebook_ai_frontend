@@ -69,9 +69,9 @@ function FileUploadComponent(props) {
 		let file = e.target.files;
 		console.log(file[0]);
 		for (let i = 0; i < file.length; i++) {
-			let existFile = state.files.filter(e => e.name == file[i].name);
+			let existFile = state.files.filter(e => e.name === file[i].name);
 
-			if (existFile.length != 0) {
+			if (existFile.length !== 0) {
 				alert(`${existFile[0].name} is already Exists`)
 			} else {
 				let reader = new FileReader();

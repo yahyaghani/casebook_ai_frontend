@@ -56,9 +56,9 @@ const Register = () => {
 			<div className="d-flex align-items-center auth px-0 h-100">
 				<div className="row w-100 mx-0">
 					<div className="col-lg-5 mx-auto">
-						<div className="card text-center py-3 mt-3 bg-dark px-3 px-sm-5">
+						<div className="card text-center py-3 mt-3 bg-dark2 px-3 px-sm-5">
 							<div className="brand-logo">
-								<img src={require("../images/logo.svg")} alt="logo" />
+								<img src={require("../images/scaletransm2.png")} alt="logo" />
 							</div>
 							<h4>New here?</h4>
 							<h6 className="font-weight-light">

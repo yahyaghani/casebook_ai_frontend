@@ -44,12 +44,12 @@ const Login = () => {
       <div className="d-flex align-items-center auth px-0">
         <div className="row w-100 mx-0">
           <div className="col-lg-5 mx-auto">
-            <div className="card text-center py-3 mt-3 bg-dark px-3 px-sm-5">
+            <div className="card text-center py-3 mt-3 bg-dark2 px-3 px-sm-5">
               <div className="brand-logo">
-                <img src={require("../images/logo.svg")} alt="logo" />
+                <img src={require("../images/scaletransm2.png")} alt="logo" />
               </div>
-              <h4>Hello! let's get started</h4>
-              <h6 className="font-weight-light">Sign in to continue.</h6>
+              <h4>Zero Click- Legal AI</h4>
+              <h6 className="font-weight-light">Please Sign in to continue.</h6>
               <Form className="pt-3">
                 <Form.Group className="d-flex search-field">
                   <Form.Control
@@ -88,9 +88,9 @@ const Login = () => {
                   </Button>
                 </div>
                 <div className="text-center mt-4 font-weight-light">
-                  Don't have an account?{" "}
+                  Don't have an account?{" "} <br></br>
                   <Link to="/register" className="text-primary">
-                    Create
+                    Create your account
                   </Link>
                 </div>
               </Form>

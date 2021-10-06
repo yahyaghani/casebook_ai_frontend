@@ -34,7 +34,7 @@ const Profile = (props) => (
 						onClick={(evt) => evt.preventDefault()}
 					>
 						<div className="preview-thumbnail">
-							<div className="preview-icon bg-dark rounded-circle">
+							<div className="preview-icon bg-dark2 rounded-circle">
 								<i className="mdi mdi-settings text-primary"></i>
 							</div>
 						</div>
@@ -51,7 +51,7 @@ const Profile = (props) => (
 						onClick={(evt) => evt.preventDefault()}
 					>
 						<div className="preview-thumbnail">
-							<div className="preview-icon bg-dark rounded-circle">
+							<div className="preview-icon bg-dark2 rounded-circle">
 								<i className="mdi mdi-onepassword  text-info"></i>
 							</div>
 						</div>
@@ -68,7 +68,7 @@ const Profile = (props) => (
 						onClick={(evt) => evt.preventDefault()}
 					>
 						<div className="preview-thumbnail">
-							<div className="preview-icon bg-dark rounded-circle">
+							<div className="preview-icon bg-dark2 rounded-circle">
 								<i className="mdi mdi-calendar-today text-success"></i>
 							</div>
 						</div>

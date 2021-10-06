@@ -74,15 +74,16 @@ function FileViewer() {
 				style={{
 					width: dimensions.width + 'px' || "25%",
 					// minWidth: "20%",
-					height: dimensions.height + 'px' || "calc(100vh - 70px)",
+					// height: dimensions.height + 'px' || "calc(100vh - 70px)",
+					height:'100vh',
 					overflowY: "scroll",
 				}}
 			>
 				<div className="description" style={{ padding: "1rem" }}>
-					<h2 style={{ marginBottom: "1rem" }}>SUPO</h2>
+					<h2 style={{ marginBottom: "1rem" }}>Smart Law Viewer </h2>
 					<p>
 						<small>
-							To create area highlight hold ⌥ Option key (Alt), then click and
+							To create your own highlights hold ⌥ Option key (Alt), then click and
 							drag.
 						</small>
 					</p>
@@ -90,7 +91,7 @@ function FileViewer() {
 
 				<ul className="sidebar__highlights">
 					<li
-						className="sidebar__highlight h4 bg-secondary"
+						className="btn btn-md btn btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
 						onClick={() => setSelectPdf(true)}
 					>
 						Select Another File

@@ -41,7 +41,7 @@ function HighlightButton(props) {
           color="light"
           onClick={saveHighlightData}
         >
-          Save Highlight JSON
+          Save Highlights
         </Button>
         <p>{hightlightResponse}</p>
       </div>

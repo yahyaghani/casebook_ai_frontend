@@ -60,10 +60,10 @@ function Sidebar({ sideItems, sideItemsClick }) {
 		<nav className="sidebar sidebar-offcanvas" id="sidebar">
 			<div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
 				<a className="sidebar-brand brand-logo" href="index.html">
-					<img src={require("../images/logo.svg")} alt="logo" />
+					<img src={require("../images/scaletransm2.png")} alt="logo" />
 				</a>
 				<a className="sidebar-brand brand-logo-mini" href="index.html">
-					<img src={require("../images/logo-mini.svg")} alt="logo" />
+					<img src={require("../images/scaletransm2.png")} alt="logo" />
 				</a>
 			</div>
 			<ul className="nav">
@@ -80,17 +80,18 @@ function Sidebar({ sideItems, sideItemsClick }) {
 				<SideNav class={sideItems.showDashboardView} click={() => itemClickHandler(showDashboard)}
 					iconClass='mdi mdi-speedometer' transTitle='Dashboard' />
 
-				<SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
-					iconClass='mdi mdi-lightbulb' transTitle='Highlight' />
-
-				<SideNav class={false} click={handleTextEditor}
-					iconClass='mdi mdi-text' transTitle='Create Notes' />
-
 				<SideNav class={sideItems.showFileViewer} click={() => itemClickHandler(showFileViewer)}
-					iconClass='mdi mdi-file' transTitle='File Viewer' />
+					iconClass='mdi mdi-file' transTitle='Smart Law Viewer' />
+
+				<SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
+						iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' />
+
 
 				<SideNav class={sideItems.showFeedView} click={() => itemClickHandler(showFeedView)}
 					iconClass='mdi mdi-forum' transTitle='My Feeds' />
+
+				<SideNav class={false} click={handleTextEditor}
+					iconClass='mdi mdi-text' transTitle='My Notepad' />
 			</ul>
 			{showTextEditor && (
 				<TextEditor

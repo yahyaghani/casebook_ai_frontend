@@ -46,7 +46,7 @@ function FeedView() {
 
 	return (
 		<div
-			className="dashboard-view bg-dark p-5 text-center"
+			className="dashboard-view bg-dark2 p-5 text-center"
 			style={{ width: "100%", minHeight: "100vh" }}
 		>
 			<Tabs
@@ -92,7 +92,7 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
 								sm={12}
 							>
 								<div className="user-avatar mb-auto mr-3">
-									<div className="rounded-circle d-flex bg-dark align-items-center justify-content-center img-lg">
+									<div className="rounded-circle d-flex bg-dark2 align-items-center justify-content-center img-lg">
 										<i className="mdi mdi-file display-1 text-primary"></i>
 									</div>
 								</div>
@@ -358,7 +358,7 @@ function ShowRatingsModal({ ratings, show, setShow }) {
 										))}
 								</div>
 								<div className="h4 mt-0 w-100 text-dark">{item.review}</div>
-								{(i !== (ratings.length - 1)) && <hr className="bg-dark" />}
+								{(i !== (ratings.length - 1)) && <hr className="bg-dark2" />}
 							</div>
 						))}
 				</Modal.Body>
