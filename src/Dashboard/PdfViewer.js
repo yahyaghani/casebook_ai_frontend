@@ -80,10 +80,10 @@ function PdfViewer() {
 		setCurrFile(null);
 		// console.log(state);
 		if (state.currentFile && state.currentFile.url) {
-			setTimeout(
-				() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
-				100
-			);
+				setTimeout(
+					() => setCurrFile(`${BASE_URL_DEV}/${state.currentFile.url}`),
+					100
+				);
 		} else {
 			let reader = new FileReader();
 			let file = state.currentFile;

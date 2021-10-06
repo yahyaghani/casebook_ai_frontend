@@ -35,6 +35,7 @@ function App() {
 		showDashboardView: true,
 		showProfileView: false,
 		showFeedView: false,
+		showTextAnonymizerView:false
 	});
 
 	const sidebarClickHandler = (sidebarState) => {
@@ -69,6 +70,7 @@ function App() {
 												showHighlight={sidebarItems.showHighlight}
 												showProfileView={sidebarItems.showProfileView}
 												showFeedView={sidebarItems.showFeedView}
+												showTextAnonymizerView={sidebarItems.showTextAnonymizerView}
 											/>
 										</div>
 										{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodePreview />}

@@ -22,6 +22,7 @@ import PdfViewer from "./PdfViewer";
 import DashboardView from "./DashboardView";
 import ProfileView from "./ProfileView";
 import FeedView from "./FeedView";
+import TextAnonymizer from "./TextAnonymizer"
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -44,9 +45,10 @@ const HighlightPopup = ({ comment }) =>
 //const searchParams = new URLSearchParams(document.location.search);
 //const url = searchParams.get("url") || DEFAULT_URL;
 
-function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfileView, showFeedView }) {
+function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfileView, showFeedView, showTextAnonymizerView }) {
 	const [state, setState] = useState({ highlights: [] });
 	const [PdfUrl, setPdfUrl] = useState({ url: "" });
+	
 
 	useEffect(() => {
 		async function fetchData() {
@@ -202,6 +204,7 @@ function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfi
 			{showDashboardView && <DashboardView />}
 			{showProfileView && <ProfileView />}
 			{showFeedView && <FeedView />}
+			{showTextAnonymizerView&& <TextAnonymizer/>}
 		</Fragment>
 	);
 }

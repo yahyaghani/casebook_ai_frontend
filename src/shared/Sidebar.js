@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView } from './SidebarItemData/data';
+import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView} from './SidebarItemData/data';
 import axios from 'axios';
 import { Trans } from "react-i18next";
 import TextEditor from "../TextEditor";
@@ -24,7 +24,29 @@ function Sidebar({ sideItems, sideItemsClick }) {
 				},
 			});
 			const files = result.data && result.data.files;
-			dispatch({ type: "ADD_FILE", payload: files });
+			if (files && files.length > 0) {
+				const results = await axios(`${BASE_URL_DEV}/get-graphdata`, {
+					headers: {
+						"x-access-token": state.auth && state.auth.authToken,
+					},
+				});
+				const allgraphs = results.data;
+				let Obj = {};
+				let _id = "";
+
+				allgraphs && allgraphs.graphdata && allgraphs.graphdata.length && allgraphs.graphdata.filter(x => {
+					_id = x.fileName
+					Obj[_id] = x.links.filter(e => e.source == "CITATION" || e.source == "PROVISION")
+
+				});
+				var fileNew = files
+				fileNew.forEach(element => {
+					element["CITATION"] = Obj && Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source == "CITATION") : ["N/A"]
+					element["PROVISION"] = Obj && Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source == "PROVISION") : ["N/A"]
+
+				});
+				dispatch({ type: "ADD_FILE", payload: fileNew });
+			}
 		})();
 		if (state.fileHighlights && state.fileHighlights.length === 0) {
 			(async () => {
@@ -35,6 +57,12 @@ function Sidebar({ sideItems, sideItemsClick }) {
 				});
 				const fileHighlights = result.data;
 				console.log('filehighligh', fileHighlights);
+				if (!state.currentFile && fileHighlights && fileHighlights.highlights && fileHighlights.highlights.length) {
+					var data = {}
+					data["name"] = fileHighlights.highlights[0]["name"]
+					data["url"] = `uploads/${state.auth.userPublicId}/${fileHighlights.highlights[0]["name"]}`
+					dispatch({ type: "SET_CURR_FILE", payload: data })
+				};
 				if (
 					fileHighlights &&
 					fileHighlights.highlights &&
@@ -76,7 +104,7 @@ function Sidebar({ sideItems, sideItemsClick }) {
 						<Trans>Navigation</Trans>
 					</span>
 				</li>
-
+				{console.log(sideItems)}
 				<SideNav class={sideItems.showDashboardView} click={() => itemClickHandler(showDashboard)}
 					iconClass='mdi mdi-speedometer' transTitle='Dashboard' />
 
@@ -84,14 +112,17 @@ function Sidebar({ sideItems, sideItemsClick }) {
 					iconClass='mdi mdi-file' transTitle='Smart Law Viewer' />
 
 				<SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
-						iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' />
-
+					iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' />
 
 				<SideNav class={sideItems.showFeedView} click={() => itemClickHandler(showFeedView)}
 					iconClass='mdi mdi-forum' transTitle='My Feeds' />
 
 				<SideNav class={false} click={handleTextEditor}
 					iconClass='mdi mdi-text' transTitle='My Notepad' />
+
+				<SideNav class={sideItems.showTextAnonymizerView} click={() => itemClickHandler(showTextAnonymizerView)}
+					iconClass='mdi mdi-text' transTitle='Text Anonymizer' />
+
 			</ul>
 			{showTextEditor && (
 				<TextEditor
