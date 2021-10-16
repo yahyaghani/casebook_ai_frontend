@@ -152,7 +152,7 @@ export default class TextAnonymizer extends React.Component{
                         onChange={this.handleFictional}
                     />
                     <Form.Group   controlId="exampleForm.ControlTextarea1">
-                      <Form.Label style={{fontSize:18}}>Enter text to anonimize below:</Form.Label>
+                      <Form.Label style={{fontSize:18}}>Enter text to anonymize below:</Form.Label>
                       <Form.Control value={this.state.text} onChange={this.handleTextChange} as="textarea" rows={3} />
                     </Form.Group>
                 </Form>
