@@ -132,7 +132,7 @@ function FileViewer() {
         }}
       >
         <div className="description" style={{ padding: "1rem" }}>
-          <h2 style={{ marginBottom: "1rem" }}>SUPO</h2>
+          <h2 style={{ marginBottom: "1rem" }}>CASEVIEWER</h2>
           <p>
             <small>
               To create area highlight hold ⌥ Option key (Alt), then click and
