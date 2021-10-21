@@ -4,7 +4,8 @@ export const showProfile = {
 	showDashboardView: false,
 	showProfileView: true,
 	showFeedView: false,
-	showTextAnonymizerView:false
+	showTextAnonymizerView:false,
+	showGptView:false
 }
 
 export const showDashboard = {
@@ -13,7 +14,9 @@ export const showDashboard = {
 	showDashboardView: true,
 	showProfileView: false,
 	showFeedView: false,
-	showTextAnonymizerView:false
+	showTextAnonymizerView:false,
+	showGptView:false
+
 }
 
 export const showHighlight = {
@@ -22,7 +25,9 @@ export const showHighlight = {
 	showDashboardView: false,
 	showProfileView: false,
 	showFeedView: false,
-	showTextAnonymizerView:false
+	showTextAnonymizerView:false,
+	showGptView:false
+
 }
 
 export const showFileViewer = {
@@ -31,7 +36,9 @@ export const showFileViewer = {
 	showDashboardView: false,
 	showProfileView: false,
 	showFeedView: false,
-	showTextAnonymizerView:false
+	showTextAnonymizerView:false,
+	showGptView:false
+
 }
 
 export const showFeedView = {
@@ -40,7 +47,9 @@ export const showFeedView = {
 	showDashboardView: false,
 	showProfileView: false,
 	showFeedView: true,
-	showTextAnonymizerView:false
+	showTextAnonymizerView:false,
+	showGptView:false
+
 }
 
 export const showTextAnonymizerView = {
@@ -49,5 +58,18 @@ export const showTextAnonymizerView = {
 	showDashboardView: false,
 	showProfileView: false,
 	showFeedView: false,
-	showTextAnonymizerView:true
+	showTextAnonymizerView:true,
+	showGptView:false
+
+}
+
+export const showGptView = {
+	showHighlight: false,
+	showFileViewer: false,
+	showDashboardView: false,
+	showProfileView: false,
+	showFeedView: false,
+	showTextAnonymizerView:false,
+	showGptView:true
+
 }

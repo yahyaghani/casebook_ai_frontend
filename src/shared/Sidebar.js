@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView} from './SidebarItemData/data';
+import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView,showGptView} from './SidebarItemData/data';
 import axios from 'axios';
 import { Trans } from "react-i18next";
 import TextEditor from "../TextEditor";
@@ -122,6 +122,15 @@ function Sidebar({ sideItems, sideItemsClick }) {
 
 				<SideNav class={sideItems.showTextAnonymizerView} click={() => itemClickHandler(showTextAnonymizerView)}
 					iconClass='mdi mdi-text' transTitle='Text Anonymizer' />
+
+				<SideNav class={sideItems.showGptView} click={() => itemClickHandler(showGptView)}
+					iconClass='mdi mdi-text' transTitle='Gpt Viewer' />
+
+
+
+
+
+
 
 			</ul>
 			{showTextEditor && (
