@@ -15,6 +15,7 @@ function AppRoutes(props) {
 				showFeedView={props.showFeedView}
 				showTextAnonymizerView={props.showTextAnonymizerView}
 				showGptView={props.showGptView}
+				showLawsReader={props.showLawsReader}
 			/>
 		</Suspense>
 	);

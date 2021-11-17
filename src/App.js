@@ -35,9 +35,9 @@ function App() {
 		showDashboardView: true,
 		showProfileView: false,
 		showFeedView: false,
-		showTextAnonymizerView:false,
-		showGptView:false
-
+		showTextAnonymizerView: false,
+		showGptView: false,
+		showLawsReader: false,
 	});
 
 	const sidebarClickHandler = (sidebarState) => {
@@ -73,6 +73,7 @@ function App() {
 												showProfileView={sidebarItems.showProfileView}
 												showFeedView={sidebarItems.showFeedView}
 												showTextAnonymizerView={sidebarItems.showTextAnonymizerView}
+												showLawsReader={sidebarItems.showLawsReader}
 												showGptView={sidebarItems.showGptView}
 
 											/>

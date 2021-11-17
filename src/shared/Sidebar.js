@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView,showGptView} from './SidebarItemData/data';
+import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView, showGptView, showLawsReader } from './SidebarItemData/data';
 import axios from 'axios';
 import { Trans } from "react-i18next";
 import TextEditor from "../TextEditor";
@@ -126,11 +126,8 @@ function Sidebar({ sideItems, sideItemsClick }) {
 				<SideNav class={sideItems.showGptView} click={() => itemClickHandler(showGptView)}
 					iconClass='mdi mdi-text' transTitle='Gpt Viewer' />
 
-
-
-
-
-
+				<SideNav class={sideItems.showLawsReader} click={() => itemClickHandler(showLawsReader)}
+					iconClass='mdi mdi-scale-balance' transTitle='Laws Reader' />
 
 			</ul>
 			{showTextEditor && (
