@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* === Plugin styles === */
+// @import "~sass/app/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+// @import "~sass/bootstrap/bootstrap/mixins";
+
+// Override bootstrap variables
+
+
+// Bootstrap
+
+
+
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+@import "./style/theme-styles/_variables";
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+
+@import "./style/theme-styles/_fonts";
+@import "./style/theme-styles/_functions";
+
+/* === Icon fonts === */
+@import "~@mdi/font/scss/materialdesignicons";
+
+/* === Template mixins === */
+@import "./style/theme-styles/mixins/_animation";
+@import "./style/theme-styles/mixins/_badges";
+@import "./style/theme-styles/mixins/_buttons";
+@import "./style/theme-styles/mixins/_misc";
+@import "./style/theme-styles/mixins/_color-functions";
+@import "./style/theme-styles/mixins/_cards";
+@import "./style/theme-styles/mixins/_blockqoute";
+
+
+/* === Core Styles === */
+@import "./style/theme-styles/_typography";
+@import "./style/theme-styles/_reset";
+@import "./style/theme-styles/_responsive";
+@import "./style/theme-styles/_misc";
+@import "./style/theme-styles/_utilities";
+@import "./style/theme-styles/_demo";
+@import "./style/theme-styles/_spinner";
+@import "./style/theme-styles/_dashboard";
+
+/* === Components === */
+
+@import "./style/theme-styles/components/checkbox-radio";
+@import "./style/theme-styles/components/forms";
+@import "./style/theme-styles/components/icons";
+@import "./style/theme-styles/components/tables";
+@import "./style/theme-styles/components/buttons";
+@import "./style/theme-styles/components/breadcrumbs";
+@import "./style/theme-styles/components/badges";
+@import "./style/theme-styles/components/cards";
+@import "./style/theme-styles/components/preview";
+@import "./style/theme-styles/components/lists";
+@import "./style/theme-styles/components/todo-list";
+@import "./style/theme-styles/components/dropdowns";
+@import "./style/theme-styles/components/loaders/loaders";
+
+@import "./style/theme-styles/components/landing-screens/auth";
+
+/* === Plugin Overrides === */
+@import "./style/theme-styles/components/plugin-overrides/slick-carousel";
+@import "./style/theme-styles/components/plugin-overrides/jquery-jvectormap";
+
+/* === Layout === */
+@import "./style/theme-styles/_navbar";
+@import "./style/theme-styles/_sidebar";
+@import "./style/theme-styles/_footer";
+@import "./style/theme-styles/_layout";

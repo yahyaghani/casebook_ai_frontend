@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.results-container .css-y5rags-Card {
+  height: auto;
+}
+
+.fileInput
+ { border-bottom: 4px solid lightgray;
+  border-right: 4px solid lightgray;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  padding: 10px;
+  margin: 15px;
+  cursor: pointer;
+}
+  
+.imgPreview
+{  
+  text-align: center;
+  margin: 5px 15px;
+  height: 50px;
+  width: 50px;
+  border: 1px solid gray;
+}
+  img
+{    width: 100%;
+    height: 100%;}
+  
+.previewText
+ { width: 100%;
+  margin-top: 20px;
+}
+  
+.submitButton
+{  padding: 12px;
+  margin-left: 10px;
+  background: white;
+  border: 4px solid lightgray;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 10pt;
+  cursor: pointer;
+    /* background: #efefef; */
+  }
+
+.centerText
+{  text-align: center;
+  width: 500px;
+}
