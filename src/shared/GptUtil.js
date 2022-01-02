@@ -23,7 +23,7 @@ const useAsyncEndpoint = fn => {
                 },
             })
                 .then(res =>
-                    setRes({ data: res.data, pending: false, error: false, complete: true })
+                    setRes({ data: res.data.result, pending: false, error: false, complete: true })
                 )
                 .catch(() =>
                     setRes({ data: null, pending: false, error: true, complete: true })

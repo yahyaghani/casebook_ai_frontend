@@ -14,7 +14,7 @@ const SelectBox = ({ model, setModel }) => {
             margin='normal'
             style={{ width: '200px' }}
             variant='outlined'>
-            <InputLabel ref={inputLabel} htmlFor="model-select">Model</InputLabel>
+            <InputLabel ref={inputLabel} htmlFor="model-select">No. Of Samples</InputLabel>
             <Select
                 value={model}
                 labelWidth={labelWidth}

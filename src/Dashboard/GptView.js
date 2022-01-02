@@ -18,7 +18,7 @@ function GptView() {
   }
 
   return (
-    <div className='app-container'>
+    <div className='main-panel'>
       <form noValidate autoComplete='off'>
         <h1>React GPT-2</h1>
         <SelectBox model={model} setModel={setModel} />
@@ -32,8 +32,13 @@ function GptView() {
       {generatedText.complete &&
         (generatedText.error ?
           <div className='result error'>Bad Request</div> :
-          <div className='result valid'>
-            {generatedText.data.result}
+          <div className='content-wrapper'>
+            {/* {console.log(generatedText.data[1],"hellooooo")} */}
+            <ul>
+            {generatedText.data.map((index,key) => <div style={{margin: 20}} className='result valid' key={key}>{index}</div>)}
+                    </ul>
+
+
           </div>)}
     </div>
   );

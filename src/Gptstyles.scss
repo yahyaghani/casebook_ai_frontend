@@ -8,7 +8,10 @@
   flex-direction: column;
 }
 
+.container-gpt{
 
+  overflow-y: scroll
+}
 .result {
   border-radius: 4px;
   padding: 2em;
@@ -18,12 +21,12 @@
 }
 
 .pending {
-  border: 1px solid #ffeb3b;
-  background-color: #fffde7;
+  border: 1px solid #191c24;
+  background-color: #554f13;
 }
 
 .valid {
-  background-color: #e1f5fe;
+  background-color: #191c24;
   border: 1px solid #03a9f4;
 }
 

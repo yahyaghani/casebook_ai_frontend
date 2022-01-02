@@ -28,7 +28,7 @@
       font-size: 1.5rem;
       line-height: 48px;
       margin-right: 0;
-      padding: 0rem 0rem 0rem 1.3rem;
+      padding: 1.5rem 0rem 0rem 1.3rem;
       width: 100%;
 
       &:active,
@@ -47,10 +47,11 @@
       &.brand-logo-mini {
         display: none;
         img {
-          width: calc(#{$sidebar-width-icon} - 50px );
+          // width: calc(#{$sidebar-width-icon} - 50px );
           max-width: 100%;
-          height: 28px;
-          margin: auto;
+          height: 58px;
+          margin: -10px;
+
         }
       }
     }
