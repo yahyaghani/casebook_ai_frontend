@@ -32,4 +32,6 @@
 .Tip__card input[type="submit"] {
   margin-top: 5px;
   font-size: large;
+  cursor: pointer;
+
 }

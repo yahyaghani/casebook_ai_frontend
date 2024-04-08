@@ -27,22 +27,22 @@ function FileViewer() {
   const [index, setIndex] = useState();
 
   const handleClose = () => setShow(false);
-
   useEffect(() => {
-
     if (state.currentFile) {
       let highlightUpdated = false;
       state.fileHighlights.forEach((item) => {
         if (item.name === state.currentFile.name) {
-          setHighlights(item.highlights);
+          // Filter out highlights with the label "OTHER"
+          const filteredHighlights = item.highlights.filter(highlight => highlight.comment.text !== "OTHER");
+          setHighlights(filteredHighlights);
           highlightUpdated = true;
         }
       });
       if (!highlightUpdated) setHighlights([]);
     }
     console.log("files", state.files)
-
   }, [state.currentFile, state.fileHighlights]);
+  
 
   const handleFileClick = async (index) => {
     dispatch({ type: "SET_CURR_FILE", payload: state.files[index] });
@@ -132,7 +132,7 @@ function FileViewer() {
         }}
       >
         <div className="description" style={{ padding: "1rem" }}>
-          <h2 style={{ marginBottom: "1rem" }}>CASEVIEWER</h2>
+          <h2 style={{ marginBottom: "1rem" }}>Highlights</h2>
           <p>
             <small>
               To create area highlight hold ⌥ Option key (Alt), then click and

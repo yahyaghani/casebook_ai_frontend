@@ -57,7 +57,7 @@ function PdfGraphFunc(props) {
 		panAndZoom: false,
 		staticGraph: false,
 		staticGraphWithDragAndDrop: false,
-		width: 500,
+		width: 50,
 		d3: {
 			alphaTarget: 0.05,
 			gravity: -150,

@@ -101,7 +101,6 @@ function Sidebar({ sideItems, sideItemsClick }) {
 
 				<li className="nav-item nav-category">
 					<span className="nav-link">
-						<Trans>Navigation</Trans>
 					</span>
 				</li>
 				{console.log(sideItems)}
@@ -109,25 +108,25 @@ function Sidebar({ sideItems, sideItemsClick }) {
 					iconClass='mdi mdi-speedometer' transTitle='Dashboard' />
 
 				<SideNav class={sideItems.showFileViewer} click={() => itemClickHandler(showFileViewer)}
-					iconClass='mdi mdi-file' transTitle='Smart Law Viewer' />
+					iconClass='mdi mdi-file' transTitle='Copilot' />
 
-				<SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
-					iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' />
+				{/* <SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
+					iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' /> */}
 
-				<SideNav class={sideItems.showFeedView} click={() => itemClickHandler(showFeedView)}
-					iconClass='mdi mdi-forum' transTitle='My Feeds' />
+				{/* <SideNav class={sideItems.showFeedView} click={() => itemClickHandler(showFeedView)}
+					iconClass='mdi mdi-forum' transTitle='My Feeds' /> */}
 
 				<SideNav class={false} click={handleTextEditor}
-					iconClass='mdi mdi-text' transTitle='My Notepad' />
+					iconClass='mdi mdi-text' transTitle='Notes' />
 
 				<SideNav class={sideItems.showTextAnonymizerView} click={() => itemClickHandler(showTextAnonymizerView)}
-					iconClass='mdi mdi-text' transTitle='Text Anonymizer' />
+					iconClass='mdi mdi-text' transTitle='Anonymizer' />
 
-				<SideNav class={sideItems.showGptView} click={() => itemClickHandler(showGptView)}
-					iconClass='mdi mdi-text' transTitle='Gpt Viewer' />
-
+				{/* <SideNav class={sideItems.showGptView} click={() => itemClickHandler(showGptView)}
+					iconClass='mdi mdi-text' transTitle='Gpt Viewer' /> */}
+{/* 
 				<SideNav class={sideItems.showLawsReader} click={() => itemClickHandler(showLawsReader)}
-					iconClass='mdi mdi-scale-balance' transTitle='Laws Reader' />
+					iconClass='mdi mdi-scale-balance' transTitle='Easy-Reader' /> */}
 
 			</ul>
 			{showTextEditor && (

@@ -6,7 +6,9 @@ import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 
 // Time in milliseconds to auto save the document
-const SAVE_INTERVAL_MS = 60000;
+const SAVE_INTERVAL_MS = 3000;
+
+
 
 // Options available in toolbar
 const TOOLBAR_OPTIONS = [
@@ -30,9 +32,26 @@ export default function TextEditor({
 	const documentId = id;
 	const [socket, setSocket] = useState();
 	const [quill, setQuill] = useState();
+	// const [openaiResponse, setOpenaiResponse] = useState("");
+	const [openaiResponses, setOpenaiResponses] = useState([]);
 
+	const handleCopyToClipboard = (text) => {
+		// Copy to clipboard
+		navigator.clipboard.writeText(text).then(() => {
+		  console.log('Text copied to clipboard');
+		}, (err) => {
+		  console.error('Could not copy text: ', err);
+		});
+	  
+		// Paste into the Quill editor at the current cursor position, or at the end if no selection is made
+		const range = quill.getSelection();
+		const position = range ? range.index : quill.getLength();
+		quill.insertText(position, text);
+		quill.setSelection(position + text.length); // Move cursor to the end of the inserted text
+	  };
+	  
 	useEffect(() => {
-		const s = io("http://localhost:5000");
+		const s = io("http://localhost:8000");
 		setSocket(s);
 
 		return () => {
@@ -108,6 +127,34 @@ export default function TextEditor({
 		handleClose();
 	};
 
+	//openai call
+	useEffect(() => {
+		const interval = setInterval(() => {
+			socket.emit("openai_call",quill.getContents());
+		}, 5000);
+	
+		return () => {
+			clearInterval(interval);
+		};
+	}, [socket]);
+	
+	useEffect(() => {
+		if (socket == null) return;
+	
+		const handler = (data) => {
+			setOpenaiResponses(currentResponses => [data.message, ...currentResponses]);
+		};
+	
+		socket.on("openai_response", handler);
+	
+		return () => {
+			socket.off("openai_response", handler);
+		};
+	}, [socket]);
+	
+
+
+
 	return (
 		<React.Fragment>
 			<Modal
@@ -118,9 +165,28 @@ export default function TextEditor({
 				size="xl"
 				centered={true}
 			>
-				<Modal.Body>
-					<div className="container" ref={wrapperRef}></div>
+				<Modal.Body style={{ height: '60vh' }}>
+				<div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
+					<div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
+					<div style={{
+					flex: 3,
+					borderLeft: '1px solid #ccc',
+					paddingLeft: '20px',
+					overflowY: 'auto'
+					}}>
+					<h4>Recommendations</h4>
+					<div style={{ display: 'flex', flexDirection: 'column-reverse' }}> {/* This ensures the latest (top) item is added first */}
+						{openaiResponses.map((response, index) => (
+						<div key={index} style={{ border: '1px solid #ccc', padding: '10px', margin: '5px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+							<span>{response}</span>
+							<Button variant="outline-primary" onClick={() => handleCopyToClipboard(response)}>Insert</Button>
+						</div>
+						))}
+					</div>
+					</div>
+				</div>
 				</Modal.Body>
+
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close

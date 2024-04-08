@@ -20,7 +20,7 @@ function GptView() {
   return (
     <div className='main-panel'>
       <form noValidate autoComplete='off'>
-        <h1>React GPT-2</h1>
+        <h1>Clause Recommender</h1>
         <SelectBox model={model} setModel={setModel} />
         <TextBox text={text} setText={setText} />
         <Button onClick={generateText} />

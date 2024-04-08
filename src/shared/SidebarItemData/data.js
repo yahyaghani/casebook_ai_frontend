@@ -86,5 +86,5 @@ export const showGptView = {
 	showFeedView: false,
 	showLawsReader: false,
 	showTextAnonymizerView: false,
-	showGptView: true
+	showGptView: false
 }

@@ -37,7 +37,7 @@ function Tip(props) {
 					<div>
 						<textarea
 							width="100%"
-							placeholder="Your comment"
+							placeholder="Your comments"
 							autoFocus
 							value={text}
 							onChange={event => setState({ text: event.target.value })}

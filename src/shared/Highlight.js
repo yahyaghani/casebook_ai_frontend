@@ -13,9 +13,9 @@ function Highlight(props) {
 
 	useEffect(() => {
 		async function fetchData() {
-			const result_json = await axios("http://127.0.0.1:5000/api/v1/json");
+			const result_json = await axios("http://127.0.0.1:8000/api/v1/json");
 			const pdf_name = Object.keys(result_json.data)[0];
-			setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
+			setPdfUrl({ url: `http://127.0.0.1:8000/api/v1/pdf/${pdf_name}` });
 			setState({ highlights: result_json.data[pdf_name] });
 		}
 		fetchData();
@@ -40,7 +40,7 @@ function Highlight(props) {
 		<div className="sidebarnew" style={{ width: "25vw" }}>
 			{/*  */}
 			<div className="description" style={{ padding: "1rem" }}>
-				<h2 style={{ marginBottom: "1rem" }}>CASEVIEWER</h2>
+				<h2 style={{ marginBottom: "1rem" }}>Highlights</h2>
 
 				<p>
 					<small>

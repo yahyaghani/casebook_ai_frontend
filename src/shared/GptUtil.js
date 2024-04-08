@@ -4,7 +4,7 @@ import { fetchAuth } from "../utils";
 import { UserContext } from "../App";
 // import React, { useContext, useEffect } from 'react';
 
-const ENDPOINT_URL = "http://localhost:5000/generate";
+const ENDPOINT_URL = "http://localhost:8000/generate";
 
 const useAsyncEndpoint = fn => {
     const [res, setRes] = React.useState({ data: null, complete: false, pending: false, error: false });

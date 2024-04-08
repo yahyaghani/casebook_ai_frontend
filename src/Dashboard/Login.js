@@ -48,7 +48,7 @@ const Login = () => {
               <div className="brand-logo">
                 <img src={require("../images/scaletransm2.png")} alt="logo" />
               </div>
-              <h4>Zero Click- Legal AI</h4>
+              <h4>Legal Copilot</h4>
               <h6 className="font-weight-light">Please Sign in to continue.</h6>
               <Form className="pt-3">
                 <Form.Group className="d-flex search-field">
