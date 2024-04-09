@@ -149,26 +149,39 @@ export default function TextEditor({
 		setIsQuillReady(true); // Indicate that Quill is now ready
 	  }, [editorMode]);
 		  
-			// Function to handle when the "Appeal" option is selected
-			const handleAppeal = () => {
-				if (socket && socket.connected) {
-					// console.log('Appeal clicked. Emitting openai-call.', `Socket connected: ${socket.connected}`);
-					const dataToSend = { content: 'Your input data here' }; // Adjust this as needed
-					socket.emit("openai_call", JSON.stringify(dataToSend)); // Emit the openai_call event
-					setEditorMode('appeal'); // Update editorMode to 'appeal'
-				} else {
-					console.log("Socket is not connected.");
-				}
+	  const handleAppeal = () => {
+		if (socket && socket.connected) {
+			// Include documentId in the data being sent
+			const dataToSend = { 
+				content: 'Your input data here', // This can be any content you wish to send
+				documentId: documentId, // Adding documentId to the payload
+				filename:fileName
 			};
+			console.log('Appeal clicked. Emitting openai_call with data:', dataToSend);
+			socket.emit("openai_call", JSON.stringify(dataToSend)); // Emit the openai_call event with documentId
+			setEditorMode('appeal'); // Update editorMode to 'appeal'
+		} else {
+			console.log("Socket is not connected.");
+		}
+	};
+	
 			
 	const insertTextIntoQuill = (text) => {
 
 		const length = quill.getLength();
-		quill.insertText(length, "\n" + text); // Inserting text at the end
-		quill.setSelection(length + text.length); // Moving cursor to the end
+		quill.insertText(length, "\n" + text + "\n\n"); // Inserting text at the end
+		quill.setSelection(length + text.length + 2); // Moving cursor to the end
+		
+
 	  };
 	  
 
+	const insertHighlightIntoQuill = (highlightContent) => {
+		const position = quill.getLength(); // Get the position to insert at the end of the document
+		quill.insertText(position, "\n" + highlightContent + "\n\n"); // Insert the content with padding newlines
+		quill.setSelection(position + highlightContent.length + 2); // Move cursor to the end of the inserted text
+	};
+	
 	// Function to handle when the "Edit Document" option is selected
 	const handleEditDocument = () => {
 		setEditorMode('edit_document');
@@ -203,19 +216,33 @@ export default function TextEditor({
 		handleClose();
 	};
 
-	const requestRecommendations = () => {
-		console.log("Attempting to request recommendations...");
+	const handleRequest = (type) => {
+		console.log(`Attempting to request ${type}...`);
 		if (socket && socket.connected && quill) { // Ensure socket is connected and Quill is initialized
-		  console.log("Socket is connected, sending recommendation request.");
+		  console.log(`Socket is connected, sending ${type} request.`);
 		  const quillContent = quill.getContents(); // Get Quill content
 		  const requestData = { quillContent }; // Include Quill content in the request data
-		  socket.emit("openai-get-recommendation", JSON.stringify(requestData)); // Emit the request with Quill content
+		  
+		  // Emitting different events based on the type of request
+		  switch (type) {
+			case "recommendations":
+			  socket.emit("openai-get-recommendation", JSON.stringify(requestData));
+			  break;
+			case "caselaw":
+			// console.log(`Emitting ${type} with data:`, requestData);
+			  socket.emit("openai-get-caselaw", JSON.stringify(requestData));
+			  break;
+			case "clause":
+			  socket.emit("openai-get-clause", JSON.stringify(requestData));
+			  break;
+			default:
+			  console.log("Unknown request type");
+		  }
 		} else {
 		  console.log("Socket is not connected or Quill is not initialized.");
 		}
 	  };
 	  
-
 
 	useEffect(() => {
 		const newSocket = io("http://localhost:8000");
@@ -236,19 +263,24 @@ export default function TextEditor({
 	}, [editorMode, socket, documentId, fileName]);
 	
 	useEffect(() => {
-		if (!socket || !isQuillReady) return;
+		if (!socket || !isQuillReady) return; // Check if quill is ready
 	  
-		const handler = (data) => {
+		const recommendationHandler = (data) => {
+		//   setOpenaiRecommendations(currentRecommendations => [data.recommendation, ...currentRecommendations]);
 		  setOpenaiRecommendations(currentRecommendations => [...currentRecommendations, data.recommendation]);
-		  // Optionally, automatically insert the recommendation into Quill or handle it differently
+
 		};
 	  
-		socket.on("openai-recommendations", handler);
+		socket.on("openai-recommendations", recommendationHandler);
+		socket.on("openai-caselaw", recommendationHandler); // Listen for caselaw responses
+		socket.on("openai-clause", recommendationHandler); // Listen for clause responses
 	  
 		return () => {
-		  socket.off("openai-recommendations", handler);
+		  socket.off("openai-recommendations", recommendationHandler);
+		  socket.off("openai-caselaw", recommendationHandler);
+		  socket.off("openai-clause", recommendationHandler);
 		};
-	  }, [socket, isQuillReady]);
+	  }, [socket, isQuillReady]); // Ensure dependencies are correctly managed
 	  
 
 	useEffect(() => {
@@ -256,7 +288,8 @@ export default function TextEditor({
 	  
 		const handler = (data) => {
 		  setOpenaiResponses(currentResponses => [data.message, ...currentResponses]);
-		  
+		//   setOpenaiResponses(currentResponses => [ ...currentResponses,data.message]);
+
 		  insertTextIntoQuill(data.message); // Automatically insert the response into Quill
 		};
 	  
@@ -267,6 +300,9 @@ export default function TextEditor({
 		};
 	  }, [socket, isQuillReady]); // Add `isQuillReady` as a dependency
 	  
+
+
+	  
 	return (
 		<React.Fragment>
 		  {!editorMode ? (
@@ -274,18 +310,23 @@ export default function TextEditor({
 			
 		>
 		<Modal.Header closeButton style={{ backgroundColor: '#191c24', textAlign: 'center' }}>
-			  <Modal.Title >Choose an Option</Modal.Title>
+			  <Modal.Title >Notepad</Modal.Title>
 			  </Modal.Header >
 			  <Modal.Body style={{ textAlign: 'center',background:'#191c24' }}>
-				<Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
-				  <FaRegPaperPlane /> Appeal
+			  <Button variant="outline-info" onClick={handleNewDocument} style={{ margin: '10px' }}>
+				  <FaFile /> New Document
 				</Button>
+
 				<Button variant="outline-success" onClick={handleEditDocument} style={{ margin: '10px' }}>
 				  <FaBriefcase /> Edit Document
 				</Button>
-				<Button variant="outline-info" onClick={handleNewDocument} style={{ margin: '10px' }}>
-				  <FaFile /> New Document
+
+				<Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
+				  <FaRegPaperPlane /> Appeal
 				</Button>
+
+				
+		
 			  </Modal.Body>
 			</Modal>
 		  ) : (
@@ -299,32 +340,51 @@ export default function TextEditor({
 			>
 			  <Modal.Body style={{ height: '76vh',background:'#191c24' }}>
 				<div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-				  <div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
-					<h4>Highlights</h4>
-					{state.highlightTextsForEditor && state.highlightTextsForEditor.length > 0 ? (
-					  state.highlightTextsForEditor.map((highlight, index) => (
-						<div key={index} style={{ padding: '10px', margin: '5px 0' }}>
-						  <strong>{highlight.commentText}</strong>
-						  <p>{highlight.contentText}</p>
-						</div>
-					  ))
-					) : (
-					  <div>No highlights </div>
-					)}
-				  </div>
-				  <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
-				  <div style={{ flex: 3, paddingLeft: '20px', overflowY: 'auto' }}>
-				  <Button variant="primary" onClick={requestRecommendations}>Get Recommendations</Button>
-
-					{/* <h4>Recommendations</h4> */}
-					<div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-					{openaiRecommendations.map((recommendation, index) => (
-						<div key={index} style={{padding: '10px', margin: '5px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-						<span>{recommendation}</span>
-						<Button variant="outline-primary" onClick={() => handleCopyToClipboard(recommendation)}>Insert</Button>
-						</div>
-					))}
+				<div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
+						{state.highlightTextsForEditor && state.highlightTextsForEditor.length > 0 ? (
+							state.highlightTextsForEditor.map((highlight, index) => (
+								<div key={index} className="sidebar__highlight" style={{ 
+									// padding: '10px', 
+									margin: '5px 0', 
+									display: 'flex', 
+									flexDirection: 'column', // Stack content and button vertically
+									justifyContent: 'space-between', // Space between content and button
+									// height: '100%' // Ensure the div takes full height to push the button to the bottom
+								}}>
+									<div>
+										<strong>{highlight.commentText}</strong>
+										<p>{highlight.contentText}</p>
+									</div>
+									<div style={{
+										display: 'flex',
+										justifyContent: 'flex-end', // Align button to the right
+										// paddingTop: '10px' // Add some space between the text and the button
+									}}>
+										<Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(highlight.contentText)}>Insert</Button>
+									</div>
+								</div>
+							))
+						) : (
+							<div>No highlights</div>
+						)}
 					</div>
+				  <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
+				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
+				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
+						<Button variant="outline-primary" onClick={() => handleRequest('recommendations')}>Insights</Button>
+						<Button variant="outline-success" onClick={() => handleRequest('caselaw')}>Caselaw</Button> {/* New Button */}
+						<Button variant="outline-info" onClick={() => handleRequest('clause')}>Clause</Button> {/* New Button */}
+
+						<div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
+							{openaiRecommendations.map((recommendation, index) => (
+							<div key={index} className="sidebar__highlight"  style={{padding: '10px', margin: '5px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<span>{recommendation}</span>
+								<Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(recommendation)}>Insert</Button>
+							</div>
+							))}
+						</div>
+						</div>
+
 				  </div>
 				</div>
 			  </Modal.Body>

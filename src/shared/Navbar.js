@@ -35,7 +35,7 @@ const Navbar = () => {
             if (toggleButtonRef.current) {
                 toggleButtonRef.current.click();
             }
-        }, 4000);
+        }, 3000);
         // Cleanup the timer if the component unmounts
         return () => clearTimeout(timer);
 

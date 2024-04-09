@@ -38,7 +38,7 @@
 }
 .react-resizable-handle-w,
 .react-resizable-handle-e {
-  top: 50%;
+  /* top: 50%; */
   margin-top: -10px;
   cursor: ew-resize;
 }

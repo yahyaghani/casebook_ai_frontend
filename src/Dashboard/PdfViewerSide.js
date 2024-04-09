@@ -31,7 +31,7 @@ const PdfViewerSide = (props) => {
             <div
                 className="sidebarnew"
                 style={{
-                    minWidth: "30%",
+                    minWidth: "20%",
                     width: dimensions.width + "px" || "25%",
                     height: '100vw',
                     overflowY: "scroll",

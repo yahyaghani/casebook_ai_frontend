@@ -38,7 +38,7 @@ function Highlight(props) {
 	}
 
 	return (
-		<div className="sidebarnew" style={{ width: "25vw" }}>
+		<div className="sidebarnew2" style={{ width: "25vw" }}>
 			<ul className="sidebar__highlights" style={{ "maxHeight": "96vh", "overflow": "scroll" }}>
 				{graphData.nodes && graphData.nodes.map((node, index) => (
 					node.id !== state.searchQuery && state.nodesData[node.id] !== undefined ?
