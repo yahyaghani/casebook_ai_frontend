@@ -80,6 +80,12 @@ body {
 	border-radius: 20%;
 }
 
+.custom-modal-footer {
+    position: relative; /* or 'absolute' if needed, but ensure it works with your layout */
+    z-index: 1050; /* Bootstrap's modal z-index is 1050, so this ensures it's on top */
+}
+
+
 /* Style buttons */
 .sidebar__btn_send {
 	background-color: rgb(40, 167, 69 ); /* Blue background */
@@ -238,7 +244,7 @@ blockquote:after {
 .nav-tabs > a {
 	color: #ffffff !important;
 	background: #191c24 !important;
-	border-bottom: 1px solid #dee2e6 !important;
+	/* border-bottom: 1px solid #dee2e6 !important; */
 	font-weight: 500;
 	border-radius: 0 !important;
 }

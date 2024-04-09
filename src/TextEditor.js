@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext,useCallback, useEffect, useState } from "react";
 import Quill from "quill";
-import { Button, Modal } from "react-bootstrap";
+import { FormControl, Modal, Button } from "react-bootstrap";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { UserContext } from "./App";
@@ -40,6 +40,7 @@ export default function TextEditor({
 	const [editorMode, setEditorMode] = useState(null); // New state for tracking the editor mode
 	const [isQuillReady, setIsQuillReady] = useState(false);
 	const [openaiRecommendations, setOpenaiRecommendations] = useState([]);
+	const [query, setQuery] = useState('');
 
 	const handleCopyToClipboard = (text) => {
 		// Copy to clipboard
@@ -300,7 +301,12 @@ export default function TextEditor({
 		};
 	  }, [socket, isQuillReady]); // Add `isQuillReady` as a dependency
 	  
-
+	  const handleSend = () => {
+		// Example: Log the query or send it somewhere
+		console.log("Send query:", query); // Assuming 'query' is the state holding the input value
+		// You might emit a socket event here, or make an API call, etc.
+	};
+	
 
 	  
 	return (
@@ -338,7 +344,7 @@ export default function TextEditor({
 			  size="xl"
 			  centered
 			>
-			  <Modal.Body style={{ height: '76vh',background:'#191c24' }}>
+				<Modal.Body style={{ height: '76vh', background:'#191c24' }}>
 				<div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
 				<div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
 						{state.highlightTextsForEditor && state.highlightTextsForEditor.length > 0 ? (
@@ -388,11 +394,25 @@ export default function TextEditor({
 				  </div>
 				</div>
 			  </Modal.Body>
-			  <Modal.Footer
-			 style={{ background:'#191c24' }}>
-				<Button variant="secondary" onClick={handleClose}>Close</Button>
-				<Button variant="primary" onClick={handleNoteSave}>Save</Button>
-			  </Modal.Footer>
+			  <Modal.Footer className="custom-modal-footer" style={{ background:'#191c24', justifyContent: 'center' }}>
+				<div className="w-100 d-flex justify-content-between align-items-center">
+					<Button variant="secondary" onClick={handleClose}>Close</Button>
+					{/* Query Text Box */}
+					<FormControl
+						type="text"
+						placeholder="Ask Casebook AI a question"
+						value={query} // Bind the input value to state
+						onChange={(e) => setQuery(e.target.value)} // Update state on input change
+						className="nav-link mt-2 mt-md-0 d-none d-lg-flex search mx-3"
+					/>
+
+					{/* Send Button */}
+					<Button variant="info" onClick={handleSend}>Send</Button>
+					<Button variant="primary" onClick={handleNoteSave}>Save</Button>
+				</div>
+			</Modal.Footer>
+
+
 			</Modal>
 		  )}
 		</React.Fragment>
