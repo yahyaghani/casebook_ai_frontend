@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useRef,useContext, useEffect } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import HighlightButton from '../Dashboard/HighlightButton';
 import FileUploadComponent from '../Dashboard/FileUploadComponent';
@@ -12,6 +12,7 @@ const Navbar = () => {
 
 	const history = useHistory();
 	const { state, dispatch } = useContext(UserContext);
+    const toggleButtonRef = useRef(null); // Add this line
 
 	useEffect(() => {
 		setInterval(function () { authChe(); }, 60000);
@@ -29,7 +30,19 @@ const Navbar = () => {
 				}
 			}
 		}
+
+		const timer = setTimeout(() => {
+            if (toggleButtonRef.current) {
+                toggleButtonRef.current.click();
+            }
+        }, 4000);
+        // Cleanup the timer if the component unmounts
+        return () => clearTimeout(timer);
+
+
 	}, [state.auth]);
+
+
 	const authChe = () => {
 		var d = new Date();
 
@@ -62,6 +75,7 @@ const Navbar = () => {
 			</div>
 			<div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
 				<button
+					ref={toggleButtonRef} // Assign the ref here
 					className="navbar-toggler align-self-center"
 					type="button"
 					onClick={() => document.body.classList.toggle("sidebar-icon-only")}

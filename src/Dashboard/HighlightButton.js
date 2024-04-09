@@ -34,7 +34,7 @@ function HighlightButton(props) {
 
   return (
     <Fragment>
-      <div className="highlight_btn">
+      {/* <div className="highlight_btn">
         <Button
           className="btn btn-md"
           outline
@@ -44,7 +44,7 @@ function HighlightButton(props) {
           Save Highlights
         </Button>
         <p>{hightlightResponse}</p>
-      </div>
+      </div> */}
     </Fragment>
   );
 }

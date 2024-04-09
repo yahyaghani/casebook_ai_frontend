@@ -67,6 +67,8 @@ body {
 	background: rgba(58, 56, 52, 0.08);
 }
 
+
+
 /* Style buttons */
 .sidebar__btn {
 	background-color: rgb(150, 187, 224); /* Blue background */
@@ -78,6 +80,16 @@ body {
 	border-radius: 20%;
 }
 
+/* Style buttons */
+.sidebar__btn_send {
+	background-color: rgb(40, 167, 69 ); /* Blue background */
+	border: none; /* Remove borders */
+	color: white; /* White text */
+	padding: 4px 6px; /* Some padding */
+	font-size: 16px; /* Set a font size */
+	cursor: pointer; /* Mouse pointer on hover */
+	border-radius: 10%;
+}
 /* Darker background on mouse-over */
 .sidebar__btn:hover {
 	background-color: RoyalBlue;
@@ -258,6 +270,12 @@ blockquote:after {
 	justify-content: center;
 }
 
+.ql-container.ql-snow{
+
+
+
+}
+
 .container .ql-toolbar.ql-snow {
 	display: flex;
 	justify-content: center;
@@ -266,7 +284,6 @@ blockquote:after {
 	top: 0;
 	z-index: 1;
 	background-color: #f3f3f3;
-	border: none;
 	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 .Highlight {
@@ -284,6 +301,16 @@ blockquote:after {
 	opacity: 1;
 }
 
+.modal-header .close{
+	color:white;
+}
+.custom-modal-header .btn-close {
+    color: white;
+}
+
+.custom-modal-header .btn-close:before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>');
+}
 .Highlight__part {
 	cursor: pointer;
 	position: absolute;

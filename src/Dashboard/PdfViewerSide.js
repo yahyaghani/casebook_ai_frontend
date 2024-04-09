@@ -39,19 +39,19 @@ const PdfViewerSide = (props) => {
             >
                 <div>
                     {/* Button container with flexbox */}
-                    <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0' }}>
+                    <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content' }}>
                         <div
                             onClick={() => setCreateNotes(true)}
                             className="btn btn-lg btn-outline-primary text-center cursor-pointer p-3"
                         >
                             ADD NOTES
                         </div>
-                        <div
+                        {/* <div
                             onClick={() => { }}
                             className="btn btn-lg btn-outline-success text-center cursor-pointer p-3"
                         >
                             OPEN GRAPH
-                        </div>
+                        </div> */}
                     </div>
                     {createNotes && (
                         <TextEditor
@@ -61,23 +61,23 @@ const PdfViewerSide = (props) => {
                             setShowTextEditor={setCreateNotes}
                         />
                     )}
-                    <div
+                    {/* <div
                         onClick={() => { }}
                         style={{ marginBottom: "0 !important" }}
                         className="btn btn-md btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
                     >
                         RECOMMEND CASES
-                    </div>
+                    </div> */}
 
 
-                    <i className="mdi mdi-fullscreen"
+                    {/* <i className="mdi mdi-fullscreen"
                         onClick={() => setShowGraphModal(true)}
                         style={{
                             float: "right",
                             padding: "20px",
                             fontSize: "30px",
                         }}
-                    />
+                    /> */}
 
                     {!showGraphModal && <PdfGraphFunc />}
                     {showGraphModal && (

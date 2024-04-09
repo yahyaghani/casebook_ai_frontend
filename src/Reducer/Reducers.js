@@ -91,6 +91,21 @@ export const reducer = (state, action) => {
 		}
 		case 'SET_MODAL':
 			return updateState(state, { isModalOpen: action.payload });
+
+		case 'SET_HIGHLIGHT_TEXT':
+			return {
+				...state,
+				highlightTextForEditor: action.payload,
+			};
+		case 'ADD_HIGHLIGHT_TEXT':
+			const newHighlight = action.payload;
+			const updatedHighlights = [...(state.highlightTextsForEditor || []), newHighlight]; // Fallback to empty array if not defined
+			return {
+				...state,
+				highlightTextsForEditor: updatedHighlights,
+			};
+			
+
 		default:
 			return state;
 	}

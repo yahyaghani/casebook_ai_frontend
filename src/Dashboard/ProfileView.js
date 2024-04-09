@@ -33,7 +33,7 @@ function ProfileView() {
 											height: "100px",
 											width: "100px",
 										}}
-										src={require("../images/faces/face15.jpg")}
+										src={require("../images/faces/face0.jpeg")}
 										className="rounded-circle"
 										alt="face"
 									/>

@@ -6,6 +6,8 @@ import { Resizable } from "react-resizable";
 import processMd from "./markdown";
 import axios from "axios";
 import { BASE_URL_DEV } from "../utils";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import "../style/resizable.css";
 
@@ -108,6 +110,20 @@ function FileViewer() {
     setHighlights([]);
   };
 
+  const handleSendToEditor = (highlight) => {
+    if (!highlight.comment || !highlight.content) {
+        console.error("Highlight structure is not as expected", highlight);
+        return;
+    }
+
+    const payload = {
+        commentText: highlight.comment.text,
+        contentText: highlight.content.text,
+    };
+    dispatch({ type: 'ADD_HIGHLIGHT_TEXT', payload });
+};
+
+
   return (
     <Resizable
       className="box"
@@ -158,7 +174,7 @@ function FileViewer() {
                 }}
               >
                 <div>
-                  <div style={{ padding: "4px" }}>
+                  <div style={{ padding: "0px" }}>
                     <button
                       style={{ float: "right" }}
                       onClick={() => deleteHighlight(index)}
@@ -166,6 +182,19 @@ function FileViewer() {
                     >
                       <i className="fa fa-close"></i>
                     </button>
+                    </div>
+                    <div>
+                    <button
+                      style={{ marginLeft: "114px" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSendToEditor(highlight);
+                      }}
+                      className="sidebar__btn_send"
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                    </button>
+
                   </div>
                   <strong>{processMd(highlight.comment.text)}</strong>
                   {highlight.content.text ? (

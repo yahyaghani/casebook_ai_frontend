@@ -9,7 +9,7 @@ const Profile = (props) => (
 				<div className="count-indicator">
 					<img
 						className="img-xs rounded-circle "
-						src={require("../images/faces/face15.jpg")}
+						src={require("../images/faces/face0.jpeg")}
 						alt="profile"
 					/>
 					<span className="count bg-success"></span>

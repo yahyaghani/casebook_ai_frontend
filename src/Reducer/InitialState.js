@@ -25,4 +25,6 @@ export const InitialState = {
 		country: null,
 		organisation: null,
 	},
+	highlightTextsForEditor: [],
+
 };
