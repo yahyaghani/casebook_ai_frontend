@@ -1,11 +1,13 @@
 import React from "react";
 import { useContext,useCallback, useEffect, useState } from "react";
 import Quill from "quill";
-import { FormControl, Modal, Button } from "react-bootstrap";
+import { FormControl, Modal, Button, Spinner } from "react-bootstrap"; // Import Spinner component
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { UserContext } from "./App";
 import { FaRegPaperPlane, FaBriefcase, FaFile } from 'react-icons/fa'; // Importing icons
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
 
 // Time in milliseconds to auto save the document
 const SAVE_INTERVAL_MS = 15000;
@@ -41,21 +43,31 @@ export default function TextEditor({
 	const [isQuillReady, setIsQuillReady] = useState(false);
 	const [openaiRecommendations, setOpenaiRecommendations] = useState([]);
 	const [query, setQuery] = useState('');
+	const [requestCounter, setRequestCounter] = useState({ recommendations: 0, caselaw: 0, clause: 0 });
+	const [responseReceived, setResponseReceived] = useState(false);
+	// Add state variables to track loading status
+	const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+	const [loadingCaselaw, setLoadingCaselaw] = useState(false);
+	const [loadingClause, setLoadingClause] = useState(false);
+	const [loadingSend, setLoadingSend] = useState(false);
+	const [latestReceivedIndex, setLatestReceivedIndex] = useState(-1);
 
-	const handleCopyToClipboard = (text) => {
-		// Copy to clipboard
-		navigator.clipboard.writeText(text).then(() => {
-		  console.log('Text copied to clipboard');
-		}, (err) => {
-		  console.error('Could not copy text: ', err);
-		});
-	  
-		// Paste into the Quill editor at the current cursor position, or at the end if no selection is made
-		const range = quill.getSelection();
-		const position = range ? range.index : quill.getLength();
-		quill.insertText(position, text);
-		quill.setSelection(position + text.length); // Move cursor to the end of the inserted text
+
+
+	const exportAsPDF = async () => {
+		const delta = quill.getContents(); // gets the Quill delta
+		const pdfAsBlob = await pdfExporter.generatePdf(delta); // converts to PDF
+		saveAs(pdfAsBlob, "current-draft-on-case.pdf"); // downloads from the browser
 	  };
+
+
+	useEffect(() => {
+		// Reset the request counter whenever the text editor is shown
+		if (showTextEditor) {
+		  setRequestCounter({ recommendations: 0, caselaw: 0, clause: 0 });
+		}
+	  }, [showTextEditor]);
+	
 	  
 	useEffect(() => {
 		const s = io("http://localhost:8000");
@@ -158,8 +170,8 @@ export default function TextEditor({
 				documentId: documentId, // Adding documentId to the payload
 				filename:fileName
 			};
-			console.log('Appeal clicked. Emitting openai_call with data:', dataToSend);
-			socket.emit("openai_call", JSON.stringify(dataToSend)); // Emit the openai_call event with documentId
+			console.log('Appeal clicked. Emitting openai_appeal_call with data:', dataToSend);
+			socket.emit("openai_appeal_call", dataToSend); // Emit the openai_appeal_call event with documentId
 			setEditorMode('appeal'); // Update editorMode to 'appeal'
 		} else {
 			console.log("Socket is not connected.");
@@ -214,7 +226,8 @@ export default function TextEditor({
 	const handleNoteSave = () => {
 		if (socket == null || quill == null) return;
 		socket.emit("save-document", quill.getContents());
-		handleClose();
+		exportAsPDF();
+		// handleClose();
 	};
 
 	const handleRequest = (type) => {
@@ -222,23 +235,42 @@ export default function TextEditor({
 		if (socket && socket.connected && quill) { // Ensure socket is connected and Quill is initialized
 		  console.log(`Socket is connected, sending ${type} request.`);
 		  const quillContent = quill.getContents(); // Get Quill content
-		  const requestData = { quillContent }; // Include Quill content in the request data
+		  const currentCount = requestCounter[type] + 1; // Increment the specific request count
+		  console.log(`counter number is ${currentCount} request.`);
+
+		  const requestData = { 
+			content: quillContent, // This can be any content you wish to send
+			documentId: documentId, // Adding documentId to the payload
+			filename:fileName,
+			requestCount: currentCount, // Include the incremented count in the request
+
+			 }; // Include Quill content in the request data
 		  
 		  // Emitting different events based on the type of request
 		  switch (type) {
 			case "recommendations":
-			  socket.emit("openai-get-recommendation", JSON.stringify(requestData));
+			  socket.emit("openai-get-recommendation", requestData);
+			  setLoadingRecommendations(true);
 			  break;
 			case "caselaw":
 			// console.log(`Emitting ${type} with data:`, requestData);
-			  socket.emit("openai-get-caselaw", JSON.stringify(requestData));
+			  socket.emit("openai-get-caselaw", requestData);
+			  setLoadingCaselaw(true);
+
 			  break;
 			case "clause":
-			  socket.emit("openai-get-clause", JSON.stringify(requestData));
+			  socket.emit("openai-get-clause", requestData);
+			  setLoadingClause(true);
+
 			  break;
 			default:
 			  console.log("Unknown request type");
 		  }
+		  setRequestCounter({
+			...requestCounter,
+			[type]: currentCount, // Update the state with the new count
+		  });
+	
 		} else {
 		  console.log("Socket is not connected or Quill is not initialized.");
 		}
@@ -269,19 +301,26 @@ export default function TextEditor({
 		const recommendationHandler = (data) => {
 		//   setOpenaiRecommendations(currentRecommendations => [data.recommendation, ...currentRecommendations]);
 		  setOpenaiRecommendations(currentRecommendations => [...currentRecommendations, data.recommendation]);
+		  setLoadingRecommendations(false); // Update loading state to false when recommendation is received
+		  setLoadingCaselaw(false);
+		  setLoadingSend(false);
+		  setLoadingClause(false);
 
 		};
 	  
 		socket.on("openai-recommendations", recommendationHandler);
 		socket.on("openai-caselaw", recommendationHandler); // Listen for caselaw responses
 		socket.on("openai-clause", recommendationHandler); // Listen for clause responses
-	  
+		socket.on("openai-query-response", recommendationHandler);
+
 		return () => {
 		  socket.off("openai-recommendations", recommendationHandler);
 		  socket.off("openai-caselaw", recommendationHandler);
 		  socket.off("openai-clause", recommendationHandler);
+		  socket.off("openai-query-response", recommendationHandler);
+
 		};
-	  }, [socket, isQuillReady]); // Ensure dependencies are correctly managed
+	  }, [socket, isQuillReady,setLoadingRecommendations,setLoadingCaselaw,setLoadingSend,setLoadingClause]); // Ensure dependencies are correctly managed
 	  
 
 	useEffect(() => {
@@ -290,21 +329,40 @@ export default function TextEditor({
 		const handler = (data) => {
 		  setOpenaiResponses(currentResponses => [data.message, ...currentResponses]);
 		//   setOpenaiResponses(currentResponses => [ ...currentResponses,data.message]);
+			setLoadingRecommendations(false); // Update loading state to false when recommendation is received
+			setLoadingCaselaw(false);
+			setLoadingSend(false);
+			setLoadingClause(false);
 
 		  insertTextIntoQuill(data.message); // Automatically insert the response into Quill
 		};
 	  
 		socket.on("openai_response", handler);
-	  
+
 		return () => {
 		  socket.off("openai_response", handler);
+
 		};
-	  }, [socket, isQuillReady]); // Add `isQuillReady` as a dependency
+	  }, [socket, isQuillReady,setLoadingRecommendations,setLoadingCaselaw,setLoadingSend,setLoadingClause]); // Add `isQuillReady` as a dependency
 	  
-	  const handleSend = () => {
-		// Example: Log the query or send it somewhere
-		console.log("Send query:", query); // Assuming 'query' is the state holding the input value
-		// You might emit a socket event here, or make an API call, etc.
+	const handleSend = () => {
+		if (!socket || !quill || !query) return; // Check if socket and Quill are initialized, and query is not empty
+	
+		const quillContent = quill.getContents(); // Get Quill content
+		const dataToSend = { 
+			query: query,
+			content: quillContent,
+			documentId: documentId,
+			filename: fileName
+		};
+	
+		socket.emit("openai-query", dataToSend); // Emit the openai-query event with the data
+		setLoadingSend(true);
+
+		// Optionally clear the query box after sending the query
+		setQuery('');
+	
+		// You might also want to handle any UI changes or feedback upon sending the query
 	};
 	
 
@@ -343,7 +401,16 @@ export default function TextEditor({
 			  backdrop="static"
 			  size="xl"
 			  centered
-			>
+			><Modal.Header closeButton={false} style={{ backgroundColor: '#191c24', textAlign: 'center', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+			<Modal.Title>Notepad</Modal.Title>
+			<div>
+			  <Button variant="primary" onClick={handleNoteSave} style={{ marginRight: '10px' }}>Save</Button>
+			  <Button variant="secondary" onClick={handleClose} style={{ fontSize: '16px', lineHeight: '1', padding: '0.375rem 0.75rem' }}>
+				<span aria-hidden="true">&times;</span>
+			  </Button>
+			</div>
+		  </Modal.Header>
+		  
 				<Modal.Body style={{ height: '76vh', background:'#191c24' }}>
 				<div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
 				<div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
@@ -358,8 +425,8 @@ export default function TextEditor({
 									// height: '100%' // Ensure the div takes full height to push the button to the bottom
 								}}>
 									<div>
-										<strong>{highlight.commentText}</strong>
-										<p>{highlight.contentText}</p>
+											<strong style={{ fontSize: '10px' }}>{highlight.commentText}</strong>
+											<p style={{ fontSize: '10px' }}>{highlight.contentText}</p>
 									</div>
 									<div style={{
 										display: 'flex',
@@ -371,23 +438,49 @@ export default function TextEditor({
 								</div>
 							))
 						) : (
-							<div>No highlights</div>
+							<div></div>
 						)}
 					</div>
-				  <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
-				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
-				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
-						<Button variant="outline-primary" onClick={() => handleRequest('recommendations')}>Insights</Button>
-						<Button variant="outline-success" onClick={() => handleRequest('caselaw')}>Caselaw</Button> {/* New Button */}
-						<Button variant="outline-info" onClick={() => handleRequest('clause')}>Clause</Button> {/* New Button */}
 
+					
+				  <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
+
+
+				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
+				  <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
+				  <Button variant="outline-primary" onClick={() => handleRequest('recommendations')}>
+				{loadingRecommendations ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Insights'}
+			</Button>
+			<Button variant="outline-success" onClick={() => handleRequest('caselaw')}>
+				{loadingCaselaw ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Caselaw'}
+			</Button>
+		
+						
+						<Button variant="outline-info" onClick={() => handleRequest('clause')}>
+				{loadingClause ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Clause'}
+			</Button>
 						<div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-							{openaiRecommendations.map((recommendation, index) => (
-							<div key={index} className="sidebar__highlight"  style={{padding: '10px', margin: '5px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-								<span>{recommendation}</span>
-								<Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(recommendation)}>Insert</Button>
-							</div>
+						{openaiRecommendations.map((recommendation, index) => (
+								<div 
+									key={index} 
+									className="sidebar__highlight"  
+									style={{
+										padding: '10px', 
+										margin: '5px 0', 
+										display: 'flex', 
+										justifyContent: 'space-between', 
+										alignItems: 'center',
+										backgroundColor: index === latestReceivedIndex ? '2A3038' : '2A3038', // Apply flashing effect to the latest received recommendation
+										animation: index === latestReceivedIndex ? 'flash 1s infinite alternate' : 'none' // Apply flashing animation
+									}}
+									onMouseEnter={() => setLatestReceivedIndex(index)} // Update the index of the latest received recommendation on hover
+									onMouseLeave={() => setLatestReceivedIndex(-1)} // Reset the index when mouse leaves
+								>
+									<span style={{ fontSize: '10px' }}>{recommendation}</span>
+									<Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(recommendation)}>Insert</Button>
+								</div>
 							))}
+
 						</div>
 						</div>
 
@@ -396,7 +489,7 @@ export default function TextEditor({
 			  </Modal.Body>
 			  <Modal.Footer className="custom-modal-footer" style={{ background:'#191c24', justifyContent: 'center' }}>
 				<div className="w-100 d-flex justify-content-between align-items-center">
-					<Button variant="secondary" onClick={handleClose}>Close</Button>
+					{/* <Button variant="secondary" onClick={handleClose}>Close</Button> */}
 					{/* Query Text Box */}
 					<FormControl
 						type="text"
@@ -407,10 +500,27 @@ export default function TextEditor({
 					/>
 
 					{/* Send Button */}
-					<Button variant="info" onClick={handleSend}>Send</Button>
-					<Button variant="primary" onClick={handleNoteSave}>Save</Button>
+					{/* <Button variant="info" onClick={handleSend}>Send</Button> */}
+					<Button variant="info" onClick={handleSend}>
+				{loadingSend ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Send'}
+			</Button>
+
+					{/* <Button variant="primary" onClick={handleNoteSave}>Save</Button> */}
 				</div>
+
 			</Modal.Footer>
+			<style>
+        {`
+            @keyframes flash {
+                from {
+                    background-color: #2A3038; // Initial background color
+                }
+                to {
+                    background-color: #32435a; // Flashing background color
+                }
+            }
+        `}
+    </style>
 
 
 			</Modal>
