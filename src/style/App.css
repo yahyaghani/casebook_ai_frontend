@@ -13,12 +13,67 @@ body {
 }
 .bg-dark2 {
 	background-color: #191c24;
+	
 }
-.sidebarnew {
+
+/* new sidebar highlights */
+
+.sidebar__highlights .highlight-card  {
+	height: 15em; /* Set minimum height relative to its parent */
+	width: 12em;
+  }
+  
+
+.highlight-card {
+	margin: 10px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	border-radius: 8px;
+	overflow: hidden;
+	background-color:#383c4d;
+  }
+  
+ 
+  
+  .highlight-actions {
+    display: inline-flex;
+    justify-content: center;
+    padding-top: 1px;
+    grid-gap: 2em;
+    gap: 5px;
+    /* margin-left: 1em; */
+}
+  
+  .no-highlights {
+	padding: 20px;
+	text-align: center;
+  }
+  
+
+  
+.summary-card {
+	margin: 10px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	border-radius: 8px;
+	overflow: hidden;
+	background-color:#383c4d;
+	height: 15em; /* Set minimum height relative to its parent */
+
+  }
+  
+  .summary-section h2 {
+	font-size: 1.5em; /* Ensure it matches the Highlights heading */
+	margin-bottom: 10px;
+	
+  }
+
+/* sidebar highlights section */
+  .sidebarnew {
 	/* overflow: auto; */
 	color: #fff;
 	/* rgb(119, 119, 119); */
-	background: #191c24;
+	/* background: #252836; */
+background:linear-gradient(to bottom, #424e85 0%, #0a112f 50%, #ccb2d1 100%);
+
 	/* linear-gradient(
     rgb(249, 248, 247),
     rgb(251, 250, 248) 46px,
@@ -135,8 +190,8 @@ blockquote:after {
 .pdf-viewer .PdfHighlighter {
 	/* position: fixed; */
 	min-width: 50%;
-	width: 70%;
-	overflow-x: scroll;
+	width: 80%;
+	/* overflow-x: scroll; */
 }
 .loading {
 	border: 2px dotted #f3f3f3;
@@ -178,7 +233,7 @@ blockquote:after {
 	content: '\f105';
 	font-family: 'FontAwesome';
 	font-size: inherit;
-	color: inherit;
+	color: #959bc1;
 }
 .sidebar .nav .nav-item .nav-link i.fa-angle-right {
 	position: absolute;
@@ -332,7 +387,7 @@ blockquote:after {
 	border-radius: 3px;
 	max-width: 300px;
 	max-height: 100px;
-	overflow-y: scroll;
+	/* overflow-y: scroll; */
 }
 
 .Highlight--scrolledTo .Highlight__part {

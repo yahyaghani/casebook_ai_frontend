@@ -7,7 +7,9 @@ import processMd from "./markdown";
 import axios from "axios";
 import { BASE_URL_DEV } from "../utils";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 import "../style/resizable.css";
 
@@ -21,31 +23,122 @@ function FileViewer() {
   const [highlights, setHighlights] = useState([]);
   const [dimensions, setDimensions] = useState({
     height: 720,
-    width: 250,
+    width: 300,
   });
   const [selectPdf, setSelectPdf] = useState(false);
 
   const [show, setShow] = useState(false);
   const [index, setIndex] = useState();
+  const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
+  const [filter, setFilter] = useState("");
+  const [totalHighlights, setTotalHighlights] = useState(0);
+  const [highlightProgress, setHighlightProgress] = useState(0);
+
+  const updateProgress = (currentIndex, total) => {
+    setHighlightProgress(((currentIndex + 1) / total) * 100);
+  };
+  
+  const handlePreviousHighlight = () => {
+    const filteredHighlights = highlights.filter(h => h.comment.text.toUpperCase().includes(filter));
+    if (filteredHighlights.length === 0) {
+      alert(`No highlights available for '${filter}'`);
+      return; // Early return to prevent further execution
+    }
+    const currentFilteredIndex = filteredHighlights.findIndex(h => h === highlights[currentHighlightIndex]);
+    const prevIndex = (currentFilteredIndex - 1 + filteredHighlights.length) % filteredHighlights.length;
+    const prevHighlight = filteredHighlights[prevIndex];
+    setCurrentHighlightIndex(highlights.indexOf(prevHighlight));
+    updateHash(prevHighlight);
+    updateProgress(highlights.indexOf(prevHighlight), filteredHighlights.length);
+
+  };
+      
+  const handleNextHighlight = () => {
+    const filteredHighlights = highlights.filter(h => h.comment.text.toUpperCase().includes(filter));
+
+    if (filteredHighlights.length === 0) {
+      // alert(`No highlights available for '${filter}'`);
+      return; // Early return to prevent further execution
+    }
+    const currentFilteredIndex = filteredHighlights.findIndex(h => h === highlights[currentHighlightIndex]);
+    const nextIndex = (currentFilteredIndex + 1) % filteredHighlights.length;
+  
+    if (nextIndex === 0 && currentFilteredIndex === filteredHighlights.length - 1) {
+      // alert(`Reached end of '${filter}' highlights`);
+      return;
+    }
+  
+    const nextHighlight = filteredHighlights[nextIndex];
+    setCurrentHighlightIndex(highlights.indexOf(nextHighlight));
+    updateHash(nextHighlight);
+    updateProgress(highlights.indexOf(nextHighlight), filteredHighlights.length);
+
+  };
+      
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  
+    // Apply the new filter and get filtered highlights
+    const filteredHighlights = highlights.filter(h =>
+      newFilter === "" || h.comment.text.toUpperCase().includes(newFilter.toUpperCase())
+    );
+  
+    // Set the total number of highlights which helps in calculating the progress
+    setTotalHighlights(filteredHighlights.length);
+  
+    // Check if there are any highlights that match the new filter
+    if (filteredHighlights.length > 0) {
+      // Reset the index to start at the first highlight of the filtered list
+      setCurrentHighlightIndex(highlights.indexOf(filteredHighlights[0]));
+      // Update the progress for the new filtered list
+      updateProgress(0, filteredHighlights.length);
+      // Update the hash to jump to the first highlight of the new filter
+      updateHash(filteredHighlights[0]);
+    } else {
+      // No highlights available for this filter
+      setCurrentHighlightIndex(-1); // Indicates no selection
+      setHighlightProgress(0); // Reset progress bar
+      // Optionally revert to the first available highlight if no filter matches
+      if (highlights.length > 0) {
+        setCurrentHighlightIndex(0);
+        updateHash(highlights[0]);
+        updateProgress(0, highlights.length);
+      } else {
+        document.location.hash = ""; // Clear the hash as no valid highlight
+        // alert(`No highlights available for '${newFilter}'`);
+      }
+    }
+  };
+  
+
+
 
   const handleClose = () => setShow(false);
   useEffect(() => {
     if (state.currentFile) {
       let highlightUpdated = false;
-      state.fileHighlights.forEach((item) => {
+      const filteredHighlights = state.fileHighlights.reduce((acc, item) => {
         if (item.name === state.currentFile.name) {
-          // Filter out highlights with the label "OTHER"
-          const filteredHighlights = item.highlights.filter(highlight => highlight.comment.text !== "OTHER");
-          setHighlights(filteredHighlights);
+          // Include only highlights that do not have the label "OTHER" and match the current filter (if any)
+          const validHighlights = item.highlights.filter(highlight => 
+            highlight.comment.text !== "OTHER" &&
+            (!filter || highlight.comment.text.toUpperCase().includes(filter))
+          );
+          acc.push(...validHighlights);
           highlightUpdated = true;
         }
-      });
-      if (!highlightUpdated) setHighlights([]);
-    }
-    console.log("files", state.files)
-  }, [state.currentFile, state.fileHighlights]);
+        return acc;
+      }, []);
   
-
+      setHighlights(filteredHighlights);
+      if (!highlightUpdated || filteredHighlights.length === 0) {
+        setHighlights([]); // Clear highlights if none match or file changes
+      }
+      setCurrentHighlightIndex(0); // Reset index to start at first of new filtered list or if file changes
+    }
+  }, [state.currentFile, state.fileHighlights, filter]);  // Dependency on filter ensures index reset on filter change
+  
   const handleFileClick = async (index) => {
     dispatch({ type: "SET_CURR_FILE", payload: state.files[index] });
     dispatch({ type: "SET_MODAL", payload: false });
@@ -125,211 +218,100 @@ function FileViewer() {
 
 
   return (
-    <Resizable
-      className="box"
-      height={dimensions.height}
-      axis="x"
-      width={dimensions.width}
-      onResize={(e, { size }) => {
-        setDimensions({
-          height: size.height,
-          width: size.width,
-        });
-      }}
-      resizeHandles={["e"]}
-    >
-      <div
-        className="sidebarnew"
-        style={{
-          width: dimensions.width + 'px' || "25%",
-          // minWidth: "20%",
-          height: dimensions.height + 'px' || "calc(100vh - 70px)",
-          overflowY: "scroll",
-        }}
-      >
-        <div className="description" style={{ padding: "1rem" }}>
-          <h2 style={{ marginBottom: "1rem" }}>Highlights</h2>
-          <p>
-            <small>
-              To create area highlight hold ⌥ Option key (Alt), then click and
-              drag.
-            </small>
-          </p>
-        </div>
 
-        <ul className="sidebar__highlights">
-          <li
-            className="sidebar__highlight h4 bg-secondary"
-            onClick={() => setSelectPdf(true)}
-          >
-            Select Another File
-          </li>
-          {highlights.length > 0 ? (
-            highlights.map((highlight, index) => (
-              <li
-                key={index}
-                className="sidebar__highlight"
-                onClick={() => {
-                  updateHash(highlight);
-                }}
-              >
-                <div>
-                  <div style={{ padding: "0px" }}>
-                    <button
-                      style={{ float: "right" }}
-                      onClick={() => deleteHighlight(index)}
-                      className="sidebar__btn"
-                    >
-                      <i className="fa fa-close"></i>
-                    </button>
-                    </div>
-                    <div>
-                    <button
-                      style={{ marginLeft: "114px" }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSendToEditor(highlight);
-                      }}
-                      className="sidebar__btn_send"
-                    >
-                      <FontAwesomeIcon icon={faPlus} />
-                    </button>
 
-                  </div>
-                  <strong>{processMd(highlight.comment.text)}</strong>
-                  {highlight.content.text ? (
-                    <blockquote style={{ marginTop: "0.5rem" }}>
-                      {`${highlight.content.text.slice(0, 90).trim()}…`}
-                    </blockquote>
-                  ) : null}
-                  {highlight.content.image ? (
-                    <div
-                      className="highlight__image"
-                      style={{ marginTop: "0.5rem" }}
-                    >
-                      <img src={highlight.content.image} alt={"Screenshot"} />
-                    </div>
-                  ) : null}
-                </div>
-                <div className="highlight__location">
-                  Page {highlight.position.pageNumber}
-                </div>
-              </li>
-            ))
-          ) : (
-            <li className="sidebar__highlight">
-              <div className="p-2">
-                <p style={{ margin: 0 }}>
-                  No Highlights Available for Selected Pdf!
-                </p>
-              </div>
-            </li>
+<Resizable className="box" width={dimensions.width} onResize={(e, { size }) => setDimensions({  width: size.width })} resizeHandles={["e"]}>
+
+<div className="sidebarnew" style={{
+    width: dimensions.width + 'px',
+    // overflowY: "scroll",
+  }}>
+
+      {/* Progress Bar */}
+  <div className="progress-container" style={{ width: '100%', backgroundColor: '#e0e0e0', height: '5px', margin: '10px 0' }}>
+    <div className="progress-bar" style={{ width: `${highlightProgress}%`, height: '5px', backgroundColor: '#007bff' }}></div>
+  </div>
+
+
+  {/* Navigation buttons */}
+  <div className="highlight-actions">
+    <button className="btn btn-secondary" onClick={(e) => {
+      e.stopPropagation();
+      handlePreviousHighlight();
+    }}>Previous</button>
+
+       {/* Filtering dropdown */}
+       <UncontrolledDropdown>
+      <DropdownToggle caret color="warning">
+        Category
+      </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem header>Jump to</DropdownItem>
+        <DropdownItem onClick={() => handleFilterChange("AXIOM")}>Axiom</DropdownItem>
+        <DropdownItem onClick={() => handleFilterChange("ISSUE")}>Issue</DropdownItem>
+        <DropdownItem onClick={() => handleFilterChange("LEGAL_TEST")}>Legal Test</DropdownItem>
+        <DropdownItem onClick={() => handleFilterChange("CONCLUSION")}>Conclusion</DropdownItem>
+        <DropdownItem divider />
+      </DropdownMenu>
+    </UncontrolledDropdown>
+    <button className="btn btn-primary" onClick={(e) => {
+      e.stopPropagation();
+      handleNextHighlight();
+    }}>Next</button>
+  </div>
+
+  {/* Descriptive and control elements */}
+  <div className="description" style={{ padding: "1rem" }}>
+    
+    <div className="summary-section"><h2>Highlights</h2></div>
+ 
+  </div>
+  
+  {/* Highlight cards */}
+  <div className="sidebar__highlights">
+    {highlights.length > 0 ? (
+      <div className="highlight-card" key={currentHighlightIndex} onClick={() => updateHash(highlights[currentHighlightIndex])}>
+        <div className="card-body">
+          <strong>{processMd(highlights[currentHighlightIndex].comment.text)}</strong>
+          {highlights[currentHighlightIndex].content.text && (
+            <blockquote>{`${highlights[currentHighlightIndex].content.text.slice(0, 90).trim()}…`}</blockquote>
           )}
-        </ul>
-        {highlights.length > 0 ? (
-          <div style={{ padding: "1rem" }}>
-            <button onClick={resetHighlights}>Reset highlights</button>
-          </div>
-        ) : null}
-        <Modal
-          style={{ color: "#050505" }}
-          show={selectPdf || state.isModalOpen}
-          onHide={() => hideModal()}
-          backdrop="static"
-          size="xl"
-          centered={true}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="example-modal-sizes-title-sm">
-              Select File
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-
-            <div className="card">
-              <div className="card-body" style={{ padding: '1.75rem 1.2rem' }}>
-                <div className="table-responsive">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>PDF NAME</th>
-                        <th>CITATION</th>
-                        <th>PROVISION</th>
-                        <th>ACTION</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {state.files && state.files.length > 0 ? (
-                        state.files.map((pdf, index) => (
-                          state.currentFile && state.currentFile.name === pdf.name ? (
-                            <tr style={{ backgroundColor: "rgba(0, 0, 0, 0.075)", color: "#212529" }}>
-                              <td>{pdf.name}</td>
-
-                              <td style={{ lineHeight: 'inherit' }}><div style={{ overflowY: 'auto', maxHeight: '100px' }}>{pdf && pdf.CITATION && pdf.CITATION.length > 0 && pdf.CITATION.map((listValue) => { return listValue.target }).join(' | ')}</div></td>
-                              <td style={{ lineHeight: 'inherit' }}><div style={{ overflowY: 'auto', maxHeight: '100px' }}>{pdf && pdf.PROVISION && pdf.PROVISION.length > 0 && pdf.PROVISION.map((listValue) => { return listValue.target }).join(' | ')}</div></td>
-
-                              <td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
-                              <td className="text-danger"><button type="button" onClick={() => handleRemove(pdf)} className="btn btn-danger btn-sm">Delete File</button></td>
-                            </tr>
-                          ) : (
-                            <tr>
-                              <td>{pdf.name}</td>
-                              <td style={{ lineHeight: 'inherit' }}><div style={{ overflowY: 'auto', maxHeight: '100px' }}>{pdf && pdf.CITATION && pdf.CITATION.length > 0 && pdf.CITATION.map((listValue) => { return listValue.target }).join(' | ')}</div></td>
-                              <td style={{ lineHeight: 'inherit' }}><div style={{ overflowY: 'auto', maxHeight: '100px' }}>{pdf && pdf.PROVISION && pdf.PROVISION.length > 0 && pdf.PROVISION.map((listValue) => { return listValue.target }).join(' | ')}</div></td>
-                              <td className="text-danger"><button type="button" onClick={() => handleFileClick(index)} className="btn btn-info btn-sm">View File</button></td>
-                              <td className="text-danger"><button type="button" onClick={() => handleRemove(pdf)} className="btn btn-danger btn-sm">Delete File</button></td>
-                            </tr>
-                          )
-
-                        ))) : (
-                        <tr>
-                          <td colSpan="4" align="center"><p style={{ margin: "5px" }}>No Pdfs uploaded!</p></td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+          {highlights[currentHighlightIndex].content.image && (
+            <div className="highlight__image" style={{ marginTop: "0.5rem" }}>
+              <img src={highlights[currentHighlightIndex].content.image} alt="Screenshot" />
             </div>
-            {console.log(state)}
-            {/* // <div
-                //   key={index}
-                //   className="btn btn-secondary w-100 rounded-0 py-3 my-1"
-                //   onClick={() => handleFileClick(index)}
-                // >
-                //   {state.currentFile.name === pdf.name ? (
-                //     <strong>
-                //       <p style={{ margin: 0 }}>{pdf.name}</p>
-                //     </strong>
-                //   ) : (
-                //     <p style={{ margin: 0 }}>{pdf.name}</p>
-                //   )}
-                // </div>
-               */}
-
-          </Modal.Body>
-        </Modal>
-        <Modal
-          style={{ color: "#050505" }}
-          show={show}
-          onHide={() => handleClose()}
-          centered={true}>
-          <Modal.Header closeButton>
-            <Modal.Title>Deleting File</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Are you sure you want to delete ?</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="danger" onClick={() => handleRemoveFile(index)}>
-              Delete
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          )}
+        </div>
       </div>
-    </Resizable>
-  );
+    ) : (
+      // <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
+      <div className="no-highlights">
+      No Highlights Available for Selected Pdf!
+
+    </div>
+
+    )}
+  </div>
+
+
+    {/* Gap between buttons and summary card */}
+    <div style={{ height: '10px' }}></div>  {/* Adjust the height as needed for desired spacing */}
+    {/* New Summary Card Section */}
+<div className="description" style={{ padding: "1rem" }}>
+
+  <div className="summary-section">  <h2>Summary</h2></div></div>
+  <div className="sidebar__highlights">  
+
+  <div className="highlight-card" key={currentHighlightIndex}>
+    <div className="card-body">
+      <strong> Details Here</strong>
+      <blockquote>This is an example of some summary text that could be here.</blockquote>
+    </div>
+  </div>
+
+</div></div>
+</Resizable>
+);
 }
 
 export default FileViewer;

@@ -49,7 +49,7 @@ const Login = () => {
                 <img src={require("../images/scaletransm2.png")} alt="logo" />
               </div>
               <h4>Copilot for Lawyers</h4>
-              <h6 className="font-weight-light">Please Sign in to continue.</h6>
+              {/* <h6 className="font-weight-light">Please Sign in to continue.</h6> */}
               <Form className="pt-3">
                 <Form.Group className="d-flex search-field">
                   <Form.Control

@@ -39,7 +39,7 @@ function Highlight(props) {
 	return (
 		<div className="sidebarnew" style={{ width: "25vw" }}>
 			{/*  */}
-			<div className="description" style={{ padding: "1rem" }}>
+			<div className="card-description" style={{ padding: "1rem" }}>
 				<h2 style={{ marginBottom: "1rem" }}>Highlights</h2>
 
 				<p>
