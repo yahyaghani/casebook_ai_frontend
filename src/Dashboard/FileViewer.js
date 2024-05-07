@@ -216,6 +216,22 @@ function FileViewer() {
     dispatch({ type: 'ADD_HIGHLIGHT_TEXT', payload });
 };
 
+const handleWheel = (event) => {
+  const delta = event.deltaY;
+  event.preventDefault(); // Prevent the sidebar itself from scrolling
+
+  if (delta < 0) {
+    // Scrolling up
+    handlePreviousHighlight();
+  } else if (delta > 0) {
+    // Scrolling down
+    handleNextHighlight();
+  }
+};
+const handleHighlightClick = (index) => {
+  setCurrentHighlightIndex(index);
+  updateHash(highlights[index]);
+};
 
   return (
 
@@ -268,30 +284,31 @@ function FileViewer() {
   </div>
   
   {/* Highlight cards */}
-  <div className="sidebar__highlights">
-    {highlights.length > 0 ? (
-      <div className="highlight-card" key={currentHighlightIndex} onClick={() => updateHash(highlights[currentHighlightIndex])}>
-        <div className="card-body">
-          <strong>{processMd(highlights[currentHighlightIndex].comment.text)}</strong>
-          {highlights[currentHighlightIndex].content.text && (
-            <blockquote>{`${highlights[currentHighlightIndex].content.text.slice(0, 90).trim()}…`}</blockquote>
+  <div className="sidebar__highlights" onWheel={handleWheel}>
+  {highlights.length > 0 ? (
+    highlights.map((highlight, idx) => (
+      <div
+        className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`}
+        key={idx}
+        onClick={() => handleHighlightClick(idx)}
+      >
+        <div className="">
+          <strong>{processMd(highlight.comment.text)}</strong>
+          {highlight.content.text && (
+            <blockquote>{`${highlight.content.text.slice(0, 90).trim()}…`}</blockquote>
           )}
-          {highlights[currentHighlightIndex].content.image && (
+          {highlight.content.image && (
             <div className="highlight__image" style={{ marginTop: "0.5rem" }}>
-              <img src={highlights[currentHighlightIndex].content.image} alt="Screenshot" />
+              <img src={highlight.content.image} alt="Screenshot" />
             </div>
           )}
         </div>
       </div>
-    ) : (
-      // <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
-      <div className="no-highlights">
-      No Highlights Available for Selected Pdf!
-
-    </div>
-
-    )}
-  </div>
+    ))
+  ) : (
+    <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
+  )}
+</div>
 
 
     {/* Gap between buttons and summary card */}
