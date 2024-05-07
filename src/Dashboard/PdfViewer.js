@@ -5,7 +5,10 @@ import {
 	Highlight,
 	Popup,
 	AreaHighlight,
+	
 } from "react-pdf-highlighter";
+
+import StickyNote from './StickyNote';
 
 import { Container } from "react-bootstrap";
 import styled from "styled-components";
@@ -201,13 +204,23 @@ function PdfViewer() {
 													const isTextHighlight = !Boolean(
 														highlight.content && highlight.content.image
 													);
+													const showStickyNote = highlight.content;
 
 													const component = isTextHighlight ? (
-														<Highlight
-															isScrolledTo={isScrolledTo}
-															position={highlight.position}
-															comment={highlight.comment}
-														/>
+												
+												/* Turn on off highlight vs sticky note ,have to make the full conditional logic here*/
+
+													// 	<Highlight
+													// 	isScrolledTo={isScrolledTo}
+													// 	position={highlight.position}
+													// 	comment={highlight.comment}
+													// />
+													<StickyNote
+													isScrolledTo={isScrolledTo}
+													position={highlight.position}
+													comment={highlight.comment}
+												/>
+											
 													) : (
 														<AreaHighlight
 															highlight={highlight}
@@ -222,8 +235,11 @@ function PdfViewer() {
 															}}
 														/>
 													);
-
+												
+								
 													return (
+
+														
 														<Popup
 															popupContent={<HighlightPopup {...highlight} />}
 															onMouseOver={(popupContent) =>
@@ -235,6 +251,7 @@ function PdfViewer() {
 														/>
 													);
 												}}
+
 												highlights={highlights}
 											/>
 										</>

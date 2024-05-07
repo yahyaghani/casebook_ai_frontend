@@ -1,4 +1,24 @@
 /* Cards */
+.newcard {
+  position: sticky;
+  top: 0; // Start at top, will adjust for individual cards if needed
+  background: rgb(27, 36, 44);
+  padding: 1.5rem;
+  box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: $card-border-radius; // Use variable for consistency
+  margin-bottom: 2rem; // Add space between cards
+}
+  // Ensuring each card's top is slightly adjusted to create the sticky layered effect
+  @for $i from 1 through 20 {
+    .newcard:nth-child(#{$i}) {
+      top: #{$i * 1rem};
+      transform: rotate(#{$i * 1deg});
+    }
+  }
+
+
+
+
 
 .card {
   border-radius: $card-border-radius;

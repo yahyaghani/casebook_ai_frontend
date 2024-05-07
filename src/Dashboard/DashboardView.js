@@ -6,7 +6,7 @@ import DashboardCard from "../shared/DashboardCard";
 function DashboardView() {
 	return (
 		<div
-			className="dashboard-view bg-dark2 p-5 text-center"
+			className="dashboard-view bg-dark3 p-5 text-center"
 			style={{ width: "100%" }}
 		>
 			<Row>

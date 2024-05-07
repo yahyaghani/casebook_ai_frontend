@@ -184,7 +184,7 @@ function FileUploadComponent(props) {
 						type="submit"
 						onClick={(e) => _handleSubmit(e)}
 					>
-						Upload File
+						Upload
 					</Button>
 					{isLoading ? (
 						<div className="loading"></div>

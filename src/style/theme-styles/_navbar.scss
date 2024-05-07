@@ -53,6 +53,8 @@
     }
   }
   .navbar-menu-wrapper {
+    box-shadow:21px 19px 34px -15px rgba(0, 0, 0, 0.5);
+    background:linear-gradient(to right, #191c24 0%, #484e5e 50%, #212847 100%);
     transition: width $action-transition-duration $action-transition-timing-function;
     -webkit-transition: width $action-transition-duration $action-transition-timing-function;
     -moz-transition: width $action-transition-duration $action-transition-timing-function;
