@@ -278,11 +278,38 @@ const handleHighlightClick = (index) => {
 
   {/* Descriptive and control elements */}
   <div className="description" style={{ padding: "1rem" }}>
-        <div className="summary-section"><h2>Highlights</h2></div>
-
+    
+    <div className="summary-section"><h2>Highlights</h2></div>
  
   </div>
   
+  {/* Highlight cards */}
+  <div className="sidebar__highlights" onWheel={handleWheel}>
+  {highlights.length > 0 ? (
+    highlights.map((highlight, idx) => (
+      <div
+        className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`}
+        key={idx}
+        onClick={() => handleHighlightClick(idx)}
+      >
+        <div className="">
+          <strong>{processMd(highlight.comment.text)}</strong>
+          {highlight.content.text && (
+            <blockquote>{`${highlight.content.text.slice(0, 90).trim()}…`}</blockquote>
+          )}
+          {highlight.content.image && (
+            <div className="highlight__image" style={{ marginTop: "0.5rem" }}>
+              <img src={highlight.content.image} alt="Screenshot" />
+            </div>
+          )}
+        </div>
+      </div>
+    ))
+  ) : (
+    <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
+  )}
+</div>
+
 
     {/* Gap between buttons and summary card */}
     <div style={{ height: '10px' }}></div>  {/* Adjust the height as needed for desired spacing */}
