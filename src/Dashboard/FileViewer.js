@@ -278,8 +278,8 @@ const handleHighlightClick = (index) => {
 
   {/* Descriptive and control elements */}
   <div className="description" style={{ padding: "1rem" }}>
-    
-    <div className="summary-section"><h2>Highlights</h2></div>
+        <div className="summary-section"><h2>Highlights</h2></div>
+
  
   </div>
   
