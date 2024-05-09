@@ -10,87 +10,91 @@
     --chat-send-button-background: #8147fc;
     --chat-text-color: #a3a3a3;
     --chat-options-svg: #a3a3a3;
-
-  }
-
-  .chat__conversation-board {
-    height: calc(100vh - 50vh); /* Adjust height as needed to fit the chat panel and any other UI elements */
-    overflow-y: auto; /* Enables vertical scrolling when content overflows */
-    padding: 10px 20px; /* Provide some padding around messages */
 }
 
+.chat__conversation-board {
+    height: calc(78vh - 24vh); 
+    overflow-y: auto;
+    padding: 1vh 20px;
+    font-family: 'Kalam', cursive;
 
-  .chat__conversation-board__message__person__nickname,
+}
+
+.chat__conversation-board::-webkit-scrollbar {
+    width: 2vw;
+    font-family: 'Kalam', cursive;
+
+}
+
+.chat__conversation-board::-webkit-scrollbar-track {
+    background: rgb(34, 45, 55);
+    font-family: 'Kalam', cursive;
+
+}
+
+.chat__conversation-board::-webkit-scrollbar-thumb {
+    background-color: #fff;
+    border-radius: 0.25rem;
+    border: 1em solid rgb(46, 95, 138);
+    font-family: 'Kalam', cursive;
+
+}
+
+.chat__conversation-board__message__person__nickname,
 .chat__conversation-board__message__bubble span {
-    font-family: 'Kalam', cursive; /* Ensures text messages and nicknames use the 'Kalam' font */
+    font-family: 'Kalam', cursive;
 }
 
-  #chat {
-    /* background: var(--chat-background); */
-    background:rgb(27, 36, 44);
-    /* max-width: 600px; */
-    margin: 15px auto;
-    padding: 1em;
+#chat {
+    background: rgb(27 36 44);
+    top: 5vh;
+    margin: 1vh auto;
+    padding: 1vh;
     border-radius: 0.25rem;
     position: relative;
     overflow: hidden;
-    /* box-shadow: 0 1.5rem 1rem rgba(0, 0, 4, 0.15); */
     box-shadow: 0 1.5rem 0rem rgba(0, 0, 0, 0.15);
-    min-height: calc(100vh - 150vh);
-    /* font-family: 'Lato', sans-serif; Example using Lato, ensure the font is loaded in your HTML or via CSS @import */
+    min-height: calc(50vh);
     font-family: 'Kalam', cursive;
+}
 
-  }
-  
-  #chat::before {
+#chat::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* background: url('https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80') fixed; */
-   background:rgb(27, 36, 44);
+    background: rgb(27, 36, 44);
     z-index: -1;
+    min-height: calc(50vh);
     font-family: 'Kalam', cursive;
-    min-height: calc(100vh - 460px);
 
-  }
-  
-  .chat__conversation-panel {
+}
+
+.chat__conversation-panel {
     position: absolute;
     bottom: 0;
-    width: 50%; /* Make sure it spans the width of its container */
-    /* left: 50%; Center align the panel */
-    /* transform: translateX(-50%); Offset the panel to align with the chat container */
-    /* width: 600px; Same as the chat box for alignment */
-    background:#11171c;
+    width: 100%;
+    background: #11171c;
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    font-family: 'Kalam', cursive;
+
 }
 
-  .btn-icon svg {
-    stroke: #FFF;
-    fill: #FFF;
-    width: 50%;
-    height: auto;
-  }
-  
-
-/*  */
 .chat__conversation-panel__input {
-    /* flex: 1; Take available space */
-    margin-right: 0.5rem; /* Space between input and button */
+    margin-right: 0.5rem;
     padding: 0.5rem;
     border: 2px solid #ddd;
     border-radius: 0.25rem;
     outline: none;
-    max-width:100%;
+    flex: 1;
+    font-family: 'Kalam', cursive;
+
 }
-
-
 
 .chat__conversation-panel__button {
     display: flex;
@@ -103,15 +107,49 @@
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background 0.3s ease;
+    font-family: 'Kalam', cursive;
+
 }
 
 .chat__conversation-panel__button svg {
     width: 24px;
     height: 24px;
-    color: white; /* Adjust color to match design */
+    color: white;
+    /* font-family: 'Kalam', cursive; */
+
 }
 
-
 .chat__conversation-panel__button:hover {
-    background-color: darken(var(--chat-send-button-background), 2%);
+    background-color: rgb(27, 158, 7);
+    font-family: 'Kalam', cursive;
+
+}
+
+/* Remove tail and adjust alignment for 'me' type messages */
+.chat__conversation-board__message__bubble {
+    background-color: #463046d6; 
+    color: #ffffff; 
+    padding: 10px 20px; 
+    border-radius: 18px; 
+    margin: 5px 0;
+    max-width: 70%; 
+    word-wrap: break-word;
+    position: relative; 
+    font-family: 'Kalam', cursive;
+    top:10px;
+
+}
+
+.chat__conversation-board__message-container.me .chat__conversation-board__message__context {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 5%;  /* Adjust as needed for slight right-centering */
+    /* font-family: 'Kalam', cursive; */
+
+}
+
+.chat__conversation-board__message-container:not(:last-child) {
+    margin-bottom: 2vh;
+    /* font-family: 'Kalam', cursive; */
+
 }

@@ -49,14 +49,19 @@ background-color: #f0f0f0;
  
   
   .highlight-actions {
-    display: inline-flex;
-    justify-content: center;
-    padding-top: 1px;
-    grid-gap: 2em;
-    gap: 5px;
-    /* margin-left: 1em; */
+    /* display: inline-flex; */
+	display: flex; /* Use flexbox */
+
+	justify-content: space-between; /* Space between the children */
+    align-items: center; /* Align items vertically */
+    width: 100%; /* Ensure the container spans the full width of its parent */
+    padding: 1px; /* Maintain the padding */
+
 }
   
+
+
+
   .no-highlights {
 	padding: 20px;
 	text-align: center;
@@ -118,7 +123,7 @@ background:linear-gradient(132deg, #85899e 0%, #4b5272 50%, #bbafc4 100%);
 .sidebar__highlights {
 	list-style: 'none';
 	padding: 0;
-	top:10px;
+	top:2vh;
 }
 
 .highlight__location {

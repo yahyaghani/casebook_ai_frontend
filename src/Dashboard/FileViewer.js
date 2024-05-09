@@ -246,11 +246,11 @@ scrollToActiveCard();
 
 return (
   <Resizable className="box" width={dimensions.width} onResize={(e, { size }) => setDimensions({ width: size.width })} resizeHandles={["e"]}>
-      <div className="sidebarnew" style={{ width: dimensions.width + 'px' }}>
+      <div className="sidebarnew" style={{ width: "36vw" }}>
 
           {/* Progress Bar */}
-          <div className="progress-container" style={{ width: '100%', backgroundColor: '#e0e0e0', height: '5px', margin: '10px 0' }}>
-              <div className="progress-bar" style={{ width: `${highlightProgress}%`, height: '5px', backgroundColor: '#007bff' }}></div>
+          <div className="progress-container" style={{ width: '100%', backgroundColor: '#222d37', height: '1vh', margin: '1vh 0' }}>
+              <div className="progress-bar" style={{ width: `${highlightProgress}%`, height: '5px', backgroundColor: '#2e5f8a' }}></div>
           </div>
 
           {/* Navigation and Filtering */}
@@ -281,7 +281,7 @@ return (
           </div>
 
           {/* Highlight cards within a scrollable container */}
-          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(100vh - 85vh)", position: "relative" }}>
+          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(15vh)", position: "relative" }}>
               {highlights.length > 0 ? highlights.map((highlight, idx) => (
                   <div className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`} key={idx} onClick={() => handleHighlightClick(idx)}>
                       <div>

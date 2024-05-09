@@ -33,7 +33,7 @@ const PdfViewerSide = (props) => {
                 style={{
                     minWidth: "20%",
                     width: dimensions.width + "px" || "25%",
-                    height: '100vw',
+                    height: '100vh',
                     // overflowY: "scroll",
                 }}
             >
