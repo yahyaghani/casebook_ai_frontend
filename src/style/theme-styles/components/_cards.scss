@@ -1,23 +1,77 @@
-/* Cards */
+// /* Cards */
+
+/* stacking but no scroll working */
+// .newcard {
+//   position: sticky;
+//   top: 0; // Start at top, will adjust for individual cards if needed
+//   background: rgb(27, 36, 44);
+//   padding: 1.5rem;
+//   box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+//   border-radius: $card-border-radius; // Use variable for consistency
+//   margin-bottom: 2rem; // Add space between cards
+// }
+//   // Ensuring each card's top is slightly adjusted to create the sticky layered effect
+//  @for $i from 1 through 20 {
+//   .newcard:nth-child(#{$i}) {
+//     top: #{$i }; // This computes each card's top value based on its index
+//   }
+// }
+
+/* individual scroll working */
 .newcard {
+  display: none; // Initially set all cards to not display
   position: sticky;
-  top: 0; // Start at top, will adjust for individual cards if needed
+  top: 0; // All cards start from the top
   background: rgb(27, 36, 44);
   padding: 1.5rem;
   box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border-radius: $card-border-radius; // Use variable for consistency
-  margin-bottom: 2rem; // Add space between cards
-}
-  // Ensuring each card's top is slightly adjusted to create the sticky layered effect
-  @for $i from 1 through 20 {
-    .newcard:nth-child(#{$i}) {
-      top: #{$i * 1rem};
-      transform: rotate(#{$i * 1deg});
-    }
+  border-radius: $card-border-radius;
+  margin-bottom: 2rem;
+  
+  &.active {
+    display: block; // Only the active card is displayed
   }
+}
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar__highlights::-webkit-scrollbar {
+  display: none;
+  
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.sidebar__highlights {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 
+.description
+// .newcard {
+//   display: none; // Initially set all cards to not display
+//   position: sticky;
+//   top: 0; // All cards start from the top
+//   background: rgb(27, 36, 44);
+//   padding: 1.5rem;
+//   box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+//   border-radius: $card-border-radius;
+//   margin-bottom: 2rem;
+
+//   &.active {
+//     display: block; // Only the active card is displayed
+//   }
+
+//   &:nth-child(1).active {
+//     top: 0; // First card stays at the top
+//   }
+
+//   &:nth-child(2).active {
+//     top: 20px; // Second card is slightly lower
+//   }
+
+//   &:nth-child(n+3).active {
+//     top: 40px; // Third and subsequent cards stack on top of the second one
+//   }
+// }
 
 
 .card {
