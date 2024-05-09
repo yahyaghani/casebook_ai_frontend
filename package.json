@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@appbaseio/reactivesearch": "^3.18.0",
+    "@chatscope/chat-ui-kit-react": "^2.0.3",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@material-ui/core": "^4.12.3",

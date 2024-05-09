@@ -24,7 +24,8 @@
   top: 0; // All cards start from the top
   background: rgb(27, 36, 44);
   padding: 1.5rem;
-  box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+  // box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1.5rem 0rem rgba(0, 0, 0, 0.15);
   border-radius: $card-border-radius;
   margin-bottom: 2rem;
   

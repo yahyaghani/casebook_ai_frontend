@@ -1,34 +1,117 @@
-.chat-container {
+@import url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');
+
+/* Chatstyles.css */
+:root {
+    --chat-background: rgba(10, 14, 14, 0.95);
+    --chat-panel-background: #131719;
+    --chat-bubble-background: #14181a;
+    --chat-bubble-active-background: #171a1b;
+    --chat-add-button-background: #212324;
+    --chat-send-button-background: #8147fc;
+    --chat-text-color: #a3a3a3;
+    --chat-options-svg: #a3a3a3;
+
+  }
+
+  .chat__conversation-board {
+    height: calc(100vh - 50vh); /* Adjust height as needed to fit the chat panel and any other UI elements */
+    overflow-y: auto; /* Enables vertical scrolling when content overflows */
+    padding: 10px 20px; /* Provide some padding around messages */
+}
+
+
+  .chat__conversation-board__message__person__nickname,
+.chat__conversation-board__message__bubble span {
+    font-family: 'Kalam', cursive; /* Ensures text messages and nicknames use the 'Kalam' font */
+}
+
+  #chat {
+    /* background: var(--chat-background); */
+    background:rgb(27, 36, 44);
+    /* max-width: 600px; */
+    margin: 15px auto;
+    padding: 1em;
+    border-radius: 0.25rem;
+    position: relative;
+    overflow: hidden;
+    /* box-shadow: 0 1.5rem 1rem rgba(0, 0, 4, 0.15); */
+    box-shadow: 0 1.5rem 0rem rgba(0, 0, 0, 0.15);
+    min-height: calc(100vh - 150vh);
+    /* font-family: 'Lato', sans-serif; Example using Lato, ensure the font is loaded in your HTML or via CSS @import */
+    font-family: 'Kalam', cursive;
+
+  }
+  
+  #chat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: url('https://images.unsplash.com/photo-1495808985667-ba4ce2ef31b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80') fixed; */
+   background:rgb(27, 36, 44);
+    z-index: -1;
+    font-family: 'Kalam', cursive;
+    min-height: calc(100vh - 460px);
+
+  }
+  
+  .chat__conversation-panel {
+    position: absolute;
+    bottom: 0;
+    width: 50%; /* Make sure it spans the width of its container */
+    /* left: 50%; Center align the panel */
+    /* transform: translateX(-50%); Offset the panel to align with the chat container */
+    /* width: 600px; Same as the chat box for alignment */
+    background:#11171c;
+    padding: 0.5rem;
     display: flex;
-    flex-direction: column;
-    height: 300px; /* Adjust based on your needs */
-    border: 1px solid #ccc;
-    padding: 10px;
+    justify-content: space-between;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
 
-.messages-list {
-    flex-grow: 1;
-    overflow-y: auto;
+  .btn-icon svg {
+    stroke: #FFF;
+    fill: #FFF;
+    width: 50%;
+    height: auto;
+  }
+  
+
+/*  */
+.chat__conversation-panel__input {
+    /* flex: 1; Take available space */
+    margin-right: 0.5rem; /* Space between input and button */
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 0.25rem;
+    outline: none;
+    max-width:100%;
 }
 
-.message {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
 
-.message-input {
+
+.chat__conversation-panel__button {
     display: flex;
-    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background-color: var(--chat-send-button-background);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-.message-input input {
-    flex-grow: 1;
-    margin-right: 5px;
-    padding: 5px;
+.chat__conversation-panel__button svg {
+    width: 24px;
+    height: 24px;
+    color: white; /* Adjust color to match design */
 }
 
-.message-input button {
-    padding: 5px 10px;
+
+.chat__conversation-panel__button:hover {
+    background-color: darken(var(--chat-send-button-background), 2%);
 }
