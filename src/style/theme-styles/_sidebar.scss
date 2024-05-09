@@ -2,7 +2,8 @@
 
 .sidebar {
   min-height: calc(100vh - #{$navbar-height});
-  background: $sidebar-bg;
+  // background: $sidebar-bg;
+  background:linear-gradient(176deg, #191c24, #272e4a);
   font-weight: normal;
   padding: 0;
   width: $sidebar-width-lg;

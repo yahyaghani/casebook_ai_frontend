@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-// import ChatUI from '../shared/Chatbox';
+import ChatUI from '../shared/Chatbox';
 
 import "../style/resizable.css";
 
@@ -281,7 +281,7 @@ return (
           </div>
 
           {/* Highlight cards within a scrollable container */}
-          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(100vh - 670px)", position: "relative" }}>
+          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(100vh - 85vh)", position: "relative" }}>
               {highlights.length > 0 ? highlights.map((highlight, idx) => (
                   <div className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`} key={idx} onClick={() => handleHighlightClick(idx)}>
                       <div>
@@ -302,8 +302,9 @@ return (
           </div>
 
           {/* Summary Card Section */}
-          <div className="description" style={{ padding: "1rem" }}>
-            
+          {/* <div className="description" style={{ padding: "1rem" }}> */}
+          <div className="description">
+
               {/* <div className="summary-section"><h2>Summary</h2></div>
               <div className="highlight-card" key={currentHighlightIndex}>
                   <div className="card-body">
@@ -313,7 +314,7 @@ return (
               </div> */}
 
 
-        {/* <ChatUI /> */}
+        <ChatUI />
 
           </div>
 
