@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import ChatUI from '../shared/Chatbox';
+// import ChatUI from '../shared/Chatbox';
 
 import "../style/resizable.css";
 
@@ -313,7 +313,7 @@ return (
               </div> */}
 
 
-        <ChatUI />
+        {/* <ChatUI /> */}
 
           </div>
 
