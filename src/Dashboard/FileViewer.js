@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import ChatUI from '../shared/Chatbox';
 
 import "../style/resizable.css";
 
@@ -50,31 +51,25 @@ function FileViewer() {
     setCurrentHighlightIndex(highlights.indexOf(prevHighlight));
     updateHash(prevHighlight);
     updateProgress(highlights.indexOf(prevHighlight), filteredHighlights.length);
+    scrollToActiveCard(); // Ensuring the card scrolls into view
+};
 
-  };
-      
-  const handleNextHighlight = () => {
+const handleNextHighlight = () => {
     const filteredHighlights = highlights.filter(h => h.comment.text.toUpperCase().includes(filter));
-
     if (filteredHighlights.length === 0) {
-      // alert(`No highlights available for '${filter}'`);
       return; // Early return to prevent further execution
     }
     const currentFilteredIndex = filteredHighlights.findIndex(h => h === highlights[currentHighlightIndex]);
     const nextIndex = (currentFilteredIndex + 1) % filteredHighlights.length;
-  
     if (nextIndex === 0 && currentFilteredIndex === filteredHighlights.length - 1) {
-      // alert(`Reached end of '${filter}' highlights`);
       return;
     }
-  
     const nextHighlight = filteredHighlights[nextIndex];
     setCurrentHighlightIndex(highlights.indexOf(nextHighlight));
     updateHash(nextHighlight);
     updateProgress(highlights.indexOf(nextHighlight), filteredHighlights.length);
-
-  };
-      
+    scrollToActiveCard(); // Ensuring the card scrolls into view
+};
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
@@ -218,117 +213,114 @@ function FileViewer() {
 
 const handleWheel = (event) => {
   const delta = event.deltaY;
-  event.preventDefault(); // Prevent the sidebar itself from scrolling
+  event.preventDefault(); // Prevent default scrolling
 
   if (delta < 0) {
-    // Scrolling up
     handlePreviousHighlight();
   } else if (delta > 0) {
-    // Scrolling down
     handleNextHighlight();
   }
+  scrollToActiveCard(); // Ensure the new active card is scrolled to view
 };
+
+
+
 const handleHighlightClick = (index) => {
   setCurrentHighlightIndex(index);
   updateHash(highlights[index]);
 };
 
-  return (
+
+const scrollToActiveCard = () => {
+  setTimeout(() => {
+      const activeCard = document.querySelector('.newcard.active');
+      if (activeCard) {
+          activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+  }, 0);
+};
+
+// Call this function after updating the current highlight index
+// setCurrentHighlightIndex(newIndex);
+scrollToActiveCard();
+
+return (
+  <Resizable className="box" width={dimensions.width} onResize={(e, { size }) => setDimensions({ width: size.width })} resizeHandles={["e"]}>
+      <div className="sidebarnew" style={{ width: dimensions.width + 'px' }}>
+
+          {/* Progress Bar */}
+          <div className="progress-container" style={{ width: '100%', backgroundColor: '#e0e0e0', height: '5px', margin: '10px 0' }}>
+              <div className="progress-bar" style={{ width: `${highlightProgress}%`, height: '5px', backgroundColor: '#007bff' }}></div>
+          </div>
+
+          {/* Navigation and Filtering */}
+          <div className="highlight-actions">
+              <button className="btn btn-secondary" onClick={(e) => {
+                  e.stopPropagation();
+                  handlePreviousHighlight();
+              }}>Previous</button>
+
+              <UncontrolledDropdown>
+                  <DropdownToggle caret color="warning">
+                      Category
+                  </DropdownToggle>
+                  <DropdownMenu>
+                      <DropdownItem header>Jump to</DropdownItem>
+                      <DropdownItem onClick={() => handleFilterChange("AXIOM")}>Axiom</DropdownItem>
+                      <DropdownItem onClick={() => handleFilterChange("ISSUE")}>Issue</DropdownItem>
+                      <DropdownItem onClick={() => handleFilterChange("LEGAL_TEST")}>Legal Test</DropdownItem>
+                      <DropdownItem onClick={() => handleFilterChange("CONCLUSION")}>Conclusion</DropdownItem>
+                      <DropdownItem divider />
+                  </DropdownMenu>
+              </UncontrolledDropdown>
+
+              <button className="btn btn-primary" onClick={(e) => {
+                  e.stopPropagation();
+                  handleNextHighlight();
+              }}>Next</button>
+          </div>
+
+          {/* Highlight cards within a scrollable container */}
+          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(100vh - 670px)", position: "relative" }}>
+              {highlights.length > 0 ? highlights.map((highlight, idx) => (
+                  <div className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`} key={idx} onClick={() => handleHighlightClick(idx)}>
+                      <div>
+                          <strong>{processMd(highlight.comment.text)}</strong>
+                          {highlight.content.text && (
+                              <blockquote>{`${highlight.content.text.slice(0, 90).trim()}…`}</blockquote>
+                          )}
+                          {highlight.content.image && (
+                              <div className="highlight__image" style={{ marginTop: "0.5rem" }}>
+                                  <img src={highlight.content.image} alt="Screenshot" />
+                              </div>
+                          )}
+                      </div>
+                  </div>
+              )) : (
+                  <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
+              )}
+          </div>
+
+          {/* Summary Card Section */}
+          <div className="description" style={{ padding: "1rem" }}>
+            
+              {/* <div className="summary-section"><h2>Summary</h2></div>
+              <div className="highlight-card" key={currentHighlightIndex}>
+                  <div className="card-body">
+                      <strong> Details Here</strong>
+                      <blockquote>This is an example of some summary text that could be here.</blockquote>
+                  </div>
+              </div> */}
 
 
-<Resizable className="box" width={dimensions.width} onResize={(e, { size }) => setDimensions({  width: size.width })} resizeHandles={["e"]}>
+<ChatUI />
 
-<div className="sidebarnew" style={{
-    width: dimensions.width + 'px',
-    // overflowY: "scroll",
-  }}>
+          </div>
 
-      {/* Progress Bar */}
-  <div className="progress-container" style={{ width: '100%', backgroundColor: '#e0e0e0', height: '5px', margin: '10px 0' }}>
-    <div className="progress-bar" style={{ width: `${highlightProgress}%`, height: '5px', backgroundColor: '#007bff' }}></div>
-  </div>
-
-
-  {/* Navigation buttons */}
-  <div className="highlight-actions">
-    <button className="btn btn-secondary" onClick={(e) => {
-      e.stopPropagation();
-      handlePreviousHighlight();
-    }}>Previous</button>
-
-       {/* Filtering dropdown */}
-       <UncontrolledDropdown>
-      <DropdownToggle caret color="warning">
-        Category
-      </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem header>Jump to</DropdownItem>
-        <DropdownItem onClick={() => handleFilterChange("AXIOM")}>Axiom</DropdownItem>
-        <DropdownItem onClick={() => handleFilterChange("ISSUE")}>Issue</DropdownItem>
-        <DropdownItem onClick={() => handleFilterChange("LEGAL_TEST")}>Legal Test</DropdownItem>
-        <DropdownItem onClick={() => handleFilterChange("CONCLUSION")}>Conclusion</DropdownItem>
-        <DropdownItem divider />
-      </DropdownMenu>
-    </UncontrolledDropdown>
-    <button className="btn btn-primary" onClick={(e) => {
-      e.stopPropagation();
-      handleNextHighlight();
-    }}>Next</button>
-  </div>
-
-  {/* Descriptive and control elements */}
-  <div className="description" style={{ padding: "1rem" }}>
-    
-    <div className="summary-section"><h2>Highlights</h2></div>
- 
-  </div>
-  
-  {/* Highlight cards */}
-  <div className="sidebar__highlights" onWheel={handleWheel}>
-  {highlights.length > 0 ? (
-    highlights.map((highlight, idx) => (
-      <div
-        className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`}
-        key={idx}
-        onClick={() => handleHighlightClick(idx)}
-      >
-        <div className="">
-          <strong>{processMd(highlight.comment.text)}</strong>
-          {highlight.content.text && (
-            <blockquote>{`${highlight.content.text.slice(0, 90).trim()}…`}</blockquote>
-          )}
-          {highlight.content.image && (
-            <div className="highlight__image" style={{ marginTop: "0.5rem" }}>
-              <img src={highlight.content.image} alt="Screenshot" />
-            </div>
-          )}
-        </div>
       </div>
-    ))
-  ) : (
-    <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
-  )}
-</div>
-
-
-    {/* Gap between buttons and summary card */}
-    <div style={{ height: '10px' }}></div>  {/* Adjust the height as needed for desired spacing */}
-    {/* New Summary Card Section */}
-<div className="description" style={{ padding: "1rem" }}>
-
-  <div className="summary-section">  <h2>Summary</h2></div></div>
-  <div className="sidebar__highlights">  
-
-  <div className="highlight-card" key={currentHighlightIndex}>
-    <div className="card-body">
-      <strong> Details Here</strong>
-      <blockquote>This is an example of some summary text that could be here.</blockquote>
-    </div>
-  </div>
-
-</div></div>
-</Resizable>
+  </Resizable>
 );
+
 }
 
 export default FileViewer;

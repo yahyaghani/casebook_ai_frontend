@@ -356,7 +356,9 @@ export default function TextEditor({
 			filename: fileName
 		};
 	
-		socket.emit("openai-query", dataToSend); // Emit the openai-query event with the data
+		// socket.emit("openai-query", dataToSend); // Emit the openai-query event with the data
+		socket.emit("openai-chat", dataToSend); // Emit the openai-query event with the data
+		
 		setLoadingSend(true);
 
 		// Optionally clear the query box after sending the query
