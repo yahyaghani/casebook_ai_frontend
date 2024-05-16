@@ -17,19 +17,16 @@
     overflow-y: auto;
     padding: 1vh 20px;
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-board::-webkit-scrollbar {
     width: 2vw;
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-board::-webkit-scrollbar-track {
     background: rgb(34, 45, 55);
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-board::-webkit-scrollbar-thumb {
@@ -37,7 +34,6 @@
     border-radius: 0.25rem;
     border: 1em solid rgb(46, 95, 138);
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-board__message__person__nickname,
@@ -69,7 +65,6 @@
     z-index: -1;
     min-height: calc(50vh);
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-panel {
@@ -82,7 +77,6 @@
     justify-content: space-between;
     box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-panel__input {
@@ -93,7 +87,6 @@
     outline: none;
     flex: 1;
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-panel__button {
@@ -109,7 +102,6 @@
     cursor: pointer;
     transition: background 0.3s ease;
     font-family: 'Kalam', cursive;
-
 }
 
 .chat__conversation-panel__button svg {
@@ -117,19 +109,15 @@
     height: 24px;
     color: white;
     /* font-family: 'Kalam', cursive; */
-
 }
 
 .chat__conversation-panel__button:hover {
     background-color: rgb(27, 158, 7);
     font-family: 'Kalam', cursive;
-
 }
 
-/* Remove tail and adjust alignment for 'me' type messages */
+/* Styles for message bubbles */
 .chat__conversation-board__message__bubble {
-    background-color: #463046d6; 
-    color: #ffffff; 
     padding: 10px 20px; 
     border-radius: 18px; 
     margin: 5px 0;
@@ -137,28 +125,34 @@
     word-wrap: break-word;
     position: relative; 
     font-family: 'Kalam', cursive;
-    top:10px;
-
 }
 
-.chat__conversation-board__message__bubble.user-message {
+/* Casebook AI messages (left-aligned) */
+.chat__conversation-board__message-container.me {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.chat__conversation-board__message-container.me .chat__conversation-board__message__bubble {
+    background-color: #463046d6; 
+    color: #ffffff; 
+}
+
+/* User messages (right-aligned) */
+.chat__conversation-board__message-container.user {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat__conversation-board__message-container.user .chat__conversation-board__message__bubble {
     background-color: #e0e0e0;
     color: #000;
 }
 
-/* Other custom styles for user messages */
-
-
-.chat__conversation-board__message-container.me .chat__conversation-board__message__context {
-    display: flex;
-    justify-content: flex-end;
-    margin-left: 5%;  /* Adjust as needed for slight right-centering */
-    /* font-family: 'Kalam', cursive; */
-
+.chat__conversation-board__message__person__nickname {
+    margin: 0 10px;
 }
 
 .chat__conversation-board__message-container:not(:last-child) {
     margin-bottom: 2vh;
-    /* font-family: 'Kalam', cursive; */
-
 }

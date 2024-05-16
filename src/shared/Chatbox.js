@@ -56,11 +56,8 @@ const ChatUI = ({ socket }) => {
                 {messages.map((msg, index) => (
                     <div key={index} className={`chat__conversation-board__message-container ${msg.type === 'me' ? 'me' : 'user'}`}>
                         <div className="chat__conversation-board__message__person">
-                            {msg.type === 'me' ?
-                                <img src="/static/media/scaletransm2.5eb52ef8.png" alt={msg.nickName} style={{ width: '35px', height: '35px', borderRadius: '50%' }} /> :
-                                <div style={{ width: '35px', height: '35px', borderRadius: '50%', backgroundColor: 'blue', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    Y
-                                </div>
+                            {msg.type === 'me' &&
+                                <img src="/static/media/scaletransm2.5eb52ef8.png" alt={msg.nickName} style={{ width: '35px', height: '35px', borderRadius: '50%' }} />
                             }
                             <span className="chat__conversation-board__message__person__nickname">{msg.nickName}</span>
                         </div>
