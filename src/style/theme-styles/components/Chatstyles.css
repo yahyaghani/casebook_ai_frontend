@@ -101,7 +101,8 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem 1rem;
-    background-color: var(--chat-send-button-background);
+    /* background-color: var(--chat-send-button-background); */
+    background-color: #1f5c44;
     color: white;
     border: none;
     border-radius: 0.25rem;
@@ -139,6 +140,14 @@
     top:10px;
 
 }
+
+.chat__conversation-board__message__bubble.user-message {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+/* Other custom styles for user messages */
+
 
 .chat__conversation-board__message-container.me .chat__conversation-board__message__context {
     display: flex;

@@ -1,0 +1,36 @@
+[33md57579b3[m[33m ([m[1;36mHEAD -> [m[1;32mnew-updates[m[33m, [m[1;31morigin/new-updates[m[33m)[m HEAD@{0}: checkout: moving from new to new-updates
+[33m1a7b1778[m[33m ([m[1;31morigin/new[m[33m, [m[1;32mnew[m[33m)[m HEAD@{1}: commit: connecting chat to back
+[33mf15acc1c[m HEAD@{2}: commit: chat-ui-improve
+[33m5f91df9b[m HEAD@{3}: commit: new-test
+[33mfc03702a[m[33m ([m[1;32mnew-ui-updates[m[33m)[m HEAD@{4}: checkout: moving from new-ui-updates to new
+[33mfc03702a[m[33m ([m[1;32mnew-ui-updates[m[33m)[m HEAD@{5}: commit: fixing
+[33m165bbe7c[m HEAD@{6}: commit: fixing
+[33mc135d674[m HEAD@{7}: commit: fixing
+[33m92054b6e[m HEAD@{8}: commit: fixing
+[33m6a3d3d92[m HEAD@{9}: commit: fixing
+[33m7e9c3b7e[m[33m ([m[1;32mcoauth[m[33m)[m HEAD@{10}: checkout: moving from coauth to new-ui-updates
+[33m7e9c3b7e[m[33m ([m[1;32mcoauth[m[33m)[m HEAD@{11}: commit: fixing
+[33m764e6ff2[m HEAD@{12}: commit: fixing
+[33m6e5b76a7[m HEAD@{13}: pull origin coauth: Merge made by the 'recursive' strategy.
+[33m5515ab16[m HEAD@{14}: commit: fixing
+[33mcd73286e[m HEAD@{15}: commit: implemented dynamic sidebars and cards
+[33m7abe0d75[m HEAD@{16}: commit: "implemented dynamic sidebars and cards"
+[33md9509fad[m HEAD@{17}: commit: "implemented dynamic sidebars and cards"
+[33md29721f7[m[33m ([m[1;31morigin/testing-new-sidebar[m[33m, [m[1;32mtesting-new-sidebar[m[33m)[m HEAD@{18}: checkout: moving from testing-new-sidebar to coauth
+[33md29721f7[m[33m ([m[1;31morigin/testing-new-sidebar[m[33m, [m[1;32mtesting-new-sidebar[m[33m)[m HEAD@{19}: commit: Add new feature
+[33md95d774e[m HEAD@{20}: commit: Add new feature
+[33m041ed650[m HEAD@{21}: commit: Add new feature
+[33md57579b3[m[33m ([m[1;36mHEAD -> [m[1;32mnew-updates[m[33m, [m[1;31morigin/new-updates[m[33m)[m HEAD@{22}: checkout: moving from new-updates to testing-new-sidebar
+[33md57579b3[m[33m ([m[1;36mHEAD -> [m[1;32mnew-updates[m[33m, [m[1;31morigin/new-updates[m[33m)[m HEAD@{23}: commit: implementing-new-sidebar-cards
+[33m7cf8eb1e[m HEAD@{24}: commit: improving-sidebar-cards
+[33m0ead052f[m HEAD@{25}: commit: improving-ui
+[33m7c28cace[m HEAD@{26}: commit: added_loading_buttons
+[33mab42a814[m HEAD@{27}: commit: preparing2.0
+[33m66f4a76e[m HEAD@{28}: commit: fixed-ui-for-gpt-apis
+[33mae7f08d3[m HEAD@{29}: commit: revising ui
+[33m31f3b09c[m[33m ([m[1;32mmain[m[33m)[m HEAD@{30}: checkout: moving from main to new-updates
+[33m31f3b09c[m[33m ([m[1;32mmain[m[33m)[m HEAD@{31}: commit: updating_front_new_apis
+[33m6fd9eda1[m HEAD@{32}: Branch: renamed refs/heads/main to refs/heads/main
+[33m6fd9eda1[m HEAD@{34}: commit: joiningtexteditor
+[33m8b4ba6f4[m HEAD@{35}: Branch: renamed refs/heads/master to refs/heads/main
+[33m8b4ba6f4[m HEAD@{37}: commit (initial): gptfixed

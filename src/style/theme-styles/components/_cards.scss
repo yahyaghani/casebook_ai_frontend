@@ -28,7 +28,7 @@
   box-shadow: 0 1.5rem 0rem rgba(0, 0, 0, 0.15);
   border-radius: $card-border-radius;
   margin-bottom: 2rem;
-  
+  height:13vh;
   &.active {
     display: block; // Only the active card is displayed
   }
