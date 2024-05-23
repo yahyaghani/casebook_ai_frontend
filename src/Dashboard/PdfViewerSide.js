@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext } from 'react';
 import { Resizable } from "react-resizable";
 import TextEditor from "../TextEditor";
 import { UserContext } from "../App";
@@ -11,6 +11,7 @@ const PdfViewerSide = (props) => {
         width: 250
     });
     const [createNotes, setCreateNotes] = useState(false);
+    const [showGraph, setShowGraph] = useState(false);
     const [showGraphModal, setShowGraphModal] = useState(false);
     const { state, dispatch } = useContext(UserContext);
 
@@ -46,6 +47,12 @@ const PdfViewerSide = (props) => {
                         >
                             ADD NOTES
                         </div>
+                        <div
+                            onClick={() => setShowGraph(!showGraph)}
+                            className="btn btn-lg btn-outline-secondary text-center cursor-pointer p-3"
+                        >
+                            {showGraph ? "HIDE GRAPH" : "SHOW GRAPH"}
+                        </div>
                         {/* <div
                             onClick={() => { }}
                             className="btn btn-lg btn-outline-success text-center cursor-pointer p-3"
@@ -79,7 +86,7 @@ const PdfViewerSide = (props) => {
                         }}
                     /> */}
 
-                    {!showGraphModal && <PdfGraphFunc />}
+                    {!showGraphModal && showGraph && <PdfGraphFunc />}
                     {showGraphModal && (
                         <Modal
                             style={{ color: "#050505" }}

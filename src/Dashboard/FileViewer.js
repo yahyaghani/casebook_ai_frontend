@@ -314,7 +314,8 @@ return (
               </div> */}
 
 
-        <ChatUI />
+        {/* <ChatUI /> */}
+        <ChatUI publicId={state.auth.userPublicId} pdfDocumentName={state.currentFile && state.currentFile.name} />
 
           </div>
 
