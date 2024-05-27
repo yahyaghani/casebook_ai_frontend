@@ -19,7 +19,7 @@ function Search(props) {
 
 	return (
 		<Fragment>
-			<form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search" onSubmit={handleFormSubmit}>
+			{/* <form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search" onSubmit={handleFormSubmit}>
 				<Input
 					type="text"
 					className="form-control"
@@ -27,7 +27,7 @@ function Search(props) {
 					value={searchQuery}
 					onChange={handleChange}
 				/>
-			</form>
+			</form> */}
 		</Fragment>
 	);
 }

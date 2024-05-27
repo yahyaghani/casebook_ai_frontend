@@ -81,7 +81,7 @@ const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
                             <span className="chat__conversation-board__message__person__nickname">{msg.nickName}</span>
                         </div>
                         <div className="chat__conversation-board__message__context">
-                            <span className={`chat__conversation-board__message__bubble ${msg.type === 'user' ? 'user-message' : ''}`}>{msg.message}</span>
+                            <p className={`chat__conversation-board__message__bubble ${msg.type === 'user' ? 'user-message' : ''}`}>{msg.message}</p>
                         </div>
                     </div>
                 ))}

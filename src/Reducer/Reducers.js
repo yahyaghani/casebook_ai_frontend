@@ -25,7 +25,7 @@ export const reducer = (state, action) => {
 				userPublicId: action.payload.userPublicId,
 				username: action.payload.username,
 				email: action.payload.email,
-				expiry: action.payload.expiry || Date.parse(new Date()) + 29 * 60 * 1000,
+				expiry: action.payload.expiry || Date.parse(new Date()) + 60 * 60 * 1000,
 				fname: action.payload.fname,
 				lname: action.payload.lname,
 				city: action.payload.city,

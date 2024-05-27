@@ -2,13 +2,16 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import DashboardCard from "../shared/DashboardCard";
+import FileUploadComponent from './FileUploadComponent';
 
 function DashboardView() {
 	return (
+		
 		<div
 			className="dashboard-view bg-dark3 p-5 text-center"
 			style={{ width: "100%" }}
 		>
+	
 			<Row>
 				<Col lg={3} md={4} xs={12} sm={12}>
 					<DashboardCard
@@ -47,6 +50,17 @@ function DashboardView() {
 					/>
 				</Col>
 			</Row>
+
+			<DashboardCard
+						title={"Statute"}
+						icon={"mdi-scale-balance"}
+						footerText={""}
+						number={3}
+						color={"danger"}
+						
+					/>
+											<FileUploadComponent />
+
 		</div>
 	);
 }

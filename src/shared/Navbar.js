@@ -76,7 +76,7 @@ const Navbar = () => {
 			<div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
 				<button
 					ref={toggleButtonRef} // Assign the ref here
-					className="navbar-toggler align-self-center"
+					className="navbar-toggler align-self-center hamburger"
 					type="button"
 					onClick={() => document.body.classList.toggle("sidebar-icon-only")}
 				>
