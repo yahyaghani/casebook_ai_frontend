@@ -136,6 +136,7 @@
 .chat__conversation-board__message-container.me .chat__conversation-board__message__bubble {
     background-color: #463046d6; 
     color: #ffffff; 
+    max-width:1000px;
 }
 
 /* User messages (right-aligned) */

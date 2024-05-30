@@ -51,7 +51,7 @@ function DashboardView() {
 				</Col>
 			</Row>
 
-			<DashboardCard
+			{/* <DashboardCard
 						title={"Statute"}
 						icon={"mdi-scale-balance"}
 						footerText={""}
@@ -59,7 +59,7 @@ function DashboardView() {
 						color={"danger"}
 						
 					/>
-											<FileUploadComponent />
+											<FileUploadComponent /> */}
 
 		</div>
 	);
