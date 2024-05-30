@@ -38,7 +38,12 @@ export const reducer = (state, action) => {
 		case 'LOG_OUT':
 			localStorage.removeItem("authDetails")
 			return InitialState;
-
+		case "TOGGLE_HIGHLIGHT":
+				return {
+					...state,
+					showHighlight: action.payload,
+				};
+	
 		case 'SET_CURR_FILE':
 			return updateState(state, { currentFile: action.payload });
 		case 'ALL_POSTS':

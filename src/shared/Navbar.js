@@ -90,7 +90,7 @@ const Navbar = () => {
 						<Search />
 					</Col>
 					<Col lg={6} md={6} xs={12} sm={12}>
-						<FileUploadComponent />
+						{/* <FileUploadComponent /> */}
 					</Col>
 					<Col lg={3} md={2} xs={12} sm={12}>
 						<HighlightButton />

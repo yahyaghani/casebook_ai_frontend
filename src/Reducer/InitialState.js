@@ -11,6 +11,7 @@ export const InitialState = {
 	nodeData: {},
 	nodesData: {},
 	graphData: {},
+	showHighlight: false,
 	highlightColors: JSON.parse(localStorage.getItem("highlightColors")) || { default: "#F48FB1", legalTest: "#E1BEE7", issue: "#D1C4E9", conclusion: "#B2EBF2" },
 	auth: {
 		userId: null,

@@ -254,9 +254,6 @@ blockquote:after {
 	text-align: center;
 	width: 100%;
 }
-.preview_Sec {
-	padding-left: 20px;
-}
 
 .sidebar .nav .nav-item .nav-link i.fa-angle-right:before {
 	content: '\f105';
@@ -276,25 +273,13 @@ blockquote:after {
 	text-align: center;
 	width: 100%;
 }
-.previewComponent {
-	text-align: center;
-	margin-right: 20px;
-	display: flex;
-	align-items: center;
-}
+
 .nav_items_upload > div {
 	position: relative;
 	bottom: 5px;
 }
 .nav_items_upload .custom-file-label {
 	margin-right: 10px;
-}
-.previewComponent form {
-	display: flex;
-	align-items: center;
-}
-.preview_Sec {
-	padding-left: 20px;
 }
 
 .dashboard-view {
@@ -439,33 +424,144 @@ blockquote:after {
 	background: rgb(26, 119, 114);
 }
 
-.drag-drop {
-	position: absolute;
-	top: 20%;
-	bottom: 25%;
-	left: 24%;
-	right: 6%;
-	background-color: #fff;
-	border-radius: 2rem;
+
+/* back button */
+
+.back-button {
+    background-color: transparent;
+    border: none;
+    color: #009688;
+    font-size: 50px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 20px;
+    padding: 0;
 }
 
+.back-button:hover {
+    color: #00796b;
+}
+
+
+
+/* ActionCard CSS */
+.action-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.action-button, .important-button {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.important-button {
+    background-color: #ff5722;
+    color: #fff;
+}
+
+.important-button:hover {
+    background-color: #e64a19;
+    color: #fff;
+}
+
+
+
+
+/* ActionCard CSS */
+.action-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.action-button, .important-button {
+    width: 80%;
+	height:3em;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.important-button {
+    background-color: #15475b;
+    color: #fff;
+    width: 30%; /* Set the width to 30% */
+    margin: 0 auto; /* Center the button */
+    display: block; /* Center the button */
+}
+
+.important-button:hover {
+    background-color: #e64a19;
+    color: #fff;
+}
+
+/* Other CSS */
 .drag-drop__area {
-	position: absolute;
-	top: 8%;
-	bottom: 8%;
-	left: 4%;
-	right: 4%;
-	border-radius: 2rem;
-	border: 1px dashed rgb(149, 176, 224);
-	background-color: #e8effa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #009688;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin: 10px 0;
+    height: 200px;
+    cursor: pointer;
 }
 
 .drag-drop__file-icon {
-	position: absolute;
-	top: 50%;
-	text-align: center;
-	transform: translateY(-50%);
-	width: 100%;
+    text-align: center;
+}
+
+.drag-drop__file-icon h2 {
+    margin-top: 1rem;
+    font-family: 'Helvetica';
+    font-size: 18px;
+    color: #555;
+}
+
+.browse-button {
+    background: none;
+    border: none;
+    color: #009688;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.file-preview {
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.file-preview ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.file-preview li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.loading {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #009688;
 }
 
 .mdi-file-multiple {
@@ -473,36 +569,41 @@ blockquote:after {
 	color: #1412bd;
 }
 
-.drag-drop__file-icon h2 {
-	margin-top: 1rem;
+span {
 	font-family: 'Helvetica';
-	font-size: 24px;
-	font-weight: bold;
-	color: green;
 }
 
-.drag-drop__browse-button {
-	text-align: center;
-	margin-top: 1rem;
+.previewComponent {
+    text-align: center;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+	background:#191c24
 }
 
-.drag-drop__option {
-	margin-top: 1rem;
-	text-align: center;
-	color: grey;
+/* single file upload header option */
+.browse-button {
+    background: none;
+    border: none;
+    color: #009688;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.drag-drop__browse-button button {
-	height: 4rem;
-	width: 13rem;
-	font-size: 20px;
-	font-weight: bold;
-	border-radius: 10px;
-	background-color: #1412bd;
-	color: #fff;
-	font-family: 'Helvetica';
-	border: none;
+
+.loading {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #009688;
 }
+
+.mdi-file-multiple {
+	font-size: 75px;
+	color: #1412bd;
+}
+
 
 span {
 	font-family: 'Helvetica';
