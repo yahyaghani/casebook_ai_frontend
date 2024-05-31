@@ -10,7 +10,7 @@ function DashboardCard({ title, icon, footerText, number, color }) {
               <i
                 className={`icon-lg mdi ${
                   icon ? icon : "mdi-monitor"
-                } ${color ? 'text-'+color : 'text-primary'} ml-auto`}
+                } ${color ? 'text-'+color : 'color:"#b2b8d2"'} ml-auto`}
               ></i>
             </div>
             <div className="col-8 col-sm-12 col-xl-8 my-auto">

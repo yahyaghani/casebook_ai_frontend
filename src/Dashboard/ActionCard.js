@@ -6,36 +6,17 @@ function ActionCard({ onHelpClick }) {
         <Card className="dashboard-card">
             <CardBody>
                 <Row>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">🏠 Accelerate construction</Button>
+                    <Col lg={3} md={6} xs={12} sm={12}>
+                        <Button className="action-button">📄 Pleadings</Button>
                     </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">📑 Amend a contract</Button>
+                    <Col lg={3} md={6} xs={12} sm={12}>
+                        <Button className="action-button">🔍 Discovery</Button>
                     </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">✏️ Appoint a sales agent</Button>
+                    <Col lg={3} md={6} xs={12} sm={12}>
+                        <Button className="action-button">⚖️ Trial</Button>
                     </Col>
-                </Row>
-                <Row className="mt-2">
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">🏷️ Appoint exclusive distributor</Button>
-                    </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">🖨️ Appoint franchise licensee</Button>
-                    </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">📃 Assign copyright in music</Button>
-                    </Col>
-                </Row>
-                <Row className="mt-2">
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">🙍 Back-to-back subcontract</Button>
-                    </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">🖋️ Collaborate with partners</Button>
-                    </Col>
-                    <Col lg={4} md={6} xs={12} sm={12}>
-                        <Button className="action-button">💼 Commission music</Button>
+                    <Col lg={3} md={6} xs={12} sm={12}>
+                        <Button className="action-button">📜 Appeal</Button>
                     </Col>
                 </Row>
                 <Row className="mt-4 justify-content-center">

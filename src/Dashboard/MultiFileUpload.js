@@ -1,19 +1,20 @@
-import React, { useContext, useState, useCallback } from "react";
-import { Fragment } from "react";
+import React, { useContext, useState, useCallback, Fragment } from "react";
 import axios from "axios";
 import { Button, Table } from "reactstrap";
+import { useDropzone } from 'react-dropzone';
+import { IoArrowBackCircle } from "react-icons/io5";
+import folderDocs from '../images/cloud-drag.png';
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
-import { useDropzone } from 'react-dropzone';
-import async from 'async';
-import folder from '../images/folder.png';
-import folderDocs from '../images/folder_documents.png';
+import FileMetadataViewer from './FileMetadataViewer'; // Import the new component
 
-function MultiFileUpload(props) {
+function MultiFileUpload({ onBackClick }) {
     const { state, dispatch } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [showMetadataViewer, setShowMetadataViewer] = useState(false); // State to trigger metadata viewer
+    const [uploadedFiles, setUploadedFiles] = useState([]); // Store uploaded files metadata
 
     const onDrop = useCallback((acceptedFiles) => {
         let newFiles = [];
@@ -28,7 +29,7 @@ function MultiFileUpload(props) {
         setFiles([...files, ...newFiles]);
     }, [files, state.files]);
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleSelectFile = (fileName) => {
         if (selectedFiles.includes(fileName)) {
@@ -44,6 +45,10 @@ function MultiFileUpload(props) {
         } else {
             setSelectedFiles(files.map(file => file.name));
         }
+    };
+
+    const handleRowClick = (fileName) => {
+        handleSelectFile(fileName);
     };
 
     async function handleUpload(e) {
@@ -68,7 +73,9 @@ function MultiFileUpload(props) {
                 toggleShowHighlight();
                 setFiles([]);
                 setSelectedFiles([]);
+                setUploadedFiles(response.data.files); // Set uploaded files metadata
                 setIsLoading(false);
+                setShowMetadataViewer(true); // Show the metadata viewer on successful upload
             })
             .catch(function (error) {
                 console.log(error);
@@ -86,57 +93,63 @@ function MultiFileUpload(props) {
     return (
         <Fragment>
             <div className="previewComponent">
-                <div {...getRootProps()} className="drag-drop__area">
-                    <input {...getInputProps()} />
-                 
+                <button className="back-button" onClick={onBackClick}>
+                    <IoArrowBackCircle size={40} />
+                </button>
+                {!showMetadataViewer && files.length === 0 && (
+                    <div {...getRootProps()} className="drag-drop__area">
+                        <input {...getInputProps()} />
                         <div className="drag-drop__file-icon">
-                            <img src={folderDocs} alt="Dropping File ..." className="images" />
-                    
-                            <h5 className="w-100 text-center">Drag and drop  <button className="browse-button"></button></h5>
-
+                            <img src={folderDocs} alt="Dropping File ..." className="drag-drop-image" />
+                            <h5 className="drag-drop-text">Drag & Drop case files here<button className="browse-button"></button></h5>
                         </div>
-                 
-                </div>
-                {files.length > 0 && (
-                    <div className="file-preview">
-                        <Table responsive bordered>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedFiles.length === files.length}
-                                            onChange={handleSelectAll}
-                                        />
-                                    </th>
-                                    <th>File Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {files.map((file, index) => (
-                                    <tr key={index}>
-                                        <td>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedFiles.includes(file.name)}
-                                                onChange={() => handleSelectFile(file.name)}
-                                            />
-                                        </td>
-                                        <td>{file.name}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
                     </div>
                 )}
-                <Button
-                    className="btn btn-md submitButton"
-                    color="success"
-                    onClick={handleUpload}
-                    disabled={selectedFiles.length === 0 || isLoading}
-                >
-                    Upload
-                </Button>
+                {!showMetadataViewer && files.length > 0 && (
+                    <Fragment>
+                        <div className="file-preview">
+                            <Table responsive bordered className="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedFiles.length === files.length}
+                                                onChange={handleSelectAll}
+                                            />
+                                        </th>
+                                        <th>File Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {files.map((file, index) => (
+                                        <tr key={index} onClick={() => handleRowClick(file.name)} style={{ cursor: 'pointer' }}>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedFiles.includes(file.name)}
+                                                    onChange={(e) => { e.stopPropagation(); handleSelectFile(file.name); }}
+                                                />
+                                            </td>
+                                            <td>{file.name}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
+                        <div className="upload-button-container">
+                            <Button
+                                className="btn btn-lg submitButton" // Updated to btn-lg
+                                color="success"
+                                onClick={handleUpload}
+                                disabled={selectedFiles.length === 0 || isLoading}
+                            >
+                                Upload
+                            </Button>
+                        </div>
+                    </Fragment>
+                )}
+                {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} />}
                 {isLoading && <div className="loading"></div>}
             </div>
         </Fragment>
