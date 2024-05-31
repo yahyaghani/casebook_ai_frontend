@@ -378,7 +378,7 @@ blockquote:after {
 /* back button */
 .back-button {
     position: absolute;
-    top: -33px;
+    top: -35px;
     left: -1px;
     background: none;
     border: none;
@@ -423,7 +423,8 @@ blockquote:after {
 }
 
 .important-button {
-    background-color: #15475b;
+    /* background-color: #15475b; */
+	background:linear-gradient(to right, #222840 0%,#477164 50%,#2b314d 100%);
     color: #fff;
     width: 30%; /* Set the width to 30% */
     margin: 0 auto; /* Center the button */
@@ -432,8 +433,9 @@ blockquote:after {
 }
 
 .important-button:hover {
-    background-color: #e64a19;
+	background:linear-gradient(to right, #477164 0%,#222840 50%,#477164 100%);
     color: #fff;
+	font-size:large;
 }
 
 /* Other CSS */
