@@ -27,5 +27,5 @@ export const InitialState = {
 		organisation: null,
 	},
 	highlightTextsForEditor: [],
-
+	showDocViewer: false,  // Add this line
 };

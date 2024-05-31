@@ -6,7 +6,9 @@ export const showProfile = {
 	showProfileView: true,
 	showFeedView: false,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 }
 
 export const showDashboard = {
@@ -17,7 +19,9 @@ export const showDashboard = {
 	showProfileView: false,
 	showFeedView: false,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 
 }
 
@@ -29,7 +33,9 @@ export const showHighlight = {
 	showProfileView: false,
 	showFeedView: false,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 
 }
 
@@ -41,7 +47,9 @@ export const showFileViewer = {
 	showProfileView: false,
 	showFeedView: false,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 
 }
 
@@ -53,7 +61,9 @@ export const showFeedView = {
 	showProfileView: false,
 	showFeedView: true,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 
 }
 
@@ -64,7 +74,9 @@ export const showTextAnonymizerView = {
 	showDashboardView: false,
 	showProfileView: false,
 	showFeedView: false,
-	showTextAnonymizerView: true
+	showTextAnonymizerView: true,
+	showDocViewer: false,
+
 }
 
 export const showLawsReader = {
@@ -75,7 +87,9 @@ export const showLawsReader = {
 	showFeedView: false,
 	showLawsReader: true,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 }
 
 export const showGptView = {
@@ -86,5 +100,19 @@ export const showGptView = {
 	showFeedView: false,
 	showLawsReader: false,
 	showTextAnonymizerView: false,
-	showGptView: false
+	showGptView: false,
+	showDocViewer: false,
+
 }
+
+export const showDocViewer = {
+	showLawsReader: false,
+	showHighlight: false,
+	showFileViewer: false,
+	showDashboardView: false,
+	showProfileView: false,
+	showFeedView: false,
+	showTextAnonymizerView: false,
+	showGptView: false,
+	showDocViewer: true,
+};

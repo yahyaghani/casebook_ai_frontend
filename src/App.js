@@ -1,7 +1,4 @@
-// @flow
-
-// Based on https://github.com/agentcooper/react-pdf-highlighter/tree/master/packages/example
-// rewritten with hooks
+// App.js
 
 import React, { useState, useReducer, createContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,10 +17,10 @@ import Register from "./Dashboard/Register";
 import Login from "./Dashboard/Login";
 import Sidebar from "./shared/Sidebar";
 import "./App.scss";
-
 import "./style/App.css";
 import Navbar from "./shared/Navbar";
 import FileViewer from "./Dashboard/FileViewer";
+import DocViewer from "./Dashboard/DocViewer"; // Import DocViewer
 
 export const UserContext = createContext();
 
@@ -32,12 +29,15 @@ function App() {
 	const [sidebarItems, setSidebarItems] = useState({
 		showHighlight: false,
 		showFileViewer: false,
+		showDocViewer: false, // Add this line
 		showDashboardView: true,
 		showProfileView: false,
 		showFeedView: false,
 		showTextAnonymizerView: false,
 		showGptView: false,
 		showLawsReader: false,
+		showDocViewer: false, // Add this line
+
 	});
 
 	const sidebarClickHandler = (sidebarState) => {
@@ -65,6 +65,7 @@ function App() {
 										{/* {showHighlight === true && <NodesList />} */}
 										{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodesList />}
 										{sidebarItems.showFileViewer === true && <FileViewer />}
+										{sidebarItems.showDocViewer === true && <DocViewer />} {/* Add this line */}
 										<div className="content-wrapper">
 											<AppRoutes
 												showFileViewer={sidebarItems.showFileViewer}
@@ -75,6 +76,7 @@ function App() {
 												showTextAnonymizerView={sidebarItems.showTextAnonymizerView}
 												showLawsReader={sidebarItems.showLawsReader}
 												showGptView={sidebarItems.showGptView}
+												showDocViewer={sidebarItems.showDocViewer} // Add this line
 
 											/>
 										</div>

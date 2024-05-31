@@ -110,7 +110,11 @@ export const reducer = (state, action) => {
 				highlightTextsForEditor: updatedHighlights,
 			};
 			
-
+		case "SHOW_DOC_VIEWER":
+				return {
+					...state,
+					showDocViewer: action.payload,
+				};
 		default:
 			return state;
 	}

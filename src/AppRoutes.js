@@ -16,6 +16,7 @@ function AppRoutes(props) {
 				showTextAnonymizerView={props.showTextAnonymizerView}
 				showGptView={props.showGptView}
 				showLawsReader={props.showLawsReader}
+				showDocViewer={props.showDocViewer} // Add this line
 			/>
 		</Suspense>
 	);

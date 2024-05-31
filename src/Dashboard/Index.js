@@ -25,6 +25,7 @@ import FeedView from "./FeedView";
 import LawsViewer from "./LawsViewer";
 import TextAnonymizer from "./TextAnonymizer";
 import GptView from "./GptView"
+import DocViewer from "./DocViewer"; // Import DocViewer
 
 
 const getNextId = () => String(Math.random()).slice(2);
@@ -48,7 +49,7 @@ const HighlightPopup = ({ comment }) =>
 //const searchParams = new URLSearchParams(document.location.search);
 //const url = searchParams.get("url") || DEFAULT_URL;
 
-function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfileView, showFeedView, showTextAnonymizerView, showGptView, showLawsReader }) {
+function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfileView, showFeedView, showTextAnonymizerView, showGptView, showLawsReader, showDocViewer }) {
 	const [state, setState] = useState({ highlights: [] });
 	const [PdfUrl, setPdfUrl] = useState({ url: "" });
 
@@ -210,6 +211,8 @@ function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfi
 			{showLawsReader && <LawsViewer />}
 			{showTextAnonymizerView && <TextAnonymizer />}
 			{showGptView && <GptView />}
+			{showDocViewer && <DocViewer />} {/* Add this line */}
+
 		</Fragment>
 	);
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView, showGptView, showLawsReader } from './SidebarItemData/data';
+import { showProfile, showDashboard, showHighlight, showFileViewer, showFeedView, showTextAnonymizerView, showGptView, showLawsReader, showDocViewer } from './SidebarItemData/data'; // Import showDocViewer
 import axios from 'axios';
 import { Trans } from "react-i18next";
 import TextEditor from "../TextEditor";
@@ -109,6 +109,10 @@ function Sidebar({ sideItems, sideItemsClick }) {
 
 				<SideNav class={sideItems.showFileViewer} click={() => itemClickHandler(showFileViewer)}
 					iconClass='mdi mdi-file' transTitle='Copilot' />
+
+				{/* Add a SideNav item for DocViewer */}
+				<SideNav class={sideItems.showDocViewer} click={() => itemClickHandler(showDocViewer)}
+					iconClass='mdi mdi-file-document' transTitle='DocViewer' />
 
 				{/* <SideNav class={sideItems.showHighlight} click={() => itemClickHandler(showHighlight)}
 					iconClass='mdi mdi-lightbulb' transTitle='Intellisearch' /> */}

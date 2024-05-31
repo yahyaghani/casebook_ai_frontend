@@ -10,6 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@material-ui/core": "^4.12.3",
     "@mdi/font": "^4.2.95",
+    "@syncfusion/ej2-react-documenteditor": "^25.2.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -38,6 +39,7 @@
     "react-hot-loader": "^4.13.0",
     "react-i18next": "^11.8.15",
     "react-pdf-highlighter": "^3.1.0",
+    "react-quill": "^2.0.0",
     "react-resizable": "^3.0.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
@@ -62,10 +64,12 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app"],
+    "extends": [
+      "react-app"
+    ],
     "parserOptions": {
-      "ecmaVersion": 2020,  
-      "sourceType": "module" 
+      "ecmaVersion": 2020,
+      "sourceType": "module"
     }
   },
   "browserslist": {
