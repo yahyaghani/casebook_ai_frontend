@@ -6,20 +6,20 @@
   align-items: center;
   padding: 5px; /* Adjust padding to fit content */
   font-size: 0.75rem; /* Reduce font size */
-  background-color: #191c24;
-  border-radius: 15px;
+  border-radius:15px;
+  background:#191c24;
 }
 
 .dashboard-first-row-card .icon {
   font-size:2.7rem; /* Adjust icon size */
-  margin-top: -50px;
+  margin-top: -20px;
   bottom: 10px;
 }
 
 .dashboard-first-row-card .title {
   font-size: 0.85rem; /* Adjust title font size */
   /* margin-bottom: 0.25rem; Reduce margin */
-  margin-top: -0.3rem !important;
+  margin-top: -.9rem !important;
   
 }
 

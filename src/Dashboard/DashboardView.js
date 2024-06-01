@@ -32,7 +32,7 @@ function DashboardView() {
                 <DashboardFirstRowCard title={"Caselaw"} icon={"mdi-note-outline"} footerText={""} number={12} color={"success"} />
                 </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className="mt-5" style={{marginTop: "3.5rem"}}>
                 <Col xs={12}>
                     {!showUpload && <ActionCard onHelpClick={handleHelpClick} />}
                     {showUpload && <MultiFileUpload onBackClick={handleBackClick} />}
