@@ -124,9 +124,9 @@ function Sidebar({ sideItems, sideItemsClick }) {
 
 				{/* <SideNav class={sideItems.showGptView} click={() => itemClickHandler(showGptView)}
 					iconClass='mdi mdi-text' transTitle='Gpt Viewer' /> */}
-{/* 
+
 				<SideNav class={sideItems.showLawsReader} click={() => itemClickHandler(showLawsReader)}
-					iconClass='mdi mdi-scale-balance' transTitle='Easy-Reader' /> */}
+					iconClass='mdi mdi-scale-balance' transTitle='Easy-Reader' />
 
 			</ul>
 			{showTextEditor && (

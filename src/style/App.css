@@ -563,12 +563,12 @@ span {
 }
 
 .accordion-container {
-    position: absolute;
-    top: 10%;
+    position: relative;
+    /* top: 10%;
     bottom: 20%;
-    left: 20%;
+    left: 20%; */
     right: 0;
-    background-color: #f5f4f7;
+    background: transparent;
     overflow-y: scroll;
 }
 
@@ -579,7 +579,7 @@ span {
 }
 
 .accordion-card__header {
-    background-color: #fff;
+    background: transparent;
     border-bottom: none;
 }
 

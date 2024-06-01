@@ -1,6 +1,6 @@
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
-import React, { useContext, useState, useRef, useEffect } from 'react';
 import AccordionContext from 'react-bootstrap/AccordionContext';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 
@@ -67,7 +67,7 @@ function AccordionGenerator(props) {
 
 	const searchHandler = (event) => {
 		let matchedTextIndexArray = [];
-		props.data.map((d, index) => {
+		props.data.forEach((d, index) => {
 			if (d.text.toLowerCase().includes(searchInput.toLowerCase())) {
 				matchedTextIndexArray.push(index);
 			}
@@ -106,7 +106,7 @@ function AccordionGenerator(props) {
 	return (
 		<div>
 			<div className="accordion-container" ref={myRef}>
-				{props.data.map((d, index) => (
+				{Array.isArray(props.data) && props.data.map((d, index) => (
 					<Accordion key={index} activeKey={activeKeys.includes(index) ? (index === 0 ? '0' : index) : (active === 0 ? '0' : active)} onSelect={(e) => accordionClickHandler(e, index === 0 ? '0' : index)}>
 						<Card className="accordion-card">
 							<Card.Header className="accordion-card__header">
