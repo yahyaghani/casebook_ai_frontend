@@ -53,7 +53,20 @@ export const reducer = (state, action) => {
                 ...state,
                 ...action.payload,
             };
-
+        case 'SET_VIEW':
+                return {
+                    ...state,
+                    showHighlight: false,
+                    showFileViewer: false,
+                    showDashboardView: false,
+                    showProfileView: false,
+                    showFeedView: false,
+                    showTextAnonymizerView: false,
+                    showGptView: false,
+                    showLawsReader: false,
+                    ...action.payload
+                };
+    
         case 'ALL_POSTS':
             return updateState(state, { allPosts: action.payload });
 

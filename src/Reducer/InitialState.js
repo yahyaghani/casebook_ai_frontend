@@ -1,3 +1,5 @@
+// src/Reducer/InitialState.js
+
 export const InitialState = {
     files: [],
     currentFile: null,

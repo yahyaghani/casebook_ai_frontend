@@ -7,6 +7,8 @@ import folderDocs from '../images/cloud-drag.png';
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 import FileMetadataViewer from './FileMetadataViewer';
+import TriggerFileViewer from './TriggerFileViewer';
+
 const async = require('async');
 
 function MultiFileUpload({ onBackClick }) {
@@ -122,7 +124,7 @@ function MultiFileUpload({ onBackClick }) {
                     console.error("Error in loopErrBatch:", loopErrBatch);
                 }
             });
-            dispatch({ type: 'TOGGLE_VIEWER', payload: true });
+            dispatch({ type: "SET_VIEW", payload: { showFileViewer: true } });
         } catch (error) {
             console.error("Upload error:", error);
             dispatch({ type: "ERROR", payload: error.response?.statusText || 'File Upload Failed!!' });
@@ -197,6 +199,8 @@ function MultiFileUpload({ onBackClick }) {
                                 console.log("New files with citation and provision:", fileNew);
                                 dispatch({ type: "ADD_FILE", payload: fileNew });
                                 dispatch({ type: "SET_MODAL", payload: true });
+                                // Trigger the file viewer
+                                dispatch({ type: "SET_VIEW", payload: { showFileViewer: true } });
                             }
                         } catch (error) {
                             console.error("Error fetching files and graph data:", error);
@@ -206,7 +210,7 @@ function MultiFileUpload({ onBackClick }) {
                     console.error("Error in loopErrBatch:", loopErrBatch);
                 }
             });
-            dispatch({ type: 'TOGGLE_VIEWER', payload: true });
+            dispatch({ type: "SET_VIEW", payload: { showFileViewer: true } });
         } catch (error) {
             console.error("Error fetching PDF:", error);
         }
@@ -273,6 +277,7 @@ function MultiFileUpload({ onBackClick }) {
                 )}
                 {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} onFileClick={handleViewPDF} />}
                 {isLoading && <div className="loading"></div>}
+                <TriggerFileViewer onBackClick={onBackClick} />
             </div>
         </Fragment>
     );
