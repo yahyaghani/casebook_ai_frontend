@@ -51,7 +51,7 @@ function MultiFileUpload({ onBackClick }) {
                     'x-access-token': state.auth && state.auth.authToken,
                 }
             });
-            console.log("Upload response:", response.data);
+            // console.log("Upload response:", response.data);
             setUploadedFiles(response.data.files);
             setFiles([]);
             setSelectedFiles([]);
@@ -68,6 +68,11 @@ function MultiFileUpload({ onBackClick }) {
                     const fileHighlights = result.data;
                     if (fileHighlights && fileHighlights.highlights) {
                         dispatch({ type: "SET_FILE_HIGHLIGHTS", payload: fileHighlights.highlights });
+                        console.log("Setting Accordion Sections:", fileHighlights.highlights );
+
+                        console.log("Setting Accordion Sections:", fileHighlights.highlights.sections || []);
+                        dispatch({ type: "SET_ACCORDION_SECTIONS", payload: fileHighlights.highlights.sections || [] });
+
                     }
                     cbBatch(null);
                 }).catch(error => {
@@ -83,7 +88,7 @@ function MultiFileUpload({ onBackClick }) {
                             },
                         });
                         const files = result.data && result.data.files;
-                        console.log("Fetched files response:", files);
+                        // console.log("Fetched files response:", files);
                         if (result && files && files.length > 0) {
                             const results = await axios(`${BASE_URL_DEV}/get-graphdata`, {
                                 headers: {
@@ -91,7 +96,7 @@ function MultiFileUpload({ onBackClick }) {
                                 },
                             });
                             const allgraphs = results.data;
-                            console.log("Graph data response:", allgraphs);
+                            // console.log("Graph data response:", allgraphs);
                             let Obj = {};
                             results && allgraphs && allgraphs.graphdata && allgraphs.graphdata.length > 0 && allgraphs.graphdata.filter(x => {
                                 Obj[x.fileName] = x.links.filter(e => e.source === "CITATION" || e.source === "PROVISION");
@@ -101,7 +106,7 @@ function MultiFileUpload({ onBackClick }) {
                                 CITATION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "CITATION") : ["N/A"],
                                 PROVISION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "PROVISION") : ["N/A"]
                             }));
-                            console.log("New files with citation and provision:", fileNew);
+                            // console.log("New files with citation and provision:", fileNew);
                             dispatch({ type: "ADD_FILE", payload: fileNew });
                             dispatch({ type: "SET_MODAL", payload: true });
 
@@ -114,7 +119,7 @@ function MultiFileUpload({ onBackClick }) {
                                     lastModified: firstUploadedFile.lastModified
                                 });
                                 dispatch({ type: "SET_CURR_FILE", payload: fileToSet });
-                                console.log("New SET_CURR_FILE:", fileToSet);
+                                // console.log("New SET_CURR_FILE:", fileToSet);
                             }
                         }
                     } catch (error) {
@@ -134,7 +139,7 @@ function MultiFileUpload({ onBackClick }) {
 
     const handleViewPDF = async (file) => {
         try {
-            console.log("Fetching PDF for file:", file);
+            // console.log("Fetching PDF for file:", file);
             const response = await axios.get(`${BASE_URL_DEV}/uploads/${state.auth.userPublicId}/${file.name}`, {
                 responseType: 'blob',
                 headers: {
@@ -146,7 +151,7 @@ function MultiFileUpload({ onBackClick }) {
                 type: fileBlob.type,
                 lastModified: file.lastModified || new Date().getTime()
             });
-            console.log("Setting current file:", fileToSet);
+            // console.log("Setting current file:", fileToSet);
             // dispatch({ type: 'SET_CURR_FILE', payload: fileToSet });
 
             async.eachSeries([file], function (element, cbBatch) {
@@ -156,12 +161,15 @@ function MultiFileUpload({ onBackClick }) {
                     }
                 }).then(function (result) {
                     const fileHighlights = result.data;
-                    console.log("File highlights received:", fileHighlights);
+                    // console.log("File highlights received:", fileHighlights);
                     if (fileHighlights && fileHighlights.highlights) {
                         dispatch({
                             type: "SET_FILE_HIGHLIGHTS",
                             payload: fileHighlights.highlights,
                         });
+                        console.log("Setting Accordion Sections:", fileHighlights.highlights.sections || []);
+                        // dispatch({ type: "SET_ACCORDION_SECTIONS", payload: fileHighlights.sections || [] });
+                            
                     }
                     cbBatch(null);
                 }).catch(error => {
@@ -178,7 +186,7 @@ function MultiFileUpload({ onBackClick }) {
                                 },
                             });
                             const files = result.data && result.data.files;
-                            console.log("Fetched files response:", files);
+                            // console.log("Fetched files response:", files);
                             if (result && files && files.length > 0) {
                                 const results = await axios(`${BASE_URL_DEV}/get-graphdata`, {
                                     headers: {
@@ -186,7 +194,7 @@ function MultiFileUpload({ onBackClick }) {
                                     },
                                 });
                                 const allgraphs = results.data;
-                                console.log("Graph data response:", allgraphs);
+                                // console.log("Graph data response:", allgraphs);
                                 let Obj = {};
                                 results && allgraphs && allgraphs.graphdata && allgraphs.graphdata.length > 0 && allgraphs.graphdata.filter(x => {
                                     Obj[x.fileName] = x.links.filter(e => e.source === "CITATION" || e.source === "PROVISION");
@@ -196,7 +204,7 @@ function MultiFileUpload({ onBackClick }) {
                                     CITATION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "CITATION") : ["N/A"],
                                     PROVISION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "PROVISION") : ["N/A"]
                                 }));
-                                console.log("New files with citation and provision:", fileNew);
+                                // console.log("New files with citation and provision:", fileNew);
                                 dispatch({ type: "ADD_FILE", payload: fileNew });
                                 dispatch({ type: "SET_MODAL", payload: true });
                                 // Trigger the file viewer

@@ -281,7 +281,7 @@ return (
           </div>
 
           {/* Highlight cards within a scrollable container */}
-          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(15vh)", position: "relative" }}>
+          <div className="sidebar__highlights" onWheel={handleWheel} style={{ overflowY: "scroll", height: "calc(17vh)", position: "relative" }}>
               {highlights.length > 0 ? highlights.map((highlight, idx) => (
                   <div className={`newcard ${idx === currentHighlightIndex ? 'active' : ''}`} key={idx} onClick={() => handleHighlightClick(idx)}>
                       <div>
