@@ -24,7 +24,7 @@ import "./App.scss";
 import "./style/App.css";
 import Navbar from "./shared/Navbar";
 import FileViewer from "./Dashboard/FileViewer";
-
+import FileMetadataViewer from "./Dashboard/FileMetadataViewer";
 export const UserContext = createContext();
 
 function App() {
@@ -55,35 +55,33 @@ function App() {
 						<Register />
 					</Route>
 					<Route exact path="/dashboard">
-						<div className="container-scroller">
-							<Sidebar sideItems={sidebarItems} sideItemsClick={sidebarClickHandler} />
-							<div className="container-fluid page-body-wrapper">
-								<Navbar />
-								<div className="main-panel">
-									<div className="show_side" style={{ display: "flex" }}>
-										{/* {showHighlight === true && <Highlight />} */}
-										{/* {showHighlight === true && <NodesList />} */}
-										{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodesList />}
-										{sidebarItems.showFileViewer === true && <FileViewer />}
-										<div className="content-wrapper">
-											<AppRoutes
-												showFileViewer={sidebarItems.showFileViewer}
-												showDashboardView={sidebarItems.showDashboardView}
-												showHighlight={sidebarItems.showHighlight}
-												showProfileView={sidebarItems.showProfileView}
-												showFeedView={sidebarItems.showFeedView}
-												showTextAnonymizerView={sidebarItems.showTextAnonymizerView}
-												showLawsReader={sidebarItems.showLawsReader}
-												showGptView={sidebarItems.showGptView}
-
-											/>
+							<div className="container-scroller">
+								<Sidebar sideItems={sidebarItems} sideItemsClick={sidebarClickHandler} />
+								<div className="container-fluid page-body-wrapper">
+									<Navbar />
+									<div className="main-panel">
+										<div className="show_side" style={{ display: "flex" }}>
+											{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodesList />}
+											{sidebarItems.showFileViewer === true && <FileViewer />}
+											<div className="content-wrapper">
+												<AppRoutes
+													showFileViewer={sidebarItems.showFileViewer}
+													showDashboardView={sidebarItems.showDashboardView}
+													showHighlight={sidebarItems.showHighlight}
+													showProfileView={sidebarItems.showProfileView}
+													showFeedView={sidebarItems.showFeedView}
+													showTextAnonymizerView={sidebarItems.showTextAnonymizerView}
+													showLawsReader={sidebarItems.showLawsReader}
+													showGptView={sidebarItems.showGptView}
+												/>
+												<FileMetadataViewer files={state.files} sideItemsClick={sidebarClickHandler} /> {/* Pass the function */}
+											</div>
+											{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodePreview />}
 										</div>
-										{sidebarItems.showHighlight === true && state.searchQuery !== "" && <NodePreview />}
 									</div>
 								</div>
 							</div>
-						</div>
-					</Route>
+						</Route>
 					<Redirect to="/login" />
 				</Switch>
 			</Router>

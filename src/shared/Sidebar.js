@@ -7,6 +7,7 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 import SideNav from "./SideNav";
 import Profile from "./Profile";
+import MultiFileUpload from '../Dashboard/MultiFileUpload'; // Adjust the path based on your project structure
 
 function Sidebar({ sideItems, sideItemsClick }) {
 	const { state, dispatch } = useContext(UserContext);

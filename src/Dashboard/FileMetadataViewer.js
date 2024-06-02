@@ -1,8 +1,7 @@
-// FileMetadataViewer.js
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 
-function FileMetadataViewer({ files }) {
+function FileMetadataViewer({ files, onFileClick }) {
     return (
         <div className="file-metadata-viewer">
             <h2>Uploaded Files</h2>
@@ -14,16 +13,20 @@ function FileMetadataViewer({ files }) {
                         <th>Upload Date</th>
                         <th>Category</th>
                         <th>Summary</th>
+                        <th>View PDF</th>
                     </tr>
                 </thead>
                 <tbody>
                     {files.map((file, index) => (
                         <tr key={index}>
                             <td>{file.name}</td>
-                            <td>{(file.size / 1024).toFixed(2)} KB</td> {/* Assuming size is in bytes */}
-                            <td>{new Date().toLocaleDateString()}</td> {/* Placeholder for upload date */}
+                            <td>{(file.size / 1024).toFixed(2)} KB</td>
+                            <td>{new Date(file.uploadDate).toLocaleDateString()}</td>
                             <td>{file.category}</td>
                             <td>{file.summary}</td>
+                            <td>
+                                <Button color="primary" onClick={() => onFileClick(file)}>View PDF</Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

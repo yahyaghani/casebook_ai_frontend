@@ -6,88 +6,210 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import folderDocs from '../images/cloud-drag.png';
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
-import FileMetadataViewer from './FileMetadataViewer'; // Import the new component
+import FileMetadataViewer from './FileMetadataViewer';
+const async = require('async');
 
 function MultiFileUpload({ onBackClick }) {
     const { state, dispatch } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [showMetadataViewer, setShowMetadataViewer] = useState(false); // State to trigger metadata viewer
-    const [uploadedFiles, setUploadedFiles] = useState([]); // Store uploaded files metadata
+    const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [showMetadataViewer, setShowMetadataViewer] = useState(false);
 
     const onDrop = useCallback((acceptedFiles) => {
-        let newFiles = [];
-        acceptedFiles.forEach((file) => {
-            let existFile = state.files.filter(e => e.name === file.name);
-            if (existFile.length !== 0) {
-                alert(`${existFile[0].name} already exists`);
-            } else {
-                newFiles.push(file);
-            }
-        });
-        setFiles([...files, ...newFiles]);
-    }, [files, state.files]);
+        setFiles([...files, ...acceptedFiles]);
+    }, [files]);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleSelectFile = (fileName) => {
-        if (selectedFiles.includes(fileName)) {
-            setSelectedFiles(selectedFiles.filter(name => name !== fileName));
-        } else {
-            setSelectedFiles([...selectedFiles, fileName]);
-        }
+        setSelectedFiles(prevSelected =>
+            prevSelected.includes(fileName)
+                ? prevSelected.filter(name => name !== fileName)
+                : [...prevSelected, fileName]
+        );
     };
 
     const handleSelectAll = () => {
-        if (selectedFiles.length === files.length) {
-            setSelectedFiles([]);
-        } else {
-            setSelectedFiles(files.map(file => file.name));
-        }
+        setSelectedFiles(selectedFiles.length === files.length ? [] : files.map(file => file.name));
     };
 
-    const handleRowClick = (fileName) => {
-        handleSelectFile(fileName);
-    };
-
-    async function handleUpload(e) {
+    const handleUpload = async (e) => {
         e.preventDefault();
         const filesToUpload = files.filter(file => selectedFiles.includes(file.name));
         if (filesToUpload.length === 0) return;
 
         const data = new FormData();
-        filesToUpload.forEach(file => {
-            data.append('files', file);
-        });
+        filesToUpload.forEach(file => data.append('files', file));
         setIsLoading(true);
-        await axios
-            .post(`${BASE_URL_DEV}/upload/multiple-files`, data, {
+        try {
+            const response = await axios.post(`${BASE_URL_DEV}/upload/multiple-files`, data, {
                 headers: {
                     'x-access-token': state.auth && state.auth.authToken,
                 }
-            })
-            .then(function (response) {
-                console.log(response.data);
-                dispatch({ type: "MESSAGE", payload: response.data.message });
-                toggleShowHighlight();
-                setFiles([]);
-                setSelectedFiles([]);
-                setUploadedFiles(response.data.files); // Set uploaded files metadata
-                setIsLoading(false);
-                setShowMetadataViewer(true); // Show the metadata viewer on successful upload
-            })
-            .catch(function (error) {
-                console.log(error);
-                if (error && error.response) {
-                    dispatch({ type: "ERROR", payload: error.response.statusText || 'File Upload Failed!!' });
-                }
-                setIsLoading(false);
             });
-    }
+            console.log("Upload response:", response.data);
+            setUploadedFiles(response.data.files);
+            setFiles([]);
+            setSelectedFiles([]);
+            setIsLoading(false);
+            setShowMetadataViewer(true);
 
-    const toggleShowHighlight = () => {
-        dispatch({ type: "TOGGLE_HIGHLIGHT", payload: true });
+            // Fetch highlights and set current file
+            async.eachSeries(response.data.files, function (uploadedFile, cbBatch) {
+                axios.get(`${BASE_URL_DEV}/highlights-json/${state.auth.userPublicId}/${uploadedFile.name}`, {
+                    headers: {
+                        'x-access-token': state.auth && state.auth.authToken,
+                    }
+                }).then(function (result) {
+                    const fileHighlights = result.data;
+                    if (fileHighlights && fileHighlights.highlights) {
+                        dispatch({ type: "SET_FILE_HIGHLIGHTS", payload: fileHighlights.highlights });
+                    }
+                    cbBatch(null);
+                }).catch(error => {
+                    console.error("Error fetching highlights:", error);
+                    cbBatch(error);
+                });
+            }, async (loopErrBatch) => {
+                if (!loopErrBatch) {
+                    try {
+                        const result = await axios(`${BASE_URL_DEV}/get/files`, {
+                            headers: {
+                                "x-access-token": state.auth && state.auth.authToken,
+                            },
+                        });
+                        const files = result.data && result.data.files;
+                        console.log("Fetched files response:", files);
+                        if (result && files && files.length > 0) {
+                            const results = await axios(`${BASE_URL_DEV}/get-graphdata`, {
+                                headers: {
+                                    "x-access-token": state.auth && state.auth.authToken,
+                                },
+                            });
+                            const allgraphs = results.data;
+                            console.log("Graph data response:", allgraphs);
+                            let Obj = {};
+                            results && allgraphs && allgraphs.graphdata && allgraphs.graphdata.length > 0 && allgraphs.graphdata.filter(x => {
+                                Obj[x.fileName] = x.links.filter(e => e.source === "CITATION" || e.source === "PROVISION");
+                            });
+                            const fileNew = files.map(element => ({
+                                ...element,
+                                CITATION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "CITATION") : ["N/A"],
+                                PROVISION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "PROVISION") : ["N/A"]
+                            }));
+                            console.log("New files with citation and provision:", fileNew);
+                            dispatch({ type: "ADD_FILE", payload: fileNew });
+                            dispatch({ type: "SET_MODAL", payload: true });
+
+                            // Set the first uploaded file as the current file
+                            if (fileNew.length > 0) {
+                                const firstUploadedFile = filesToUpload[0];
+                                const firstFileResponse = response.data.files[0];
+                                const fileToSet = new File([firstUploadedFile], firstFileResponse.name, {
+                                    type: firstUploadedFile.type,
+                                    lastModified: firstUploadedFile.lastModified
+                                });
+                                dispatch({ type: "SET_CURR_FILE", payload: fileToSet });
+                                console.log("New SET_CURR_FILE:", fileToSet);
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error fetching files and graph data:", error);
+                    }
+                } else {
+                    console.error("Error in loopErrBatch:", loopErrBatch);
+                }
+            });
+            dispatch({ type: 'TOGGLE_VIEWER', payload: true });
+        } catch (error) {
+            console.error("Upload error:", error);
+            dispatch({ type: "ERROR", payload: error.response?.statusText || 'File Upload Failed!!' });
+            setIsLoading(false);
+        }
+    };
+
+    const handleViewPDF = async (file) => {
+        try {
+            console.log("Fetching PDF for file:", file);
+            const response = await axios.get(`${BASE_URL_DEV}/uploads/${state.auth.userPublicId}/${file.name}`, {
+                responseType: 'blob',
+                headers: {
+                    'x-access-token': state.auth && state.auth.authToken,
+                }
+            });
+            const fileBlob = new Blob([response.data], { type: response.headers['content-type'] });
+            const fileToSet = new File([fileBlob], file.name, {
+                type: fileBlob.type,
+                lastModified: file.lastModified || new Date().getTime()
+            });
+            console.log("Setting current file:", fileToSet);
+            dispatch({ type: 'SET_CURR_FILE', payload: fileToSet });
+
+            async.eachSeries([file], function (element, cbBatch) {
+                axios.get(`${BASE_URL_DEV}/highlights-json/${state.auth.userPublicId}/${element.name}`, {
+                    headers: {
+                        'x-access-token': state.auth && state.auth.authToken,
+                    }
+                }).then(function (result) {
+                    const fileHighlights = result.data;
+                    console.log("File highlights received:", fileHighlights);
+                    if (fileHighlights && fileHighlights.highlights) {
+                        dispatch({
+                            type: "SET_FILE_HIGHLIGHTS",
+                            payload: fileHighlights.highlights,
+                        });
+                    }
+                    cbBatch(null);
+                }).catch(error => {
+                    console.error("Error fetching highlights:", error);
+                    cbBatch(error);
+                });
+            }, (loopErrBatch) => {
+                if (!loopErrBatch) {
+                    (async () => {
+                        try {
+                            const result = await axios(`${BASE_URL_DEV}/get/files`, {
+                                headers: {
+                                    "x-access-token": state.auth && state.auth.authToken,
+                                },
+                            });
+                            const files = result.data && result.data.files;
+                            console.log("Fetched files response:", files);
+                            if (result && files && files.length > 0) {
+                                const results = await axios(`${BASE_URL_DEV}/get-graphdata`, {
+                                    headers: {
+                                        "x-access-token": state.auth && state.auth.authToken,
+                                    },
+                                });
+                                const allgraphs = results.data;
+                                console.log("Graph data response:", allgraphs);
+                                let Obj = {};
+                                results && allgraphs && allgraphs.graphdata && allgraphs.graphdata.length > 0 && allgraphs.graphdata.filter(x => {
+                                    Obj[x.fileName] = x.links.filter(e => e.source === "CITATION" || e.source === "PROVISION");
+                                });
+                                const fileNew = files.map(element => ({
+                                    ...element,
+                                    CITATION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "CITATION") : ["N/A"],
+                                    PROVISION: Obj[element.name] && Obj[element.name].length > 0 ? Obj[element.name].filter(e => e.source === "PROVISION") : ["N/A"]
+                                }));
+                                console.log("New files with citation and provision:", fileNew);
+                                dispatch({ type: "ADD_FILE", payload: fileNew });
+                                dispatch({ type: "SET_MODAL", payload: true });
+                            }
+                        } catch (error) {
+                            console.error("Error fetching files and graph data:", error);
+                        }
+                    })();
+                } else {
+                    console.error("Error in loopErrBatch:", loopErrBatch);
+                }
+            });
+            dispatch({ type: 'TOGGLE_VIEWER', payload: true });
+        } catch (error) {
+            console.error("Error fetching PDF:", error);
+        }
     };
 
     return (
@@ -123,7 +245,7 @@ function MultiFileUpload({ onBackClick }) {
                                 </thead>
                                 <tbody>
                                     {files.map((file, index) => (
-                                        <tr key={index} onClick={() => handleRowClick(file.name)} style={{ cursor: 'pointer' }}>
+                                        <tr key={index} onClick={() => handleSelectFile(file.name)} style={{ cursor: 'pointer' }}>
                                             <td>
                                                 <input
                                                     type="checkbox"
@@ -139,7 +261,7 @@ function MultiFileUpload({ onBackClick }) {
                         </div>
                         <div className="upload-button-container">
                             <Button
-                                className="btn btn-lg submitButton" // Updated to btn-lg
+                                className="btn btn-lg submitButton"
                                 color="success"
                                 onClick={handleUpload}
                                 disabled={selectedFiles.length === 0 || isLoading}
@@ -149,7 +271,7 @@ function MultiFileUpload({ onBackClick }) {
                         </div>
                     </Fragment>
                 )}
-                {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} />}
+                {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} onFileClick={handleViewPDF} />}
                 {isLoading && <div className="loading"></div>}
             </div>
         </Fragment>
