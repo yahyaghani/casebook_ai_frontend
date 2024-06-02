@@ -52,19 +52,19 @@ function Dashboard({ showFileViewer, showDashboardView, showHighlight, showProfi
 	const [state, setState] = useState({ highlights: [] });
 	const [PdfUrl, setPdfUrl] = useState({ url: "" });
 
-
-	useEffect(() => {
-		async function fetchData() {
-			axios.get('http://127.0.0.1:5000/api/v1/json')
-				.then(result_json => {
-					const pdf_name = Object.keys(result_json.data)[0];
-					setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
-					setState({ highlights: result_json.data[pdf_name] });
-				})
-				.catch(error => console.log('error: ' + error));
-		}
-		fetchData();
-	}, []);
+	/* commented off because it seems to be pinging on first dashboard view , no need for now , deprecated usage */
+	// useEffect(() => {
+	// 	async function fetchData() {
+	// 		axios.get('http://127.0.0.1:5000/api/v1/json')
+	// 			.then(result_json => {
+	// 				const pdf_name = Object.keys(result_json.data)[0];
+	// 				setPdfUrl({ url: `http://127.0.0.1:5000/api/v1/pdf/${pdf_name}` });
+	// 				setState({ highlights: result_json.data[pdf_name] });
+	// 			})
+	// 			.catch(error => console.log('error: ' + error));
+	// 	}
+	// 	fetchData();
+	// }, []);
 	// not using the State type!
 
 	// Jumping to highlight

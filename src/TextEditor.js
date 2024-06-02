@@ -168,7 +168,8 @@ export default function TextEditor({
 			const dataToSend = { 
 				content: 'Your input data here', // This can be any content you wish to send
 				documentId: documentId, // Adding documentId to the payload
-				filename:fileName
+				filename:fileName,
+				
 			};
 			console.log('Appeal clicked. Emitting openai_appeal_call with data:', dataToSend);
 			socket.emit("openai_appeal_call", dataToSend); // Emit the openai_appeal_call event with documentId

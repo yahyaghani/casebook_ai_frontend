@@ -194,12 +194,12 @@ function SinglePost({ currUser, user, filePost, dispatch, setIsFetchPosts }) {
 							setShow={setShowRatingsModal}
 							ratings={filePost.all_ratings}
 						/>
-						<OpenFileModal
+						{/* <OpenFileModal
 							showFileModal={showFileModal}
 							setShowFileModal={setShowFileModal}
 							fileUrl={filePost.fileUrl}
 							filePost={filePost}
-						/>
+						/> */}
 					</Col>
 				</Row>
 			)}
