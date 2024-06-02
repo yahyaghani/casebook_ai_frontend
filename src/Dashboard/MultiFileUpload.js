@@ -124,7 +124,7 @@ function MultiFileUpload({ onBackClick }) {
                     console.error("Error in loopErrBatch:", loopErrBatch);
                 }
             });
-            dispatch({ type: "SET_VIEW", payload: { showFileViewer: true } });
+            // dispatch({ type: "SET_VIEW", payload: { showFileViewer: true } });
         } catch (error) {
             console.error("Upload error:", error);
             dispatch({ type: "ERROR", payload: error.response?.statusText || 'File Upload Failed!!' });
@@ -147,7 +147,7 @@ function MultiFileUpload({ onBackClick }) {
                 lastModified: file.lastModified || new Date().getTime()
             });
             console.log("Setting current file:", fileToSet);
-            dispatch({ type: 'SET_CURR_FILE', payload: fileToSet });
+            // dispatch({ type: 'SET_CURR_FILE', payload: fileToSet });
 
             async.eachSeries([file], function (element, cbBatch) {
                 axios.get(`${BASE_URL_DEV}/highlights-json/${state.auth.userPublicId}/${element.name}`, {

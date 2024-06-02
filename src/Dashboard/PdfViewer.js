@@ -207,7 +207,7 @@ function PdfViewer() {
                         <Spinner />
                     )}
                 </div>
-                <PdfViewerSide />
+                {/* <PdfViewerSide /> */}
             </div>
         </Wrapper>
     );

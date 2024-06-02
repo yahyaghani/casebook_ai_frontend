@@ -5,22 +5,18 @@ import { UserContext } from "../App";
 import PdfGraphFunc from "./PdfGraphFunc";
 import { Modal } from "react-bootstrap";
 
-const PdfViewerSide = (props) => {
+const PdfViewerSide = ({ createNotes, showGraph, showGraphModal, setShowGraphModal, setCreateNotes, setShowGraph }) => {
+    const { state } = useContext(UserContext);
     const [dimensions, setDimensions] = useState({
         height: 720,
         width: 250
     });
-    const [createNotes, setCreateNotes] = useState(false);
-    const [showGraph, setShowGraph] = useState(false);
-    const [showGraphModal, setShowGraphModal] = useState(false);
-    const { state, dispatch } = useContext(UserContext);
-
     return (
         <Resizable
             className="box"
-            height={dimensions.height}
+            height={720}
             axis="x"
-            width={dimensions.width}
+            width={250}
             onResize={(e, { size }) => {
                 setDimensions({
                     height: size.height,
@@ -33,33 +29,11 @@ const PdfViewerSide = (props) => {
                 className="sidebarnew"
                 style={{
                     minWidth: "20%",
-                    width: dimensions.width + "px" || "25%",
+                    width: "250px" || "25%",
                     height: '100vh',
-                    // overflowY: "scroll",
                 }}
             >
                 <div>
-                    {/* Button container with flexbox */}
-                    <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content' }}>
-                        <div
-                            onClick={() => setCreateNotes(true)}
-                            className="btn btn-lg btn-outline-primary text-center cursor-pointer p-3"
-                        >
-                            ADD NOTES
-                        </div>
-                        <div
-                            onClick={() => setShowGraph(!showGraph)}
-                            className="btn btn-lg btn-outline-secondary text-center cursor-pointer p-3"
-                        >
-                            {showGraph ? "HIDE GRAPH" : "SHOW GRAPH"}
-                        </div>
-                        {/* <div
-                            onClick={() => { }}
-                            className="btn btn-lg btn-outline-success text-center cursor-pointer p-3"
-                        >
-                            OPEN GRAPH
-                        </div> */}
-                    </div>
                     {createNotes && (
                         <TextEditor
                             id={state.auth && state.auth.userPublicId}
@@ -68,24 +42,6 @@ const PdfViewerSide = (props) => {
                             setShowTextEditor={setCreateNotes}
                         />
                     )}
-                    {/* <div
-                        onClick={() => { }}
-                        style={{ marginBottom: "0 !important" }}
-                        className="btn btn-md btn-outline-light text-center bg-secondary cursor-pointer my-5 mb-0 p-3"
-                    >
-                        RECOMMEND CASES
-                    </div> */}
-
-
-                    {/* <i className="mdi mdi-fullscreen"
-                        onClick={() => setShowGraphModal(true)}
-                        style={{
-                            float: "right",
-                            padding: "20px",
-                            fontSize: "30px",
-                        }}
-                    /> */}
-
                     {!showGraphModal && showGraph && <PdfGraphFunc />}
                     {showGraphModal && (
                         <Modal
@@ -106,11 +62,10 @@ const PdfViewerSide = (props) => {
                             </Modal.Body>
                         </Modal>
                     )}
-
                 </div>
             </div>
         </Resizable>
-    )
-}
+    );
+};
 
 export default PdfViewerSide;
