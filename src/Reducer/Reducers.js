@@ -141,7 +141,10 @@ export const reducer = (state, action) => {
                 ...state,
                 highlightTextsForEditor: updatedHighlights,
             };
-
+            
+        case 'SET_ACCORDION_SECTIONS':
+                return updateState(state, { accordionSections: action.payload });
+    
         default:
             return state;
     }

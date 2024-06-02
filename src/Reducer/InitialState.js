@@ -36,4 +36,5 @@ export const InitialState = {
     showTextAnonymizerView: false,
     showGptView: false,
     showLawsReader: false,
+    accordionSections: [],
 };

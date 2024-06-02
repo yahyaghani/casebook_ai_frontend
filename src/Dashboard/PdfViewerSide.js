@@ -4,6 +4,7 @@ import TextEditor from "../TextEditor";
 import { UserContext } from "../App";
 import PdfGraphFunc from "./PdfGraphFunc";
 import { Modal } from "react-bootstrap";
+import AccordionRenderer from '../Dashboard/AccordionRenderer';
 
 const PdfViewerSide = ({ createNotes, showGraph, showGraphModal, setShowGraphModal, setCreateNotes, setShowGraph }) => {
     const { state } = useContext(UserContext);
@@ -11,6 +12,9 @@ const PdfViewerSide = ({ createNotes, showGraph, showGraphModal, setShowGraphMod
         height: 720,
         width: 250
     });
+
+    console.log('Accordion Sections:', state.accordionSections); // Ensure this is logged
+
     return (
         <Resizable
             className="box"
@@ -62,6 +66,7 @@ const PdfViewerSide = ({ createNotes, showGraph, showGraphModal, setShowGraphMod
                             </Modal.Body>
                         </Modal>
                     )}
+                    {state.accordionSections && <AccordionRenderer data={state.accordionSections} />}
                 </div>
             </div>
         </Resizable>
