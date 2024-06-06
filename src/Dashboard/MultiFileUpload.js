@@ -285,7 +285,7 @@ function MultiFileUpload({ onBackClick }) {
                 )}
                 {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} onFileClick={handleViewPDF} />}
                 {isLoading && <div className="loading"></div>}
-                <TriggerFileViewer onBackClick={onBackClick} />
+                {/* <TriggerFileViewer onBackClick={onBackClick} /> */}
             </div>
         </Fragment>
     );

@@ -4,7 +4,7 @@ import '../style/theme-styles/components/Chatstyles.css';
 
 const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
     const [messages, setMessages] = useState([
-        { id: 1, nickName: 'Casebook AI', message: 'Hello there!', type: 'me' }
+        { id: 1, nickName: '', message: 'Hello there!', type: 'me' }
     ]);
     const [inputText, setInputText] = useState('');
     const socketRef = useRef();
@@ -49,7 +49,7 @@ const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
                 console.log('Received response:', response);
                 const newMessage = {
                     id: messages.length + 1,
-                    nickName: 'Casebook AI',
+                    nickName: '',
                     message: response.recommendation,
                     type: 'me'
                 };

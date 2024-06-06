@@ -554,7 +554,6 @@ span {
 .upload-button-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
 }
 
 .submitButton {
@@ -653,4 +652,39 @@ span {
     margin-top: 2.5rem;
     color: black;
     font-size: 20px;
+}
+
+/* Example CSS */
+.navbar .nav-item.menu-items {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+.navbar .nav-item.menu-items .nav-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.navbar .nav-item.menu-items .menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+}
+
+.navbar .nav-item.menu-items .menu-title {
+    flex-grow: 1;
+    font-size: 14px;
+}
+
+.navbar .nav-item.menu-items.active {
+    background-color: rgba(255, 255, 255, 0.2);
 }

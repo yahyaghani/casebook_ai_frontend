@@ -15,7 +15,7 @@
 .chat__conversation-board {
     height: calc(78vh - 24vh); 
     overflow-y: auto;
-    padding: 1vh 20px;
+    /* padding: 1vh 20px; */
     font-family: 'Kalam', cursive;
 }
 
@@ -72,6 +72,7 @@
     bottom: 0;
     width: 100%;
     background: #11171c;
+    margin-left:-10px;
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
@@ -129,7 +130,7 @@
 
 /* Casebook AI messages (left-aligned) */
 .chat__conversation-board__message-container.me {
-    display: flex;
+    /* display: flex; */
     justify-content: flex-start;
 }
 
@@ -141,7 +142,7 @@
 
 /* User messages (right-aligned) */
 .chat__conversation-board__message-container.user {
-    display: flex;
+    /* display: flex; */
     justify-content: flex-end;
 }
 
