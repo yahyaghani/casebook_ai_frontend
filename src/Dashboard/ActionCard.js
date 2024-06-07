@@ -43,18 +43,19 @@ function ActionCard({ onHelpClick }) {
                 </Row>
                 <Row className="mt-4 justify-content-center">
                     {inputVisible ? (
-                        <FormGroup>
-                            <Input
-                                type="text"
-                                value={caseName}
-                                onChange={(e) => setCaseName(e.target.value)}
-                                placeholder="Enter case name"
-                                style={{ maxWidth: "200px", display: "inline-block" }}
-                            />
-                            <Button className="important-button ml-2" onClick={handleSubmit}>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
+                            <FormGroup style={{ width: "200px" }}>
+                                <Input
+                                    type="text"
+                                    value={caseName}
+                                    onChange={(e) => setCaseName(e.target.value)}
+                                    placeholder="Enter case name"
+                                />
+                            </FormGroup>
+                            <Button className="important-button" style={{ width: "200px",height:'38px', marginTop: "-2px" }} onClick={handleSubmit}>
                                 Submit
                             </Button>
-                        </FormGroup>
+                        </div>
                     ) : (
                         <Button className="important-button" onClick={() => handleHelpClick("")}>
                             Help me with a new case
