@@ -11,7 +11,7 @@ import TriggerFileViewer from './TriggerFileViewer';
 
 const async = require('async');
 
-function MultiFileUpload({ onBackClick }) {
+function MultiFileUpload({ onBackClick ,caseName}) {
     const { state, dispatch } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [files, setFiles] = useState([]);
@@ -44,6 +44,7 @@ function MultiFileUpload({ onBackClick }) {
 
         const data = new FormData();
         filesToUpload.forEach(file => data.append('files', file));
+        data.append('case_name', caseName);  // Add case name to the FormData
         setIsLoading(true);
         try {
             const response = await axios.post(`${BASE_URL_DEV}/upload/multiple-files`, data, {

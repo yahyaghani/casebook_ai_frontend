@@ -8,7 +8,6 @@ import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 import SideNav from "./SideNav";
 import Profile from "./Profile";
-import MultiFileUpload from '../Dashboard/MultiFileUpload';
 
 export const useSidebarLogic = () => {
     const { state, dispatch } = useContext(UserContext);

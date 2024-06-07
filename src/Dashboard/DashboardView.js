@@ -7,8 +7,10 @@ import DashboardFirstRowCard from "../shared/DashboardFirstRowCard"; // Import t
 
 function DashboardView() {
     const [showUpload, setShowUpload] = useState(false);
+    const [caseName, setCaseName] = useState("");
 
-    const handleHelpClick = () => {
+    const handleHelpClick = (name) => {
+        setCaseName(name); // Receive the case name
         setShowUpload(true);
     };
 
@@ -35,7 +37,7 @@ function DashboardView() {
             <Row className="mt-5" style={{marginTop: "3.5rem"}}>
                 <Col xs={12}>
                     {!showUpload && <ActionCard onHelpClick={handleHelpClick} />}
-                    {showUpload && <MultiFileUpload onBackClick={handleBackClick} />}
+                    {showUpload && <MultiFileUpload onBackClick={handleBackClick} caseName={caseName} />}
                 </Col>
             </Row>
         </div>
