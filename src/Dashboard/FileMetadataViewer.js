@@ -9,23 +9,23 @@ function FileMetadataViewer({ files, onFileClick }) {
                 <thead>
                     <tr>
                         <th>File Name</th>
-                        <th>File Size</th>
+                        {/* <th>File Size</th> */}
                         <th>Upload Date</th>
-                        <th>Category</th>
+                        {/* <th>Category</th> */}
                         <th>Summary</th>
-                        <th>View PDF</th>
+                        <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
                     {files.map((file, index) => (
                         <tr key={index}>
                             <td>{file.name}</td>
-                            <td>{(file.size / 1024).toFixed(2)} KB</td>
+                            {/* <td>{(file.size / 1024).toFixed(2)} KB</td> */}
                             <td>{new Date(file.uploadDate).toLocaleDateString()}</td>
-                            <td>{file.category}</td>
+                            {/* <td>{file.category}</td> */}
                             <td>{file.summary}</td>
                             <td>
-                                <Button color="primary" onClick={() => onFileClick(file)}>View PDF</Button>
+                                <Button color="primary" onClick={() => onFileClick(file)}>View</Button>
                             </td>
                         </tr>
                     ))}
