@@ -144,6 +144,8 @@ export const reducer = (state, action) => {
             
         case 'SET_ACCORDION_SECTIONS':
                 return updateState(state, { accordionSections: action.payload });
+                // return { ...state, accordionSections: [{ test: 'data' }] };  // Test static data
+
     
         default:
             return state;

@@ -4,15 +4,33 @@ import Accordion from 'react-bootstrap/Accordion';
 import AccordionContext from 'react-bootstrap/AccordionContext';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import './accordion.css'; // Import the new CSS file
+import { UserContext } from '../App';  // Import UserContext
+
 
 function AccordionRenderer({ data }) {
     console.log('Accordion Renderer Data:', data); // Ensure this is logged
-
     const [searchInput, setSearchInput] = useState('');
     const [activeKeys, setActiveKeys] = useState([]);
     const [active, setActive] = useState('');
     const [count, setCount] = useState(0);
+    const { state, dispatch } = useContext(UserContext);
+    const [accordionData, setAccordionData] = useState(data);  // Local state to manage accordion data
+
     const myRef = useRef();
+    // Update local accordion data if props data is empty and state has accordionSections
+    useEffect(() => {
+        if (data.length === 0 && state.accordionSections && state.accordionSections.length > 0) {
+            setAccordionData(state.accordionSections);
+        } else {
+            setAccordionData(data);
+        }
+    }, [data, state.accordionSections]);
+
+    // Logging to monitor the data updates
+    useEffect(() => {
+        console.log('Accordion Renderer Data:', accordionData);
+    }, [accordionData]);
+
 
     useEffect(() => {
         let accordionContainer = myRef.current;
@@ -122,14 +140,14 @@ function AccordionRenderer({ data }) {
                     </Accordion>
                 ))}
             </div>
-            <form className="accordion-search" onSubmit={searchHandler}>
+            {/* <form className="accordion-search" onSubmit={searchHandler}>
                 <button type="button" onClick={prevClickHandler} disabled={count <= 0}>{`<<`}</button>
                 <button type="button" onClick={prevClickHandler} disabled={count <= 0}>prev</button>
                 <input type="text" placeholder="Search"
                     onChange={(e) => setSearchInput(e.target.value)} />
                 <button type="button" onClick={nextClickHandler} disabled={count >= activeKeys.length - 1}>Next</button>
                 <button type="button" onClick={nextClickHandler} disabled={count >= activeKeys.length - 1}>{`>>`}</button>
-            </form>
+            </form> */}
         </div>
     );
 }

@@ -168,7 +168,7 @@ function MultiFileUpload({ onBackClick ,caseName}) {
                             type: "SET_FILE_HIGHLIGHTS",
                             payload: fileHighlights.highlights,
                         });
-                        console.log("Setting Accordion Sections:", fileHighlights.highlights.sections || []);
+                        // console.log("Setting Accordion Sections:", fileHighlights.highlights.sections || []);
                         // dispatch({ type: "SET_ACCORDION_SECTIONS", payload: fileHighlights.sections || [] });
                             
                     }

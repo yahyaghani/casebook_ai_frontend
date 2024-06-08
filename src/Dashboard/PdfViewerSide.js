@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Resizable } from "react-resizable";
 import TextEditor from "../TextEditor";
 import { UserContext } from "../App";
@@ -13,7 +13,16 @@ const PdfViewerSide = ({ createNotes, showGraph, showGraphModal, setShowGraphMod
         width: 250
     });
 
-    console.log('Accordion Sections:', state.accordionSections); // Ensure this is logged
+    // useEffect to log and act on changes in accordionSections
+    useEffect(() => {
+        console.log('Accordion Sections Updated:', state.accordionSections);
+        // Here you can also perform actions based on the updated accordionSections
+        // For example, checking for empty sections, handling errors, etc.
+    }, [state.accordionSections]); // Dependency array includes only accordionSections to react specifically to its changes
+// // 
+// useEffect(() => {
+//     return () => console.log('Unmounting PdfViewer, current accordionSections:', state.accordionSections);
+// }, []);  // Logs on unmount to see what state is at that time
 
     return (
         <Resizable
