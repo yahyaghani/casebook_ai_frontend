@@ -416,7 +416,7 @@ export default function TextEditor({
 		  
 				<Modal.Body style={{ height: '76vh', background:'#191c24' }}>
 				<div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-				<div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
+				{/* <div style={{ flex: 2, paddingRight: '20px', overflowY: 'auto' }}>
 						{state.highlightTextsForEditor && state.highlightTextsForEditor.length > 0 ? (
 							state.highlightTextsForEditor.map((highlight, index) => (
 								<div key={index} className="sidebar__highlight" style={{ 
@@ -443,7 +443,7 @@ export default function TextEditor({
 						) : (
 							<div></div>
 						)}
-					</div>
+					</div> */}
 
 					
 				  <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
