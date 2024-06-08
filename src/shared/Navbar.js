@@ -95,15 +95,13 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
                 <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content' }}>
                     <div
                         onClick={() => setCreateNotes(true)}
-                        className="btn btn-lg btn-outline-primary text-center cursor-pointer p-3"
-                    >
-                        ADD NOTES
+                        className="btn btn-md btn-primary text-center cursor-pointer p-2"
+                    >Notes
                     </div>
                     <div
                         onClick={() => setShowGraph(!showGraph)}
-                        className="btn btn-lg btn-outline-secondary text-center cursor-pointer p-3"
-                    >
-                        {showGraph ? "HIDE GRAPH" : "SHOW GRAPH"}
+                        className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
+                    > {showGraph ? "Hide" : "Graph"}
                     </div>
                 </div>
                 <button
