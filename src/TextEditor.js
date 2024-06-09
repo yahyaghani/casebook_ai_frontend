@@ -70,7 +70,9 @@ export default function TextEditor({
 	
 	  
 	useEffect(() => {
-		const s = io("http://localhost:8000");
+		// const s = io("http://localhost:8000");
+		const s = io("https://back.casebk.com");  // Update the URL here
+
 		setSocket(s);
 
 		return () => {
@@ -279,7 +281,9 @@ export default function TextEditor({
 	  
 
 	useEffect(() => {
-		const newSocket = io("http://localhost:8000");
+		// const newSocket = io("http://localhost:8000");
+		const newSocket = io("https://back.casebk.com");  // Update the URL here
+
 		setSocket(newSocket);
 		console.log("Socket connection established");
 	

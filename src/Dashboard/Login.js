@@ -28,6 +28,7 @@ const Login = () => {
       method: "POST",
       headers: {
         "Content-Type": "Authorization",
+        
       },
       body: JSON.stringify(userDetails),
     });

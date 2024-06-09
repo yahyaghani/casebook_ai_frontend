@@ -13,7 +13,9 @@ const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
         if (propSocket) {
             socketRef.current = propSocket;
         } else {
-            const newSocket = io("http://localhost:8000");
+            // const newSocket = io("http://localhost:8000");
+            const newSocket = io("https://back.casebk.com");  // Update the URL here
+
             socketRef.current = newSocket;
             console.log("Socket connection established");
 
