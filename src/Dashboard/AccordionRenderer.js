@@ -5,6 +5,7 @@ import AccordionContext from 'react-bootstrap/AccordionContext';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import './accordion.css'; // Import the new CSS file
 import { UserContext } from '../App';  // Import UserContext
+import { useSocket } from '../shared/SocketContext'; // Import the socket context
 
 
 function AccordionRenderer({ data }) {
@@ -15,6 +16,7 @@ function AccordionRenderer({ data }) {
     const [count, setCount] = useState(0);
     const { state, dispatch } = useContext(UserContext);
     const [accordionData, setAccordionData] = useState(data);  // Local state to manage accordion data
+    const socket = useSocket(); // Get the socket instance from context
 
     const myRef = useRef();
     // Update local accordion data if props data is empty and state has accordionSections
@@ -26,11 +28,24 @@ function AccordionRenderer({ data }) {
         }
     }, [data, state.accordionSections]);
 
+    // Listen for socket updates
+    useEffect(() => {
+        if (socket) {
+            socket.on('accordion-response', (newData) => {
+                console.log('Received accordion-response:', newData);
+                setAccordionData(newData);
+            });
+
+            return () => {
+                socket.off('accordion-response');
+            };
+        }
+    }, [socket]);
+
     // Logging to monitor the data updates
     useEffect(() => {
         console.log('Accordion Renderer Data:', accordionData);
     }, [accordionData]);
-
 
     useEffect(() => {
         let accordionContainer = myRef.current;
@@ -88,7 +103,7 @@ function AccordionRenderer({ data }) {
 
     const searchHandler = (event) => {
         let matchedTextIndexArray = [];
-        data.forEach((d, index) => {
+        accordionData.forEach((d, index) => {
             if (d.text.toLowerCase().includes(searchInput.toLowerCase())) {
                 matchedTextIndexArray.push(index);
             }
@@ -127,7 +142,7 @@ function AccordionRenderer({ data }) {
     return (
         <div>
             <div className="accordion-container" ref={myRef}>
-                {Array.isArray(data) && data.map((d, index) => (
+                {Array.isArray(accordionData) && accordionData.map((d, index) => (
                     <Accordion key={index} activeKey={activeKeys.includes(index) ? (index === 0 ? '0' : index) : (active === 0 ? '0' : active)} onSelect={(e) => accordionClickHandler(e, index === 0 ? '0' : index)}>
                         <Card className="accordion-card">
                             <Card.Header className="accordion-card__header">
@@ -140,14 +155,6 @@ function AccordionRenderer({ data }) {
                     </Accordion>
                 ))}
             </div>
-            {/* <form className="accordion-search" onSubmit={searchHandler}>
-                <button type="button" onClick={prevClickHandler} disabled={count <= 0}>{`<<`}</button>
-                <button type="button" onClick={prevClickHandler} disabled={count <= 0}>prev</button>
-                <input type="text" placeholder="Search"
-                    onChange={(e) => setSearchInput(e.target.value)} />
-                <button type="button" onClick={nextClickHandler} disabled={count >= activeKeys.length - 1}>Next</button>
-                <button type="button" onClick={nextClickHandler} disabled={count >= activeKeys.length - 1}>{`>>`}</button>
-            </form> */}
         </div>
     );
 }

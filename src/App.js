@@ -15,6 +15,9 @@ import Navbar from "./shared/Navbar";
 import FileViewer from "./Dashboard/FileViewer";
 import FileMetadataViewer from "./Dashboard/FileMetadataViewer";
 import PdfViewerSide from "./Dashboard/PdfViewerSide";
+import { SocketProvider } from './shared/SocketContext';
+
+
 export const UserContext = createContext();
 
 function App() {
@@ -26,6 +29,8 @@ function App() {
 
     return (
         <UserContext.Provider value={{ state, dispatch }}>
+                    <SocketProvider>
+
             <Router>
                 <Switch>
                     <Route path="/login">
@@ -80,6 +85,8 @@ function App() {
                     <Redirect to="/login" />
                 </Switch>
             </Router>
+            </SocketProvider>
+
         </UserContext.Provider>
     );
 }

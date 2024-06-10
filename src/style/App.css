@@ -187,6 +187,10 @@ blockquote:after {
     width: 100% !important;
 }
 
+.svg-container-graph-id{
+    height: 95vh;
+}
+
 .pdf-viewer .PdfHighlighter {
     min-width: 50%;
     width: 80%;

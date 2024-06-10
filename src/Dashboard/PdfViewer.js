@@ -1,3 +1,4 @@
+// PdfViewer.js
 import React, { useContext, useEffect, useState, useRef } from "react";
 import {
     PdfLoader,
@@ -16,6 +17,7 @@ import processMd from "./markdown";
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 import PdfViewerSide from "./PdfViewerSide";
+import PdfAutoScroller from './PdfAutoScroller'; 
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -124,6 +126,7 @@ function PdfViewer() {
                 : h
         ));
     };
+
     return (
         <Wrapper highlightColors={state.highlightColors}>
             <div className="d-flex">
@@ -201,6 +204,7 @@ function PdfViewer() {
                 </div>
                 {/* <PdfViewerSide /> */}
             </div>
+            <PdfAutoScroller pdfHighlighter={pdfHighlighter} />
         </Wrapper>
     );
 }

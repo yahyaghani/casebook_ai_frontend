@@ -1,28 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client'; // Import socket.io-client
+// import io from 'socket.io-client'; // Import socket.io-client
 import '../style/theme-styles/components/Chatstyles.css';
+import { useSocket } from './SocketContext'; // Use the context
 
-const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
+
+const ChatUI = ({ publicId, pdfDocumentName }) => {
     const [messages, setMessages] = useState([
         { id: 1, nickName: '', message: 'Hello there!', type: 'me' }
     ]);
     const [inputText, setInputText] = useState('');
-    const socketRef = useRef();
-
-    useEffect(() => {
-        if (propSocket) {
-            socketRef.current = propSocket;
-        } else {
-            const newSocket = io("http://localhost:8000");
-            socketRef.current = newSocket;
-            console.log("Socket connection established");
-
-            return () => {
-                newSocket.disconnect();
-                console.log("Socket disconnected");
-            };
-        }
-    }, [propSocket]);
+    const socket = useSocket();
 
     const sendMessage = (text, sender = 'Yahya') => {
         if (text.trim()) {
@@ -36,15 +23,15 @@ const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
                 pdfDocumentName: pdfDocumentName
             };
             setMessages(prevMessages => [...prevMessages, newMessage]);
-            if (sender === 'Yahya' && socketRef.current) {
+            if (sender === 'Yahya' && socket) {
                 console.log('Emitting to socket:', text);
-                socketRef.current.emit('openai-chat', { query: newMessage });
+                socket.emit('openai-chat', { query: newMessage });
             }
         }
     };
 
     useEffect(() => {
-        if (socketRef.current) {
+        if (socket) {
             const handleResponse = (response) => {
                 console.log('Received response:', response);
                 const newMessage = {
@@ -56,13 +43,13 @@ const ChatUI = ({ socket: propSocket, publicId, pdfDocumentName }) => {
                 setMessages(prevMessages => [...prevMessages, newMessage]);
             };
 
-            socketRef.current.on('openai-query-response', handleResponse);
+            socket.on('openai-query-response', handleResponse);
 
             return () => {
-                socketRef.current.off('openai-query-response', handleResponse);
+                socket.off('openai-query-response', handleResponse);
             };
         }
-    }, []);
+    }, [socket]);
 
     const handleSend = () => {
         sendMessage(inputText);

@@ -1,16 +1,17 @@
+// PdfGraphFunc.js
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Graph } from "react-d3-graph";
 import axios from "axios";
 import { Fragment } from "react";
-import io from 'socket.io-client';
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
+import { useSocket } from '../shared/SocketContext'; // Use the context
 
 function PdfGraphFunc(props) {
     const [obj, setObj] = useState([]);
     const { state, dispatch } = useContext(UserContext);
     const errorText = "";
-    const socketRef = useRef();
+    const socket = useSocket();
 
     useEffect(() => {
         if (state.graphData.length !== 0) {
@@ -40,23 +41,17 @@ function PdfGraphFunc(props) {
             })();
         }
 
-        // Initialize socket connection
-        if (!socketRef.current) {
-            const newSocket = io("http://localhost:8000");
-            socketRef.current = newSocket;
-            console.log("Graph Socket established");
-
-            newSocket.on('new-graph-nodes-reciever', (data) => {
+        if (socket) {
+            socket.on('new-graph-nodes-reciever', (data) => {
                 console.log('Received new Graph data:', data);
                 setObj(data);
             });
 
             return () => {
-                newSocket.disconnect();
-                console.log("Socket disconnected");
+                socket.off('new-graph-nodes-reciever');
             };
         }
-    }, [state]);
+    }, [state, socket]);
 
     const myConfig = {
         automaticRearrangeAfterDropNode: true,
@@ -134,7 +129,6 @@ function PdfGraphFunc(props) {
     };
 
     const onDoubleClickNode = function (nodeId, node) {
-        //  window.alert('Double clicked node ${nodeId} in position (${node.x}, ${node.y})');
         const nodeData = state.nodesData[nodeId];
         if (nodeData) {
             window.open(nodeData["frontend_url"], "_blank");
@@ -146,7 +140,6 @@ function PdfGraphFunc(props) {
     };
 
     const onMouseOverNode = function (nodeId, node) {
-        //  window.alert(`Mouse over node ${nodeId} in position (${node.x}, ${node.y})`);
         const nodeData = state.nodesData[node.id];
         if (nodeData) {
             dispatch({ type: "SET_NODE_DATA", payload: nodeData });
