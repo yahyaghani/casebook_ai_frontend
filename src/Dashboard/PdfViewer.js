@@ -124,7 +124,6 @@ function PdfViewer() {
                 : h
         ));
     };
-
     return (
         <Wrapper highlightColors={state.highlightColors}>
             <div className="d-flex">
@@ -161,15 +160,20 @@ function PdfViewer() {
                                             viewportToScaled,
                                             screenshot,
                                             isScrolledTo
-                                        ) => {
-                                            const isTextHighlight = !Boolean(highlight.content && highlight.content.image);
-                                            const component = isTextHighlight ? (
+                                        ) => (
+                                            <Popup
+                                                popupContent={<HighlightPopup {...highlight} />}
+                                                onMouseOver={(popupContent) =>
+                                                    setTip(highlight, (highlight) => popupContent)
+                                                }
+                                                onMouseOut={hideTip}
+                                                key={index}
+                                            >
                                                 <StickyNote
                                                     isScrolledTo={isScrolledTo}
                                                     position={highlight.position}
                                                     comment={highlight.comment}
                                                 />
-                                            ) : (
                                                 <AreaHighlight
                                                     highlight={highlight}
                                                     onChange={(boundingRect) => {
@@ -180,20 +184,8 @@ function PdfViewer() {
                                                         );
                                                     }}
                                                 />
-                                            );
-
-                                            return (
-                                                <Popup
-                                                    popupContent={<HighlightPopup {...highlight} />}
-                                                    onMouseOver={(popupContent) =>
-                                                        setTip(highlight, (highlight) => popupContent)
-                                                    }
-                                                    onMouseOut={hideTip}
-                                                    key={index}
-                                                    children={component}
-                                                />
-                                            );
-                                        }}
+                                            </Popup>
+                                        )}
                                         highlights={highlights}
                                     />
                                 )}
