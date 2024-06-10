@@ -297,7 +297,7 @@ return (
                       </div>
                   </div>
               )) : (
-                  <div className="no-highlights">No Highlights Available for Selected Pdf!</div>
+                  <div className="no-highlights">No Highlights!</div>
               )}
           </div>
 
