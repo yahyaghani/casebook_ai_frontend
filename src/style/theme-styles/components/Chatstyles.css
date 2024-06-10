@@ -13,7 +13,7 @@
 }
 
 .chat__conversation-board {
-    height: calc(78vh - 24vh); 
+    height: calc(80vh - 24vh); 
     overflow-y: auto;
     /* padding: 1vh 20px; */
     font-family: 'Kalam', cursive;
@@ -68,7 +68,7 @@
 }
 
 .chat__conversation-panel {
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     width: 100%;
     background: #11171c;
