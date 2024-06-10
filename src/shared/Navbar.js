@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import HighlightButton from '../Dashboard/HighlightButton';
 import FileUploadComponent from '../Dashboard/FileUploadComponent';
@@ -8,11 +8,10 @@ import { Col, Row } from 'reactstrap';
 import { UserContext } from "../App";
 import { fetchAuth } from '../utils';
 
-const Navbar = ({ setCreateNotes }) => {
+const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) => {
     const history = useHistory();
     const { state, dispatch } = useContext(UserContext);
     const toggleButtonRef = useRef(null);
-    const [showGraph, setShowGraph] = useState(true); // Initialize showGraph to true
 
     useEffect(() => {
         setInterval(function () { authChe(); }, 60000);

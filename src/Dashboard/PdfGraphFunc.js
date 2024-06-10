@@ -6,12 +6,14 @@ import { Fragment } from "react";
 import { UserContext } from "../App";
 import { BASE_URL_DEV } from "../utils";
 import { useSocket } from '../shared/SocketContext'; // Use the context
+import GraphIframeView from './GraphIframeView';
 
 function PdfGraphFunc(props) {
     const [obj, setObj] = useState([]);
     const { state, dispatch } = useContext(UserContext);
     const errorText = "";
     const socket = useSocket();
+    const [iframeUrl, setIframeUrl] = useState(null);
 
     useEffect(() => {
         if (state.graphData.length !== 0) {
@@ -123,10 +125,53 @@ function PdfGraphFunc(props) {
     const onClickGraph = function (event) {
         //  window.alert('Clicked the graph background');
     };
+    /* standard */
 
-    const onClickNode = function (nodeId, node) {
-        window.alert(`Clicked node ${nodeId} in position (${node.x}, ${node.y})`);
+    // const onClickNode = function (nodeId, node) {
+    //     window.alert(`Clicked node ${nodeId} in position (${node.x}, ${node.y})`);
+    // };
+    
+    /* iframe attempt */
+
+    // const onClickNode = async (nodeId) => {
+    //     try {
+    //         const response = await axios.post(`${BASE_URL_DEV}/get-node-url`, { nodeId }, {
+    //             headers: {
+    //                 "x-access-token": state.auth && state.auth.authToken,
+    //             },
+    //         });
+
+    //         if (response.data && response.data.url) {
+    //             setIframeUrl(response.data.url);
+    //         } else {
+    //             setIframeUrl(null);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching node URL:', error);
+    //         setIframeUrl(null);
+    //     }
+    // };
+
+    /* open link outside */
+
+    const onClickNode = async (nodeId) => {
+        try {
+            const response = await axios.post(`${BASE_URL_DEV}/get-node-url`, { nodeId }, {
+                headers: {
+                    "x-access-token": state.auth && state.auth.authToken,
+                },
+            });
+
+            if (response.data && response.data.url) {
+                window.open(response.data.url, "_blank");
+            } else {
+                console.error('No URL found for the given Node ID');
+            }
+        } catch (error) {
+            console.error('Error fetching node URL:', error);
+        }
     };
+
 
     const onDoubleClickNode = function (nodeId, node) {
         const nodeData = state.nodesData[nodeId];
@@ -217,6 +262,9 @@ function PdfGraphFunc(props) {
                     <p>{errorText}</p>
                 </div>
             )}
+
+        {/* {iframeUrl && <GraphIframeView url={iframeUrl} />} */}
+
         </Fragment>
     );
 }
