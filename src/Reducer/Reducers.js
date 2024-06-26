@@ -152,7 +152,18 @@ export const reducer = (state, action) => {
                 showPdfViewer: !state.showPdfViewer,
             };
 
-        
+        case 'SHOW_METADATA_VIEWER':
+            return {
+                ...state,
+                showMetadataViewer: true,
+            };
+
+        case 'HIDE_METADATA_VIEWER':
+            return {
+                ...state,
+                showMetadataViewer: false,
+            };        
+            
         default:
             return state;
     }

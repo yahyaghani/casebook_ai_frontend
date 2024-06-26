@@ -38,5 +38,6 @@ export const InitialState = {
     showLawsReader: false,
     accordionSections: [],
     showPdfViewer: true, // default to true to show the PDF viewer initially
+    showMetadataViewer: false, // default to false to hide the metadata viewer initially
 
 };

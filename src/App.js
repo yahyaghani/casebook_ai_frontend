@@ -1,4 +1,4 @@
-import React, { useState, useReducer, createContext } from "react";
+import React, { useState, useReducer, createContext, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppRoutes from "./AppRoutes";
 import { reducer } from "./Reducer/Reducers";
@@ -25,6 +25,12 @@ function App() {
     const [createNotes, setCreateNotes] = useState(false);
     const [showGraph, setShowGraph] = useState(false);
     const [showGraphModal, setShowGraphModal] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: 'HIDE_METADATA_VIEWER' });
+        };
+    }, []);
 
     return (
         <UserContext.Provider value={{ state, dispatch }}>
@@ -62,7 +68,9 @@ function App() {
                                                     showLawsReader={state.showLawsReader}
                                                     showGptView={state.showGptView}
                                                 />
-                                                <FileMetadataViewer files={state.files} />
+                                                {state.showDashboardView && state.showMetadataViewer && (
+                                                    <FileMetadataViewer files={state.files} />
+                                                )}
                                             </div>
                                             {state.showHighlight === true && state.searchQuery !== "" && <NodePreview />}
                                             {state.showFileViewer && (

@@ -17,7 +17,6 @@ function MultiFileUpload({ onBackClick ,caseName}) {
     const [files, setFiles] = useState([]);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [showMetadataViewer, setShowMetadataViewer] = useState(false);
 
     const onDrop = useCallback((acceptedFiles) => {
         setFiles([...files, ...acceptedFiles]);
@@ -57,7 +56,7 @@ function MultiFileUpload({ onBackClick ,caseName}) {
             setFiles([]);
             setSelectedFiles([]);
             setIsLoading(false);
-            setShowMetadataViewer(true);
+            dispatch({ type: 'SHOW_METADATA_VIEWER' });
 
             // Fetch highlights and set current file
             async.eachSeries(response.data.files, function (uploadedFile, cbBatch) {
@@ -231,7 +230,7 @@ function MultiFileUpload({ onBackClick ,caseName}) {
                 <button className="back-button" onClick={onBackClick}>
                     <IoArrowBackCircle size={40} />
                 </button>
-                {!showMetadataViewer && files.length === 0 && (
+                {!state.showMetadataViewer && files.length === 0 && (
                     <div {...getRootProps()} className="drag-drop__area">
                         <input {...getInputProps()} />
                         <div className="drag-drop__file-icon">
@@ -240,7 +239,7 @@ function MultiFileUpload({ onBackClick ,caseName}) {
                         </div>
                     </div>
                 )}
-                {!showMetadataViewer && files.length > 0 && (
+                {!state.showMetadataViewer && files.length > 0 && (
                     <Fragment>
                         <div className="file-preview">
                             <Table responsive bordered className="custom-table">
@@ -284,7 +283,7 @@ function MultiFileUpload({ onBackClick ,caseName}) {
                         </div>
                     </Fragment>
                 )}
-                {showMetadataViewer && <FileMetadataViewer files={uploadedFiles} onFileClick={handleViewPDF} />}
+                {state.showMetadataViewer && <FileMetadataViewer files={uploadedFiles} onFileClick={handleViewPDF} />}
                 {isLoading && <div className="loading"></div>}
                 {/* <TriggerFileViewer onBackClick={onBackClick} /> */}
             </div>
