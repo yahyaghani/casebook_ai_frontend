@@ -163,7 +163,21 @@ export const reducer = (state, action) => {
                 ...state,
                 showMetadataViewer: false,
             };        
-            
+
+        case 'SHOW_PDF_VIEWER':
+                return {
+                    ...state,
+                    showPdfViewer: true,
+                };
+    
+        case 'SHOW_TEXT_EDITOR':
+                return {
+                    ...state,
+                    showPdfViewer: false,
+                };
+    
+
+
         default:
             return state;
     }

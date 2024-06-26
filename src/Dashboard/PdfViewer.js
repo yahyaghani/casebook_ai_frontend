@@ -14,9 +14,8 @@ import Spinner from "../shared/Spinner";
 import Tip from "./Tip";
 import processMd from "./markdown";
 import { UserContext } from "../App";
-import { BASE_URL_DEV } from "../utils";
-import PdfViewerSide from "./PdfViewerSide";
-import PdfAutoScroller from './PdfAutoScroller'; 
+import PdfAutoScroller from './PdfAutoScroller';
+import TextEditor from "../TextEditor";
 
 const getNextId = () => String(Math.random()).slice(2);
 
@@ -205,9 +204,12 @@ function PdfViewer() {
                     <PdfAutoScroller pdfHighlighter={pdfHighlighter} />
                 </div>
             ) : (
-                <div className="new-div-layer">
-                    <h3>Swapped PDF Off</h3>
-                </div>
+                <TextEditor 
+                    id={state.auth?.userPublicId}
+                    fileName={state.currentFile?.name}
+                    showTextEditor={true}
+                    setShowTextEditor={(value) => dispatch({ type: value ? 'SHOW_TEXT_EDITOR' : 'SHOW_PDF_VIEWER' })}
+                />
             )}
         </Wrapper>
     );

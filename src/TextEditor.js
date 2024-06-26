@@ -1,7 +1,7 @@
 // TextEditor.js
 import React, { useContext, useCallback, useEffect, useState } from "react";
 import Quill from "quill";
-import { FormControl, Modal, Button, Spinner } from "react-bootstrap";
+import { Button, Spinner, FormControl } from "react-bootstrap";
 import "quill/dist/quill.snow.css";
 import { UserContext } from "./App";
 import { FaRegPaperPlane, FaBriefcase, FaFile } from 'react-icons/fa';
@@ -27,9 +27,8 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
     const documentId = id;
     const [quill, setQuill] = useState();
     const { state } = useContext(UserContext);
-    const [editorMode, setEditorMode] = useState(null);
     const [isQuillReady, setIsQuillReady] = useState(false);
-	const [openaiResponses, setOpenaiResponses] = useState([]);
+    const [openaiResponses, setOpenaiResponses] = useState([]);
     const [openaiRecommendations, setOpenaiRecommendations] = useState([]);
     const [query, setQuery] = useState('');
     const [requestCounter, setRequestCounter] = useState({ recommendations: 0, caselaw: 0, clause: 0 });
@@ -53,7 +52,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
     }, [showTextEditor]);
 
     useEffect(() => {
-        if (!socket || !quill || (editorMode !== 'edit_document' && editorMode !== 'appeal')) return;
+        if (!socket || !quill) return;
 
         const loadDocument = (document) => {
             let documentText = '';
@@ -76,7 +75,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
         return () => {
             socket.off("document-loaded", loadDocument);
         };
-    }, [socket, quill, editorMode]);
+    }, [socket, quill]);
 
     useEffect(() => {
         if (socket == null || quill == null) return;
@@ -124,7 +123,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
         q.enable();
         setQuill(q);
         setIsQuillReady(true);
-    }, [editorMode]);
+    }, []);
 
     const handleAppeal = () => {
         if (socket && socket.connected) {
@@ -135,7 +134,6 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
             };
             console.log('Appeal clicked. Emitting openai_appeal_call with data:', dataToSend);
             socket.emit("openai_appeal_call", dataToSend);
-            setEditorMode('appeal');
         } else {
             console.log("Socket is not connected.");
         }
@@ -154,17 +152,11 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
     };
 
     const handleEditDocument = () => {
-        setEditorMode('edit_document');
+        socket.emit("get-document", JSON.stringify({ documentId, fileName }));
     };
 
-    useEffect(() => {
-        if (editorMode === 'edit_document' && socket) {
-            socket.emit("get-document", JSON.stringify({ documentId, fileName }));
-        }
-    }, [editorMode, socket, documentId, fileName]);
-
     const handleNewDocument = () => {
-        setEditorMode('new_document');
+        quill.setText('');
     };
 
     const handleClose = () => {
@@ -279,107 +271,88 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
 
     return (
         <React.Fragment>
-            {!editorMode ? (
-                <Modal show={showTextEditor} onHide={handleClose} backdrop="static" centered>
-                    <Modal.Header closeButton style={{ backgroundColor: '#191c24', textAlign: 'center' }}>
-                        <Modal.Title>Notepad</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body style={{ textAlign: 'center', background:'#191c24' }}>
-                        <Button variant="outline-info" onClick={handleNewDocument} style={{ margin: '10px' }}>
-                            <FaFile /> New Document
+            <div style={{ padding: "10px", backgroundColor: '#191c24', textAlign: 'center' }}>
+                <Button variant="outline-info" onClick={handleNewDocument} style={{ margin: '10px' }}>
+                    <FaFile /> New Document
+                </Button>
+                <Button variant="outline-success" onClick={handleEditDocument} style={{ margin: '10px' }}>
+                    <FaBriefcase /> Edit Document
+                </Button>
+                <Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
+                    <FaRegPaperPlane /> Appeal
+                </Button>
+            </div>
+            <div style={{ color: "white", background: '#191c24', padding: '20px', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2>Notepad</h2>
+                    <div>
+                        <Button variant="primary" onClick={handleNoteSave} style={{ marginRight: '10px' }}>Save</Button>
+                        <Button variant="secondary" onClick={handleClose} style={{ fontSize: '16px', lineHeight: '1', padding: '0.375rem 0.75rem' }}>
+                            <span aria-hidden="true">&times;</span>
                         </Button>
-                        <Button variant="outline-success" onClick={handleEditDocument} style={{ margin: '10px' }}>
-                            <FaBriefcase /> Edit Document
+                    </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', height: '76vh' }}>
+                    <div style={{ flex: 7, marginRight: '20px', background: '#2a3038', borderRadius: '8px', padding: '10px' }} ref={wrapperRef}></div>
+                    <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto', background: '#2A3038', borderRadius: '8px', padding: '10px' }}>
+                        <Button variant="outline-primary" onClick={() => handleRequest('recommendations')}>
+                            {loadingRecommendations ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Insights'}
                         </Button>
-                        <Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
-                            <FaRegPaperPlane /> Appeal
+                        <Button variant="outline-success" onClick={() => handleRequest('caselaw')}>
+                            {loadingCaselaw ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Caselaw'}
                         </Button>
-                    </Modal.Body>
-                </Modal>
-            ) : (
-                <Modal
-                    style={{ color: "white" }}
-                    show={showTextEditor}
-                    onHide={handleClose}
-                    backdrop="static"
-                    size="xl"
-                    centered
-                >
-                    <Modal.Header closeButton={false} style={{ backgroundColor: '#191c24', textAlign: 'center', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Modal.Title>Notepad</Modal.Title>
-                        <div>
-                            <Button variant="primary" onClick={handleNoteSave} style={{ marginRight: '10px' }}>Save</Button>
-                            <Button variant="secondary" onClick={handleClose} style={{ fontSize: '16px', lineHeight: '1', padding: '0.375rem 0.75rem' }}>
-                                <span aria-hidden="true">&times;</span>
-                            </Button>
-                        </div>
-                    </Modal.Header>
-                    <Modal.Body style={{ height: '76vh', background:'#191c24' }}>
-                        <div style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-                            <div style={{ flex: 7, marginRight: '20px' }} ref={wrapperRef}></div>
-                            <div style={{ flex: 3, paddingLeft: '2px', overflowY: 'auto' }}>
-                                <Button variant="outline-primary" onClick={() => handleRequest('recommendations')}>
-                                    {loadingRecommendations ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Insights'}
-                                </Button>
-                                <Button variant="outline-success" onClick={() => handleRequest('caselaw')}>
-                                    {loadingCaselaw ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Caselaw'}
-                                </Button>
-                                <Button variant="outline-info" onClick={() => handleRequest('clause')}>
-                                    {loadingClause ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Clause'}
-                                </Button>
-                                <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-                                    {openaiRecommendations.map((recommendation, index) => (
-                                        <div 
-                                            key={index} 
-                                            className="sidebar__highlight"  
-                                            style={{
-                                                padding: '10px', 
-                                                margin: '5px 0', 
-                                                display: 'flex', 
-                                                justifyContent: 'space-between', 
-                                                alignItems: 'center',
-                                                backgroundColor: index === latestReceivedIndex ? '2A3038' : '2A3038', 
-                                                animation: index === latestReceivedIndex ? 'flash 1s infinite alternate' : 'none'
-                                            }}
-                                            onMouseEnter={() => setLatestReceivedIndex(index)}
-                                            onMouseLeave={() => setLatestReceivedIndex(-1)}
-                                        >
-                                            <span style={{ fontSize: '10px' }}>{recommendation}</span>
-                                            <Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(recommendation)}>Insert</Button>
-                                        </div>
-                                    ))}
+                        <Button variant="outline-info" onClick={() => handleRequest('clause')}>
+                            {loadingClause ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Clause'}
+                        </Button>
+                        <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
+                            {openaiRecommendations.map((recommendation, index) => (
+                                <div 
+                                    key={index} 
+                                    className="sidebar__highlight"  
+                                    style={{
+                                        padding: '10px', 
+                                        margin: '5px 0', 
+                                        display: 'flex', 
+                                        justifyContent: 'space-between', 
+                                        alignItems: 'center',
+                                        backgroundColor: index === latestReceivedIndex ? '2A3038' : '2A3038', 
+                                        animation: index === latestReceivedIndex ? 'flash 1s infinite alternate' : 'none'
+                                    }}
+                                    onMouseEnter={() => setLatestReceivedIndex(index)}
+                                    onMouseLeave={() => setLatestReceivedIndex(-1)}
+                                >
+                                    <span style={{ fontSize: '10px' }}>{recommendation}</span>
+                                    <Button variant="outline-secondary" onClick={() => insertHighlightIntoQuill(recommendation)}>Insert</Button>
                                 </div>
-                            </div>
+                            ))}
                         </div>
-                    </Modal.Body>
-                    <Modal.Footer className="custom-modal-footer" style={{ background:'#191c24', justifyContent: 'center' }}>
-                        <div className="w-100 d-flex justify-content-between align-items-center">
-                            <FormControl
-                                type="text"
-                                placeholder="Ask Casebook AI a question"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                className="nav-link mt-2 mt-md-0 d-none d-lg-flex search mx-3"
-                            />
-                            <Button variant="info" onClick={handleSend}>
-                                {loadingSend ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Send'}
-                            </Button>
-                        </div>
-                    </Modal.Footer>
-                    <style>
-                        {`
-                            @keyframes flash {
-                                from {
-                                    background-color: #2A3038;
-                                }
-                                to {
-                                    background-color: #32435a;
-                                }
+                    </div>
+                </div>
+                <div className="w-100 d-flex justify-content-between align-items-center" style={{ marginTop: '10px' }}>
+                    <FormControl
+                        type="text"
+                        placeholder="Ask Casebook AI a question"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="nav-link mt-2 mt-md-0 d-none d-lg-flex search mx-3"
+                    />
+                    <Button variant="info" onClick={handleSend}>
+                        {loadingSend ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Send'}
+                    </Button>
+                </div>
+                <style>
+                    {`
+                        @keyframes flash {
+                            from {
+                                background-color: #2A3038;
                             }
-                        `}
-                    </style>
-                </Modal>
-            )}
+                            to {
+                                background-color: #32435a;
+                            }
+                        }
+                    `}
+                </style>
+            </div>
         </React.Fragment>
     );
 }

@@ -1,7 +1,6 @@
 import React, { useRef, useContext, useEffect } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import HighlightButton from '../Dashboard/HighlightButton';
-import FileUploadComponent from '../Dashboard/FileUploadComponent';
 import Search from '../Dashboard/Search';
 import { Col, Row } from 'reactstrap';
 
@@ -99,22 +98,19 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
                     </Col>
                 </Row>
                 <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content' }}>
-                    <div
-                        onClick={() => setCreateNotes(true)}
-                        className="btn btn-md btn-primary text-center cursor-pointer p-2"
-                    >Notes
-                    </div>
-                    <div
-                        onClick={() => setShowGraph(!showGraph)}
-                        className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
-                    > {showGraph ? "Hide" : "Graph"}
-                    </div>
                     {state.showFileViewer && (
-                        <div
-                            onClick={togglePdfViewer}
-                            className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
-                        > {state.showPdfViewer ? "Hide PDF" : "Show PDF"}
-                        </div>
+                        <>
+                            <div
+                                onClick={() => setShowGraph(!showGraph)}
+                                className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
+                            > {showGraph ? "Hide" : "Graph"}
+                            </div>
+                            <div
+                                onClick={togglePdfViewer}
+                                className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
+                            > {state.showPdfViewer ? "Show Text Editor" : "Show PDF"}
+                            </div>
+                        </>
                     )}
                 </div>
                 <button
