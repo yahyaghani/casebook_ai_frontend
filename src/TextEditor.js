@@ -53,6 +53,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
 
     useEffect(() => {
         if (!socket || !quill) return;
+        handleEditDocument();
 
         const loadDocument = (document) => {
             let documentText = '';
@@ -282,7 +283,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
                     <FaRegPaperPlane /> Appeal
                 </Button>
             </div>
-            <div style={{ color: "white", background: '#191c24', padding: '20px', borderRadius: '8px' }}>
+            <div style={{ color: "white", background: '#191c24', padding: '20px'}}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h2>Notepad</h2>
                     <div>
