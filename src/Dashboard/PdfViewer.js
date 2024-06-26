@@ -1,4 +1,3 @@
-// PdfViewer.js
 import React, { useContext, useEffect, useState, useRef } from "react";
 import {
     PdfLoader,
@@ -129,82 +128,87 @@ function PdfViewer() {
 
     return (
         <Wrapper highlightColors={state.highlightColors}>
-            <div className="d-flex">
-                <div style={{ minHeight: "calc(100vh - 70px)", color: "#000000", width: "80%" }} className="pdf-viewer">
-                    {currFile ? (
-                        <>
-                            <PdfLoader className="my-pdf-viewer" url={currFile} beforeLoad={<Spinner />}>
-                                {(pdfDocument) => (
-                                    <PdfHighlighter
-                                        ref={pdfHighlighter}
-                                        pdfDocument={pdfDocument}
-                                        enableAreaSelection={(event) => event.altKey}
-                                        onScrollChange={resetHash}
-                                        scrollRef={(scrollTo) => { }}
-                                        onSelectionFinished={(
-                                            position,
-                                            content,
-                                            hideTipAndSelection,
-                                            transformSelection
-                                        ) => (
-                                            <Tip
-                                                onOpen={transformSelection}
-                                                onConfirm={(comment) => {
-                                                    addHighlight({ content, position, comment });
-                                                    hideTipAndSelection();
-                                                }}
-                                            />
-                                        )}
-                                        highlightTransform={(
-                                            highlight,
-                                            index,
-                                            setTip,
-                                            hideTip,
-                                            viewportToScaled,
-                                            screenshot,
-                                            isScrolledTo
-                                        ) => (
-                                            <Popup
-                                                popupContent={<HighlightPopup {...highlight} />}
-                                                onMouseOver={(popupContent) =>
-                                                    setTip(highlight, (highlight) => popupContent)
-                                                }
-                                                onMouseOut={hideTip}
-                                                key={index}
-                                            >
-                                                <StickyNote
-                                                    isScrolledTo={isScrolledTo}
-                                                    position={highlight.position}
-                                                    comment={highlight.comment}
-                                                />
-                                                <AreaHighlight
-                                                    highlight={highlight}
-                                                    onChange={(boundingRect) => {
-                                                        updateHighlight(
-                                                            highlight.id,
-                                                            { boundingRect: viewportToScaled(boundingRect) },
-                                                            { image: screenshot(boundingRect) }
-                                                        );
+            {state.showPdfViewer ? (
+                <div className="d-flex">
+                    <div style={{ minHeight: "calc(100vh - 70px)", color: "#000000", width: "80%" }} className="pdf-viewer">
+                        {currFile ? (
+                            <>
+                                <PdfLoader className="my-pdf-viewer" url={currFile} beforeLoad={<Spinner />}>
+                                    {(pdfDocument) => (
+                                        <PdfHighlighter
+                                            ref={pdfHighlighter}
+                                            pdfDocument={pdfDocument}
+                                            enableAreaSelection={(event) => event.altKey}
+                                            onScrollChange={resetHash}
+                                            scrollRef={(scrollTo) => { }}
+                                            onSelectionFinished={(
+                                                position,
+                                                content,
+                                                hideTipAndSelection,
+                                                transformSelection
+                                            ) => (
+                                                <Tip
+                                                    onOpen={transformSelection}
+                                                    onConfirm={(comment) => {
+                                                        addHighlight({ content, position, comment });
+                                                        hideTipAndSelection();
                                                     }}
                                                 />
-                                            </Popup>
-                                        )}
-                                        highlights={highlights}
-                                    />
-                                )}
-                            </PdfLoader>
-                        </>
-                    ) : state.files && state.files.length === 0 ? (
-                        <Container>
-                            <div className="h3 text-center mt-5">No File Selected!!</div>
-                        </Container>
-                    ) : (
-                        <Spinner />
-                    )}
+                                            )}
+                                            highlightTransform={(
+                                                highlight,
+                                                index,
+                                                setTip,
+                                                hideTip,
+                                                viewportToScaled,
+                                                screenshot,
+                                                isScrolledTo
+                                            ) => (
+                                                <Popup
+                                                    popupContent={<HighlightPopup {...highlight} />}
+                                                    onMouseOver={(popupContent) =>
+                                                        setTip(highlight, (highlight) => popupContent)
+                                                    }
+                                                    onMouseOut={hideTip}
+                                                    key={index}
+                                                >
+                                                    <StickyNote
+                                                        isScrolledTo={isScrolledTo}
+                                                        position={highlight.position}
+                                                        comment={highlight.comment}
+                                                    />
+                                                    <AreaHighlight
+                                                        highlight={highlight}
+                                                        onChange={(boundingRect) => {
+                                                            updateHighlight(
+                                                                highlight.id,
+                                                                { boundingRect: viewportToScaled(boundingRect) },
+                                                                { image: screenshot(boundingRect) }
+                                                            );
+                                                        }}
+                                                    />
+                                                </Popup>
+                                            )}
+                                            highlights={highlights}
+                                        />
+                                    )}
+                                </PdfLoader>
+                            </>
+                        ) : state.files && state.files.length === 0 ? (
+                            <Container>
+                                <div className="h3 text-center mt-5">No File Selected!!</div>
+                            </Container>
+                        ) : (
+                            <Spinner />
+                        )}
+                    </div>
+                    <PdfAutoScroller pdfHighlighter={pdfHighlighter} />
                 </div>
-                {/* <PdfViewerSide /> */}
-            </div>
-            <PdfAutoScroller pdfHighlighter={pdfHighlighter} />
+            ) : (
+                <div className="new-div-layer">
+                    <h3>Swapped PDF Off</h3>
+                </div>
+            )}
         </Wrapper>
     );
 }

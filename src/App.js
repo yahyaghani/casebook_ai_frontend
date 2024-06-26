@@ -17,7 +17,6 @@ import FileMetadataViewer from "./Dashboard/FileMetadataViewer";
 import PdfViewerSide from "./Dashboard/PdfViewerSide";
 import { SocketProvider } from './shared/SocketContext';
 
-
 export const UserContext = createContext();
 
 function App() {
@@ -29,64 +28,62 @@ function App() {
 
     return (
         <UserContext.Provider value={{ state, dispatch }}>
-                    <SocketProvider>
-
-            <Router>
-                <Switch>
-                    <Route path="/login">
-                        <Login />
-                    </Route>
-                    <Route path="/register">
-                        <Register />
-                    </Route>
-                    <Route exact path="/dashboard">
-                        <div className="container-scroller">
-                            <Sidebar />
-                            <div className="container-fluid page-body-wrapper">
-                                <Navbar 
-                                    setCreateNotes={setCreateNotes}
-                                    setShowGraph={setShowGraph}
-                                    showGraph={showGraph}
-                                    setShowGraphModal={setShowGraphModal}
-                                />
-                                <div className="main-panel">
-                                    <div className="show_side" style={{ display: "flex" }}>
-                                        {state.showHighlight === true && state.searchQuery !== "" && <NodesList />}
-                                        {state.showFileViewer === true && <FileViewer />}
-                                        <div className="content-wrapper">
-                                            <AppRoutes
-                                                showFileViewer={state.showFileViewer}
-                                                showDashboardView={state.showDashboardView}
-                                                showHighlight={state.showHighlight}
-                                                showProfileView={state.showProfileView}
-                                                showFeedView={state.showFeedView}
-                                                showTextAnonymizerView={state.showTextAnonymizerView}
-                                                showLawsReader={state.showLawsReader}
-                                                showGptView={state.showGptView}
-                                            />
-                                            <FileMetadataViewer files={state.files} />
+            <SocketProvider>
+                <Router>
+                    <Switch>
+                        <Route path="/login">
+                            <Login />
+                        </Route>
+                        <Route path="/register">
+                            <Register />
+                        </Route>
+                        <Route exact path="/dashboard">
+                            <div className="container-scroller">
+                                <Sidebar />
+                                <div className="container-fluid page-body-wrapper">
+                                    <Navbar 
+                                        setCreateNotes={setCreateNotes}
+                                        setShowGraph={setShowGraph}
+                                        showGraph={showGraph}
+                                        setShowGraphModal={setShowGraphModal}
+                                    />
+                                    <div className="main-panel">
+                                        <div className="show_side" style={{ display: "flex" }}>
+                                            {state.showHighlight === true && state.searchQuery !== "" && <NodesList />}
+                                            {state.showFileViewer === true && <FileViewer />}
+                                            <div className="content-wrapper">
+                                                <AppRoutes
+                                                    showFileViewer={state.showFileViewer}
+                                                    showDashboardView={state.showDashboardView}
+                                                    showHighlight={state.showHighlight}
+                                                    showProfileView={state.showProfileView}
+                                                    showFeedView={state.showFeedView}
+                                                    showTextAnonymizerView={state.showTextAnonymizerView}
+                                                    showLawsReader={state.showLawsReader}
+                                                    showGptView={state.showGptView}
+                                                />
+                                                <FileMetadataViewer files={state.files} />
+                                            </div>
+                                            {state.showHighlight === true && state.searchQuery !== "" && <NodePreview />}
+                                            {state.showFileViewer && (
+                                                <PdfViewerSide
+                                                    createNotes={createNotes}
+                                                    showGraph={showGraph}
+                                                    showGraphModal={showGraphModal}
+                                                    setShowGraphModal={setShowGraphModal}
+                                                    setCreateNotes={setCreateNotes}
+                                                    setShowGraph={setShowGraph}
+                                                />
+                                            )}
                                         </div>
-                                        {state.showHighlight === true && state.searchQuery !== "" && <NodePreview />}
-                                        {state.showFileViewer && (
-                                            <PdfViewerSide
-                                                createNotes={createNotes}
-                                                showGraph={showGraph}
-                                                showGraphModal={showGraphModal}
-                                                setShowGraphModal={setShowGraphModal}
-                                                setCreateNotes={setCreateNotes}
-                                                setShowGraph={setShowGraph}
-                                            />
-                                        )}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </Route>
-                    <Redirect to="/login" />
-                </Switch>
-            </Router>
+                        </Route>
+                        <Redirect to="/login" />
+                    </Switch>
+                </Router>
             </SocketProvider>
-
         </UserContext.Provider>
     );
 }

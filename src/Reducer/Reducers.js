@@ -146,7 +146,13 @@ export const reducer = (state, action) => {
                 return updateState(state, { accordionSections: action.payload });
                 // return { ...state, accordionSections: [{ test: 'data' }] };  // Test static data
 
-    
+        case 'TOGGLE_PDF_VIEWER':
+            return {
+                ...state,
+                showPdfViewer: !state.showPdfViewer,
+            };
+
+        
         default:
             return state;
     }

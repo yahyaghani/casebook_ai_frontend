@@ -62,6 +62,12 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
         document.querySelector('.sidebar-offcanvas').classList.toggle('active');
     }
 
+    const togglePdfViewer = () => {
+        if (state.showFileViewer) {
+            dispatch({ type: 'TOGGLE_PDF_VIEWER' });
+        }
+    }
+
     return (
         <nav className="navbar p-0 fixed-top d-flex flex-row">
             <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -103,6 +109,13 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
                         className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
                     > {showGraph ? "Hide" : "Graph"}
                     </div>
+                    {state.showFileViewer && (
+                        <div
+                            onClick={togglePdfViewer}
+                            className="btn btn-lg btn-secondary text-center cursor-pointer p-2"
+                        > {state.showPdfViewer ? "Hide PDF" : "Show PDF"}
+                        </div>
+                    )}
                 </div>
                 <button
                     className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"

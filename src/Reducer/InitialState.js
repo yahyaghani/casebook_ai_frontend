@@ -37,4 +37,6 @@ export const InitialState = {
     showGptView: false,
     showLawsReader: false,
     accordionSections: [],
+    showPdfViewer: true, // default to true to show the PDF viewer initially
+
 };
