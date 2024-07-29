@@ -121,13 +121,14 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
                     <span className="mdi mdi-format-line-spacing"></span>
                 </button>
                 <button
-                    style={{ height: '35px' }}
-                    className="navbar-toggler bg-danger align-self-center text-white btn btn-danger"
+                    className="btn btn-md bg-danger text-center cursor-pointer p-2 text-white align-self-center log-out-button"
                     type="button"
                     onClick={() => dispatch({ type: "LOG_OUT" })}
                 >
-                    LogOut
+                    Log Out
                 </button>
+
+
             </div>
         </nav>
     );

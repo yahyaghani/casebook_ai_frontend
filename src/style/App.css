@@ -554,6 +554,20 @@ span {
 .custom-table td {
     border: 1px solid #343a40;
 }
+.button-container .btn {
+    padding: 8px 16px; /* Adjust padding as needed */
+    font-size: 16px; /* Adjust font size as needed */
+    white-space: nowrap; /* Prevents the text from wrapping */
+    overflow: hidden; /* Keeps the text inside the button boundary */
+    text-overflow: ellipsis; /* Adds '...' if text is too long */
+    min-width: 120px; /* Ensures minimum width for the button */
+}
+
+.btn-lg {
+    height: 35px; /* Ensure this matches your design needs */
+}
+
+
 
 .upload-button-container {
     display: flex;
@@ -691,4 +705,10 @@ span {
 
 .navbar .nav-item.menu-items.active {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.log-out-button{
+
+border-radius:25px !important;
+
 }

@@ -60,10 +60,10 @@ const Register = () => {
 							<div className="brand-logo">
 								<img src={require("../images/scaletransm2.png")} alt="logo" />
 							</div>
-							<h4>New here?</h4>
-							<h6 className="font-weight-light">
+							{/* <h4>New here?</h4> */}
+							{/* <h6 className="font-weight-light">
 								Signing up is easy. It only takes a few steps
-							</h6>
+							</h6> */}
 							<form className="pt-3">
 								<div className="row form-group">
 									<div className="col">
@@ -193,7 +193,7 @@ const Register = () => {
 								</div>
 								<div className="mt-3">
 									<Button
-										className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+										className="btn btn-block btn-primary btn-lg font-weight-medium align-self-center"
 										onClick={registerUser}
 									>
 										SIGN UP

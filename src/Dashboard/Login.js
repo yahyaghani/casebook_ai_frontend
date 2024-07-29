@@ -81,7 +81,7 @@ const Login = () => {
                 </Form.Group>
                 <div className="mt-3">
                   <Button
-                    className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                    className="btn btn-block btn-primary btn font-weight-medium auth-form-btn btn btn-primary align-self-center"
                     onClick={loginUser}
                   >
                     SIGN IN
