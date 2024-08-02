@@ -1,5 +1,6 @@
-const BASE_URL_DEV = "http://localhost:3000";
+// const BASE_URL_DEV = "http://localhost:3000";
 // const BASE_URL_DEV = "http://localhost:8000";
+const BASE_URL_DEV = "https://back.casebk.com";
 
 export { BASE_URL_DEV };
 

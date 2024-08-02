@@ -27,7 +27,8 @@ const Login = () => {
     const response = await fetch(`${BASE_URL_DEV}/api/user/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "Authorization",
+        "Content-Type": "application/json",
+        // Assume you handle authentication token here if needed
       },
       body: JSON.stringify(userDetails),
     });
@@ -36,9 +37,12 @@ const Login = () => {
     if (response.ok) {
       dispatch({ type: "AUTH", payload: json });
       history.push("/dashboard");
+    } else {
+      // Handle errors, e.g., unauthorized access
+      console.error('Login failed:', json);
     }
   };
-
+  
   return (
     <div className="mt-5 auth-page" style={{ height: "85vh" }}>
       <div className="d-flex align-items-center auth px-0">
