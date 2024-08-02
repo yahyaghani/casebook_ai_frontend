@@ -97,7 +97,7 @@ const Navbar = ({ setCreateNotes, setShowGraph, showGraph, setShowGraphModal }) 
                         <HighlightButton />
                     </Col>
                 </Row>
-                <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content' }}>
+                <div className="button-container" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px auto', width: 'fit-content',gap:'10px' }}>
                     {state.showFileViewer && (
                         <>
                             <div
