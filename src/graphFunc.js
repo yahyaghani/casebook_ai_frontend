@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Graph } from "react-d3-graph";
 import axios from "axios";
 import { Fragment } from "react";
+import { BASE_URL_DEV } from "utils";
 
 function GraphFunc(props) {
 	const [graphData, setGraphData] = useState([]);
@@ -10,7 +11,8 @@ function GraphFunc(props) {
 	useEffect(() => {
 		async function fetchData() {
 			await axios
-				.get("http://127.0.0.1:8000/api/v1/graph")
+				.get(`${BASE_URL_DEV}/api/v1/graph`)
+
 				.then(function (response) {
 					setGraphData(response.data);
 				})
