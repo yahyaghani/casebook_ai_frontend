@@ -1,13 +1,5 @@
-
 import React, { useContext, useEffect, useState, useRef } from "react";
-import {
-    PdfLoader,
-    PdfHighlighter,
-    Highlight,
-    Popup,
-    AreaHighlight,
-} from "react-pdf-highlighter";
-
+import { PdfLoader, PdfHighlighter, Highlight, Popup, AreaHighlight } from "react-pdf-highlighter";
 import StickyNote from './StickyNote';
 import { Container } from "react-bootstrap";
 import styled from "styled-components";
@@ -61,6 +53,33 @@ function PdfViewer() {
     const [highlights, setHighlights] = useState([]);
     const pdfHighlighter = useRef(null);
 
+    // Set the last file as currentFile every time PdfViewer is rendered
+    useEffect(() => {
+        console.log("Checking if last file should be set...");
+        console.log("state.files:", state.files);
+        console.log("state.currentFile:", state.currentFile);
+
+        if (state.files && state.files.length > 0) {
+            const lastFile = state.files[state.files.length - 1]; // Get the last file
+            console.log("Last file in state.files:", lastFile);
+
+            // Check if the last file is different from the current file
+            if (!state.currentFile || lastFile.name !== state.currentFile.name) {
+                const data = {
+                    name: lastFile.name,
+                    url: lastFile.url || `uploads/${state.auth.userPublicId}/${lastFile.name}`
+                };
+                dispatch({ type: 'SET_CURR_FILE', payload: data });
+                console.log("Set last file as currentFile:", data);
+            } else {
+                console.log("Last file is already set as currentFile.");
+            }
+        } else {
+            console.log("No files available to set as currentFile.");
+        }
+    }, [state.files, state.currentFile, dispatch, state.auth.userPublicId]);
+
+    // Handle file highlights
     useEffect(() => {
         if (highlights.length > 0) {
             dispatch({
@@ -71,18 +90,18 @@ function PdfViewer() {
                 },
             });
         }
-    }, [highlights]);
+    }, [highlights, dispatch, state.currentFile]);
 
-   
+    // Set the current file URL
     useEffect(() => {
         if (state.currentFile) {
-            console.log('state.currentFile = ',state.currentFile)
-            console.log('state = ',state)
+            console.log('state.currentFile = ', state.currentFile);
+            console.log('state = ', state);
 
             if (state.fileViewSource === "metadataViewer") {
                 // If accessed via FileMetadataViewer, set directly
                 console.log('pdf view with upload');
-    
+
                 if (state.currentFile.url) {
                     setCurrFile(state.currentFile.url);
                 } else if (state.currentFile instanceof Blob) {
@@ -96,7 +115,7 @@ function PdfViewer() {
                 }
             } else {
                 console.log('pdf view without upload');
-    
+
                 if (state.currentFile.url) {
                     const correctedUrl = state.currentFile.url.startsWith('http')
                         ? state.currentFile.url
@@ -110,7 +129,8 @@ function PdfViewer() {
             setCurrFile(null);
         }
     }, [state.currentFile, state.fileViewSource]);
-    
+
+    // Set highlights for the current file
     useEffect(() => {
         if (state.currentFile) {
             const fileHighlights = state.fileHighlights.find(item => item.name === state.currentFile.name);
@@ -120,7 +140,7 @@ function PdfViewer() {
         }
     }, [state.currentFile, state.fileHighlights]);
 
-    // New effect to set accordion sections
+    // Set accordion sections
     useEffect(() => {
         if (state.currentFile) {
             const currentFileName = state.currentFile.name;
@@ -141,8 +161,9 @@ function PdfViewer() {
                 console.log("No sections found for:", currentFileName);
             }
         }
-    }, [state.currentFile, state.fileHighlights]);
+    }, [state.currentFile, state.fileHighlights, dispatch]);
 
+    // Handle hash change for highlights
     useEffect(() => {
         window.addEventListener("hashchange", scrollToHighlightFromHash, false);
         return () => {
@@ -247,5 +268,3 @@ function PdfViewer() {
 }
 
 export default PdfViewer;
-
-

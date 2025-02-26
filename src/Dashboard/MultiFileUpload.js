@@ -53,6 +53,7 @@ function MultiFileUpload({ onBackClick, caseName, document_class }) {
                     'x-access-token': state.auth && state.auth.authToken,
                 }
             });
+            console.log('response', response);
             setUploadedFiles(response.data.files);
             setFiles([]);
             setSelectedFiles([]);
