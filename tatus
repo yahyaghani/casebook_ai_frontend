@@ -1,0 +1,269 @@
+[33mcommit c383083111d377b1215b28d6952cfaa24cc09a99[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mlatest-public[m[33m, [m[1;31morigin/latest-public[m[33m)[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Feb 26 18:45:21 2025 +0000
+
+    fixed upload issue and last file uploaded to be viewable on copilot
+
+[33mcommit f221310206276a96322cb60acfabb0bc746afe7e[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Feb 1 20:07:03 2025 +0000
+
+    fixed seending document-class to backend
+
+[33mcommit abc4c230fd3e5085c995d16c03db397d1dc6802f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Jan 29 01:37:51 2025 +0000
+
+    improving-ui
+
+[33mcommit 4b5c93023fef09adeec2c6f6e4f3109c2681105b[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sun Jan 26 00:43:06 2025 +0000
+
+    SET_FILE_VIEW_SOURCE added which will help control flow of upload vs other file fetch for copilot
+
+[33mcommit 368f983ce5b0c60ec066d7ca548fb641f3ae36b8[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Tue Jan 21 17:29:01 2025 +0000
+
+    fixed sections to be statefull for session stored pdf
+
+[33mcommit d0022bee9eebc8c0f90eaf624838b892dc7bb7f3[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Tue Jan 21 16:40:12 2025 +0000
+
+    Committing current changes to latest-public branch
+
+[33mcommit 60fb249aa4af6b2d86cb42ca4f07ac53b29a1f81[m[33m ([m[1;31morigin/public-dev[m[33m)[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Fri Aug 2 03:56:47 2024 +0000
+
+    fixed navbar button gap
+
+[33mcommit 49f66c625220d5cc15c481c353eb8b92abbd63be[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Fri Aug 2 03:24:34 2024 +0100
+
+    changed all 8000 port to BASE_URL_DEV
+
+[33mcommit 04b8501b1b39f50b4f47b857dea25241eb9c2824[m
+Author: yg <apatewp@gmail.com>
+Date:   Fri Aug 2 01:16:44 2024 +0000
+
+    for prod-debugging
+
+[33mcommit a4367c4b213214362f02c28eeb098b3f03908a3a[m[33m ([m[1;31morigin/multi-doc-latest[m[33m, [m[1;32mmulti-doc-latest[m[33m)[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jul 29 20:20:36 2024 +0100
+
+    cleaned up buttons and register css
+
+[33mcommit 7d2f8833b71ddc4633edc65c167f1320e37f2129[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Jun 26 20:46:44 2024 +0100
+
+    need-to-fix-graph-keys-and-accordion-render-state-issues
+
+[33mcommit f2cfac853823c55a406306b11b3be8619161f84e[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Jun 26 19:33:48 2024 +0100
+
+    notes-button-conditional-on-showfileviewer
+
+[33mcommit 5c507e75e01208245798534f6a1740a0e81aea61[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Jun 26 17:50:19 2024 +0100
+
+    fixed-showmetadataviewer-on-show/hide-pdflayer
+
+[33mcommit 4cc2bf3dfc803c0bcfc7a9deea3483821bbe0557[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Wed Jun 26 17:07:08 2024 +0100
+
+    pdf-layer-hide-basic-implemented
+    
+    The changes involve implementing a basic version of hiding PDF layers.
+    but there is an issue , the filemetadata viewer layer behind is visible,
+    seems it was never addresssed , need to turn it off.
+
+[33mcommit 5cf372467de2ff38a42849a2c0e0e01ad523a88b[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jun 10 23:40:48 2024 +0100
+
+    dynamic-graphic-connected
+
+[33mcommit d5315a0e5349b4eb0523177997621777af799c2f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jun 10 22:39:05 2024 +0100
+
+    improved-dynamic-graph&accordiondata
+
+[33mcommit 42ee1e6b6fd21a8d481f6fe87c737ec762a09fc0[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jun 10 22:15:57 2024 +0100
+
+    improved-dynamic-graph&accordiondata
+
+[33mcommit 2028f334cb4dd82b0ae95128e118e7667a1611b3[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jun 10 16:52:21 2024 +0100
+
+    render-both-highlight-and-sticky-note
+
+[33mcommit 18e501abb41713cdd563cf22f11bedd662e35bab[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon Jun 10 05:44:38 2024 +0100
+
+    dynamic-graph-connected-toback
+
+[33mcommit c83edbbf7b08d2cbc88edb5774cd493509ed48e7[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 8 22:33:27 2024 +0100
+
+    turn-off-search-accordion
+
+[33mcommit f1116dce7a3f23423d56e811ac582829a3318f9f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 8 22:10:14 2024 +0100
+
+    turn-off-search-accordion
+
+[33mcommit 7b0669a3fe1cc9c4ca6b0d6d6d5e9d7b00aba169[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 8 21:42:56 2024 +0100
+
+    turn-off-search-accordion
+
+[33mcommit ad02554f7e4c3c2cf07040157a9764b7ff28b969[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 8 21:19:50 2024 +0100
+
+    turn-off-search-accordion
+
+[33mcommit 7ac41d704e8de903030b94797a5ab0ea376ad9c8[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 8 00:18:16 2024 +0100
+
+    working-on-multi-case-db
+
+[33mcommit e32573ce12916feef81910575cb54ae4899e4c0c[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Fri Jun 7 23:50:15 2024 +0100
+
+    working-on-multi-case-db
+
+[33mcommit 5cb15a4a770fc3025b6ad999b9fd03002895bdb5[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu Jun 6 19:22:12 2024 +0100
+
+    Stop tracking node_modules
+
+[33mcommit 4e5013675aba6b4cd93cd87bf2fa9ca23aa0871f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu Jun 6 19:18:59 2024 +0100
+
+    latest-cleanup
+
+[33mcommit be3b1f5e0ccc7d27efcd9bb42854a2605923886a[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu Jun 6 19:18:26 2024 +0100
+
+    latest-cleanup
+
+[33mcommit 7863289e0352c85c640bcfc9cd404062e448260f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu Jun 6 13:26:29 2024 +0100
+
+    revert
+
+[33mcommit acbf67e27c456448514e76546ec0fdbd04aa04e7[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sun Jun 2 13:35:56 2024 +0100
+
+    basic-accordion-on-pdfviewerside-integrated
+
+[33mcommit b504a7a176fd5e207df3743765f2e259873da1ef[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sun Jun 2 12:18:19 2024 +0100
+
+    sidebar-graph-notes-from-navbar-state
+
+[33mcommit af9f889bc984d019323192dff401077461dc5215[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sun Jun 2 11:33:16 2024 +0100
+
+    basic-multi-file-connectedview-pdf
+
+[33mcommit ebae7757a97e404df5c187c2ef0e61498436672e[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sun Jun 2 09:07:34 2024 +0100
+
+    basic-multi-file-view-pdf-highlight-working
+
+[33mcommit 604f65635c2365df469f73f11ca9a312992974d6[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 1 21:48:27 2024 +0100
+
+    split dashboard row cards
+
+[33mcommit b6e9333d1a03c86e633ceab5927de16bbbb57767[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 1 21:32:11 2024 +0100
+
+    split dashboard row cards
+
+[33mcommit feba3c05027ef4b78396563aa5ad64473ab461aa[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Sat Jun 1 21:31:36 2024 +0100
+
+    split dashboard row cards
+
+[33mcommit 6d25808ff87f3d814e975df7be13a96580dafdaf[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Fri May 31 04:22:21 2024 +0100
+
+    adding case-file-multi-ui
+
+[33mcommit f053432cb373a75be8ccd1a29702ff616129d6c0[m[33m ([m[1;32mmulti-doc-[m[33m)[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Fri May 31 03:28:36 2024 +0100
+
+    adding case-file-multi-ui
+
+[33mcommit 7ed95073e3b311a08504fa214c8cfc25383c5b67[m[33m ([m[1;32mmulti-doc-view[m[33m)[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu May 30 22:18:56 2024 +0100
+
+    adding case-file-multi-ui
+
+[33mcommit dd1dea5893db3efb799ff40486d78944b08a0427[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu May 30 01:53:57 2024 +0100
+
+    test-ready
+
+[33mcommit b7223558ffbe2b256d5db26ae942545dc20c1d9f[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Mon May 27 10:38:41 2024 +0100
+
+    testing-backend
+
+[33mcommit 24f9950aefd11c4c1a4fb37280fd1d52b6d84e10[m
+Author: Yahya Ghani <yambox88@gmail.com>
+Date:   Thu May 23 22:08:31 2024 +0100
+
+    basic-chat-backend-connected
+
+[33mcommit 3b19c815a07ea77717d19f5fbbd042bf5331b3b7[m
+Author: taymur <apatewp@gmail.com>
+Date:   Thu May 16 03:13:13 2024 +0100
+
+    fixing-chatui-issues
+
+[33mcommit ef2dad34518978ab267e97b66867e4a916a4071e[m
+Author: taymur <apatewp@gmail.com>
+Date:   Thu May 16 02:33:47 2024 +0100
+
+    fixing-chatui-issues
+
+[33mcommit 1a7b1778f65d3

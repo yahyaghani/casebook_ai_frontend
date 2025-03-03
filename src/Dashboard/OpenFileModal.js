@@ -177,7 +177,12 @@ function OpenFileModal({ showFileModal, setShowFileModal, filePost }) {
 											pdfDocument={pdfDocument}
 											enableAreaSelection={(event) => event.altKey}
 											onScrollChange={resetHash}
-											scrollRef={(scrollTo) => { }}
+											scrollRef={(scrollTo) => {
+												if (pdfHighlighter.current && typeof scrollTo === "function") {
+													pdfHighlighter.current.scrollTo = scrollTo;
+												}
+											}}
+											
 											highlightTransform={(
 												highlight,
 												index,

@@ -120,6 +120,7 @@ function PdfViewer() {
                     const correctedUrl = state.currentFile.url.startsWith('http')
                         ? state.currentFile.url
                         : `${BASE_URL_DEV}/${state.currentFile.url}`;
+                    // console.log("correctedUrl",correctedUrl);
                     setCurrFile(correctedUrl);
                 } else {
                     setCurrFile(null);
@@ -216,6 +217,12 @@ function PdfViewer() {
                                                 }}
                                             />
                                         )}
+                                        scrollRef={(scrollTo) => {
+                                            if (pdfHighlighter.current && typeof scrollTo === "function") {
+                                                pdfHighlighter.current.scrollTo = scrollTo;
+                                            }
+                                        }}
+                                        
                                         highlightTransform={(highlight, index, setTip, hideTip, viewportToScaled, screenshot, isScrolledTo) => (
                                             <Popup
                                                 popupContent={<HighlightPopup {...highlight} />}
