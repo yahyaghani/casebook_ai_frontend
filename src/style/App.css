@@ -291,15 +291,26 @@ blockquote:after {
 .container .ql-editor {
     color: #000;
     width: 80vw;
-    min-height: 70vh;
+    /* min-height: 65vh; */
+    height: 89% !important;
     padding: 1rem;
     margin-top: 1rem;
     box-shadow: 0 0 5px 0 #00000080;
     background-color: white;
 }
 
+.ql-editor {
+
+    /* min-height: 65vh; */
+    height: 89% !important;
+
+}
+.ql-container.ql-snow {
+    border: none !important;
+}
+
 .container .ql-container.ql-snow {
-    border: none;
+    border: none !important;
     display: flex;
     justify-content: center;
 }

@@ -279,9 +279,9 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
                 <Button variant="outline-success" onClick={handleEditDocument} style={{ margin: '10px' }}>
                     <FaBriefcase /> Edit Document
                 </Button>
-                <Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
+                {/* <Button variant="outline-primary" onClick={handleAppeal} style={{ margin: '10px' }}>
                     <FaRegPaperPlane /> Appeal
-                </Button>
+                </Button> */}
             </div>
             <div style={{ color: "white", background: '#191c24', padding: '20px'}}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -329,7 +329,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
                         </div>
                     </div>
                 </div>
-                <div className="w-100 d-flex justify-content-between align-items-center" style={{ marginTop: '10px' }}>
+                {/* <div className="w-100 d-flex justify-content-between align-items-center" style={{ marginTop: '10px' }}>
                     <FormControl
                         type="text"
                         placeholder="Ask Casebook AI a question"
@@ -340,7 +340,7 @@ export default function TextEditor({ id, fileName, showTextEditor, setShowTextEd
                     <Button variant="info" onClick={handleSend}>
                         {loadingSend ? <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner> : 'Send'}
                     </Button>
-                </div>
+                </div> */}
                 <style>
                     {`
                         @keyframes flash {
