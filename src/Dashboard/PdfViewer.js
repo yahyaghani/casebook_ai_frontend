@@ -59,24 +59,24 @@ function PdfViewer() {
         console.log("state.files:", state.files);
         console.log("state.currentFile:", state.currentFile);
 
-        if (state.files && state.files.length > 0) {
-            const lastFile = state.files[state.files.length - 1]; // Get the last file
-            console.log("Last file in state.files:", lastFile);
+        // if (state.files && state.files.length > 0) {
+        //     const lastFile = state.files[state.files.length - 1]; // Get the last file
+        //     console.log("Last file in state.files:", lastFile);
 
-            // Check if the last file is different from the current file
-            if (!state.currentFile || lastFile.name !== state.currentFile.name) {
-                const data = {
-                    name: lastFile.name,
-                    url: lastFile.url || `uploads/${state.auth.userPublicId}/${lastFile.name}`
-                };
-                dispatch({ type: 'SET_CURR_FILE', payload: data });
-                console.log("Set last file as currentFile:", data);
-            } else {
-                console.log("Last file is already set as currentFile.");
-            }
-        } else {
-            console.log("No files available to set as currentFile.");
-        }
+        //     // Check if the last file is different from the current file
+        //     if (!state.currentFile || lastFile.name !== state.currentFile.name) {
+        //         const data = {
+        //             name: lastFile.name,
+        //             url: lastFile.url || `uploads/${state.auth.userPublicId}/${lastFile.name}`
+        //         };
+        //         dispatch({ type: 'SET_CURR_FILE', payload: data });
+        //         console.log("Set last file as currentFile:", data);
+        //     } else {
+        //         console.log("Last file is already set as currentFile.");
+        //     }
+        // } else {
+        //     console.log("No files available to set as currentFile.");
+        // }
     }, [state.files, state.currentFile, dispatch, state.auth.userPublicId]);
 
     // Handle file highlights
